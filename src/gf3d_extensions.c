@@ -22,12 +22,16 @@ static vExtensions gf3d_device_extensions = {0};
 void gf3d_extensions_instance_close();
 void gf3d_extensions_device_close();
 
+/*
+	Device Initialization
+*/
 void gf3d_extensions_device_init(VkPhysicalDevice device)
 {
     Uint32 i;
     
-    vkEnumerateDeviceExtensionProperties(device,NULL, &gf3d_device_extensions.available_extension_count, NULL);
-    slog("Total available device extensions: %i",gf3d_device_extensions.available_extension_count);
+	// what extensions exist with this gpu?
+    vkEnumerateDeviceExtensionProperties(device, NULL, &gf3d_device_extensions.available_extension_count, NULL);
+    slog("Total available device extensions: %i", gf3d_device_extensions.available_extension_count);
     if (!gf3d_device_extensions.available_extension_count)return;
 
     gf3d_device_extensions.available_extensions = (VkExtensionProperties*)gfc_allocate_array(sizeof (VkExtensionProperties),gf3d_device_extensions.available_extension_count);    
@@ -46,6 +50,9 @@ void gf3d_extensions_device_init(VkPhysicalDevice device)
     atexit(gf3d_extensions_device_close);
 }
 
+/*
+	Device Close
+*/
 void gf3d_extensions_device_close()
 {
     slog("cleaning up device extensions");
@@ -60,13 +67,19 @@ void gf3d_extensions_device_close()
     memset(&gf3d_device_extensions,0,sizeof(vExtensions));
 }
 
+/*
+	Instance Initialization
+*/
 void gf3d_extensions_instance_init()
 {
     int i;
     
+	// get instance extensions
     vkEnumerateInstanceExtensionProperties(NULL, &gf3d_instance_extensions.available_extension_count, NULL);
     slog("Total available instance extensions: %i",gf3d_instance_extensions.available_extension_count);
-    if (!gf3d_instance_extensions.available_extension_count)return;
+    
+	// if there are no extensions.. stop 
+	if (!gf3d_instance_extensions.available_extension_count)return;
 
     gf3d_instance_extensions.available_extensions = (VkExtensionProperties*)gfc_allocate_array(sizeof (VkExtensionProperties),gf3d_instance_extensions.available_extension_count);    
     if (!gf3d_instance_extensions.available_extensions)return;
@@ -83,6 +96,10 @@ void gf3d_extensions_instance_init()
     atexit(gf3d_extensions_instance_close);
 }
 
+
+/*
+	Instance Close
+*/
 void gf3d_extensions_instance_close()
 {
     slog("cleaning up instance extentions");
@@ -97,6 +114,10 @@ void gf3d_extensions_instance_close()
     memset(&gf3d_instance_extensions,0,sizeof(vExtensions));
 }
 
+
+/*
+	Check Available Extensions
+*/
 Bool gf3d_extensions_check_available(vExtensions *extensions,const char *extensionName)
 {
     int i;
@@ -114,6 +135,10 @@ Bool gf3d_extensions_check_available(vExtensions *extensions,const char *extensi
     return false;
 }
 
+
+/*
+	Enable Extensions
+*/
 Bool gf3d_extensions_enable(ExtensionType extType, const char *extensionName)
 {
     vExtensions *extensions;
@@ -149,12 +174,20 @@ Bool gf3d_extensions_enable(ExtensionType extType, const char *extensionName)
     return true;
 }
 
+
+/*
+	Get Enabled Instance Names
+*/
 const char* const* gf3d_extensions_get_instance_enabled_names(Uint32 *count)
 {
     if (count != NULL)*count = gf3d_instance_extensions.enabled_extension_count;
     return gf3d_instance_extensions.enabled_extension_names;
 }
 
+
+/*
+	Get Enabled Device Names
+*/
 const char* const* gf3d_extensions_get_device_enabled_names(Uint32 *count)
 {
     if (count != NULL)*count = gf3d_device_extensions.enabled_extension_count;

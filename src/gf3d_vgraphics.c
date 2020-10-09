@@ -82,6 +82,9 @@ VkDeviceCreateInfo gf3d_vgraphics_get_device_info(Bool enableValidationLayers);
 void gf3d_vgraphics_debug_close();
 void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT callback, const VkAllocationCallbacks* pAllocator);
 
+/*
+	Setup
+*/
 void gf3d_vgraphics_setup(
     char *windowName,
     int renderWidth,
@@ -91,6 +94,9 @@ void gf3d_vgraphics_setup(
     Bool enableValidation
 );
 
+/*
+	Initialization
+*/
 void gf3d_vgraphics_init(
     char *windowName,
     int renderWidth,
@@ -154,7 +160,9 @@ void gf3d_vgraphics_init(
     
 }
 
-
+/*
+	Setup
+*/
 void gf3d_vgraphics_setup(
     char *windowName,
     int renderWidth,
@@ -204,11 +212,13 @@ void gf3d_vgraphics_setup(
     gf3d_extensions_instance_init();
     
     // get the extensions that are needed for rendering to an SDL Window
-    SDL_Vulkan_GetInstanceExtensions(gf3d_vgraphics.main_window, &(gf3d_vgraphics.sdl_extension_count), NULL);
+    SDL_Vulkan_GetInstanceExtensions(gf3d_vgraphics.main_window, &(gf3d_vgraphics.sdl_extension_count), NULL);	// write into the count how many we are getting
     if (gf3d_vgraphics.sdl_extension_count > 0)
     {
+		// allocate memory for that many
         gf3d_vgraphics.sdl_extension_names = gfc_allocate_array(sizeof(const char *),gf3d_vgraphics.sdl_extension_count);
         
+		// get the extensions after getting memory
         SDL_Vulkan_GetInstanceExtensions(gf3d_vgraphics.main_window, &(gf3d_vgraphics.sdl_extension_count), gf3d_vgraphics.sdl_extension_names);
         for (i = 0; i < gf3d_vgraphics.sdl_extension_count;i++)
         {
@@ -231,12 +241,13 @@ void gf3d_vgraphics_setup(
     gf3d_vgraphics.vk_app_info.applicationVersion = 0;
     gf3d_vgraphics.vk_app_info.pEngineName = windowName;
     gf3d_vgraphics.vk_app_info.engineVersion = 0;
-    gf3d_vgraphics.vk_app_info.apiVersion = VK_API_VERSION_1_0;
+    gf3d_vgraphics.vk_app_info.apiVersion = VK_API_VERSION_1_1;
     
     gf3d_vgraphics.vk_instance_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     gf3d_vgraphics.vk_instance_info.pNext = NULL;
     gf3d_vgraphics.vk_instance_info.pApplicationInfo = &gf3d_vgraphics.vk_app_info;
     
+	//	VALIDATE LAYERS
     if (enableValidation)
     {
         gf3d_vgraphics.enableValidationLayers = true;
@@ -314,6 +325,9 @@ void gf3d_vgraphics_setup(
     
 }
 
+/*
+	Close
+*/
 void gf3d_vgraphics_close()
 {
     slog("cleaning up vulkan graphics");
@@ -348,22 +362,33 @@ void gf3d_vgraphics_close()
     memset(&gf3d_vgraphics,0,sizeof(vGraphics));
 }
 
+/*
+	Get Deafult Logical Device
+*/
 VkDevice gf3d_vgraphics_get_default_logical_device()
 {
     return gf3d_vgraphics.device;
 }
 
+/*
+	Get Default Physical Device
+*/
 VkPhysicalDevice gf3d_vgraphics_get_default_physical_device()
 {
     return gf3d_vgraphics.gpu;
 }
 
+/*
+	Get View Extent
+*/
 VkExtent2D gf3d_vgraphics_get_view_extent()
 {
     return gf3d_swapchain_get_extent();
 }
 
-
+/*
+	Get Device Info
+*/
 VkDeviceCreateInfo gf3d_vgraphics_get_device_info(Bool enableValidationLayers)
 {
     VkDeviceCreateInfo createInfo = {0};
@@ -398,6 +423,9 @@ VkDeviceCreateInfo gf3d_vgraphics_get_device_info(Bool enableValidationLayers)
     return createInfo;
 }
 
+/*
+	Render Begin
+*/
 Uint32 gf3d_vgraphics_render_begin()
 {
     Uint32 imageIndex;
@@ -421,6 +449,9 @@ Uint32 gf3d_vgraphics_render_begin()
     return imageIndex;
 }
 
+/*
+	Render End
+*/
 void gf3d_vgraphics_render_end(Uint32 imageIndex)
 {
     VkPresentInfoKHR presentInfo = {0};
@@ -463,6 +494,8 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     vkQueuePresentKHR(gf3d_vqueues_get_present_queue(), &presentInfo);
 }
 
+
+
 /**
  * VULKAN DEVEICE SUPPORT
  */
@@ -481,22 +514,26 @@ Bool gf3d_vgraphics_device_validate(VkPhysicalDevice device)
     slog("apiVersion: %i",deviceProperties.apiVersion);
     slog("driverVersion: %i",deviceProperties.driverVersion);
     slog("supports Geometry Shader: %i",deviceFeatures.geometryShader);
-    return (deviceProperties.deviceType == GF3D_VGRAPHICS_DISCRETE)&&(deviceFeatures.geometryShader);
+    return (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)&&(deviceFeatures.geometryShader);
 }
 
+/*
+	Select Device
+*/
 VkPhysicalDevice gf3d_vgraphics_select_device()
 {
     int i;
-    VkPhysicalDevice chosen = VK_NULL_HANDLE;
+	slog("device count: %i", gf3d_vgraphics.device_count);
     for (i = 0; i < gf3d_vgraphics.device_count; i++)
     {
-        if (gf3d_vgraphics_device_validate(gf3d_vgraphics.devices[i]))
-        {
-            chosen = gf3d_vgraphics.devices[i];
-        }
+		if (gf3d_vgraphics_device_validate(gf3d_vgraphics.devices[i]))
+		{
+			slog("device validated");
+			return(gf3d_vgraphics.devices[i]);
+		}
     }
-
-    return chosen;
+	slog("device not validated");
+	return (VK_NULL_HANDLE);
 }
 
 
@@ -541,6 +578,9 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
     }
 }
 
+/*
+	Debug Close
+*/
 void gf3d_vgraphics_debug_close()
 {
     if (gf3d_vgraphics.enableValidationLayers)
@@ -549,6 +589,9 @@ void gf3d_vgraphics_debug_close()
     }
 }
 
+/*
+	Setup Debug
+*/
 void gf3d_vgraphics_setup_debug()
 {
     VkDebugUtilsMessengerCreateInfoEXT createInfo = {0};

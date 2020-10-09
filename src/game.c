@@ -15,7 +15,7 @@ int main(int argc,char *argv[])
 {
     int done = 0;
     int a;
-    Uint8 validate = 1;
+    Uint8 validate = 0;
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
@@ -28,12 +28,15 @@ int main(int argc,char *argv[])
     {
         if (strcmp(argv[a],"-disable_validate") == 0)
         {
-            validate = 0;
+            validate = 1;
         }
     }
     
+	// init logger
     init_logger("gf3d.log");    
     slog("gf3d begin");
+
+	// vulkan graphics initialization
     gf3d_vgraphics_init(
         "gf3d",                 //program name
         1200,                   //screen width
@@ -42,8 +45,10 @@ int main(int argc,char *argv[])
         0,                      //fullscreen
         validate                //validation
     );
+	slog_sync();
+	gf3d_entity_init(1024);
     
-    // main game loop
+    // ---------------- main game loop ---------------- 
     slog("gf3d main loop begin");
     model = gf3d_model_load("dino");
     gfc_matrix_identity(modelMat);

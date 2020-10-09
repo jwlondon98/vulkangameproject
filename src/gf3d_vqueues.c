@@ -139,6 +139,9 @@ const VkDeviceQueueCreateInfo *gf3d_vqueues_get_queue_create_info(Uint32 *count)
     return gf3d_vqueues.queue_create_info;
 }
 
+/*
+	Get Graphics Queue Info
+*/
 VkDeviceQueueCreateInfo gf3d_vqueues_get_graphics_queue_info()
 {
     VkDeviceQueueCreateInfo queueCreateInfo = {0};
@@ -149,6 +152,9 @@ VkDeviceQueueCreateInfo gf3d_vqueues_get_graphics_queue_info()
     return queueCreateInfo;
 }
 
+/*
+	Get Present Queue Info
+*/
 VkDeviceQueueCreateInfo gf3d_vqueues_get_present_queue_info()
 {
     VkDeviceQueueCreateInfo queueCreateInfo = {0};
@@ -159,6 +165,9 @@ VkDeviceQueueCreateInfo gf3d_vqueues_get_present_queue_info()
     return queueCreateInfo;
 }
 
+/*
+	Get Transfer Queue Info
+*/
 VkDeviceQueueCreateInfo gf3d_vqueues_get_transfer_queue_info()
 {
     VkDeviceQueueCreateInfo queueCreateInfo = {0};
@@ -169,6 +178,9 @@ VkDeviceQueueCreateInfo gf3d_vqueues_get_transfer_queue_info()
     return queueCreateInfo;
 }
 
+/*
+	Setup Device Queues
+*/
 void gf3d_vqueues_setup_device_queues(VkDevice device)
 {
     if (gf3d_vqueues.graphics_queue_family != -1)
@@ -185,6 +197,9 @@ void gf3d_vqueues_setup_device_queues(VkDevice device)
     }
 }
 
+/*
+	Close
+*/
 void gf3d_vqueues_close()
 {
     slog("cleaning up vulkan queues");
@@ -203,6 +218,9 @@ void gf3d_vqueues_close()
     memset(&gf3d_vqueues,0,sizeof(vQueues));
 }
 
+/*
+	Create Presentation Queues
+*/
 void gf3d_vqueues_create_presentation_queues()
 {
     gf3d_vqueues.presentation_queue_info = (VkDeviceQueueCreateInfo*)gfc_allocate_array(sizeof(VkDeviceQueueCreateInfo),gf3d_vqueues.queue_family_count);
