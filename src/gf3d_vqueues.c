@@ -42,7 +42,7 @@ void gf3d_vqueues_init(VkPhysicalDevice device,VkSurfaceKHR surface)
 
     gf3d_vqueues.graphics_queue_family = -1;
     gf3d_vqueues.present_queue_family = -1;
-    gf3d_vqueues.transfer_queue_family = -1;
+    gf3d_vqueues.transfer_queue_family = 0;
     
     vkGetPhysicalDeviceQueueFamilyProperties(
         device,
@@ -87,7 +87,7 @@ void gf3d_vqueues_init(VkPhysicalDevice device,VkSurfaceKHR surface)
         }
         if (gf3d_vqueues.queue_properties[i].queueFlags & VK_QUEUE_TRANSFER_BIT)
         {
-            gf3d_vqueues.transfer_queue_family = i;
+            gf3d_vqueues.transfer_queue_family = 0;
             gf3d_vqueues.transfer_queue_priority = 1.0f;
             slog("Queue handles transfer calls");
         }
@@ -173,14 +173,17 @@ void gf3d_vqueues_setup_device_queues(VkDevice device)
 {
     if (gf3d_vqueues.graphics_queue_family != -1)
     {
+		slog("in graphics queue family condition");
         vkGetDeviceQueue(device, gf3d_vqueues.graphics_queue_family, 0, &gf3d_vqueues.graphics_queue);
     }
     if (gf3d_vqueues.present_queue_family != -1)
     {
+		slog("in present queue family condition");
         vkGetDeviceQueue(device, gf3d_vqueues.present_queue_family, 0, &gf3d_vqueues.present_queue);
     }
     if (gf3d_vqueues.transfer_queue_family != -1)
     {
+		slog("in transfer queue family condition");
         vkGetDeviceQueue(device, gf3d_vqueues.transfer_queue_family, 0, &gf3d_vqueues.transfer_queue);
     }
 }

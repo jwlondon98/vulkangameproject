@@ -42,14 +42,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.1.108.0\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.1.108.0\Lib32;$(LibraryPath)</LibraryPath>
+    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.2.154.1\Lib32;$(LibraryPath)</LibraryPath>
     <OutDir>..\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.1.108.0\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.1.108.0\Lib32;$(LibraryPath)</LibraryPath>
+    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.2.154.1\Lib32;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
