@@ -10,6 +10,8 @@
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 #include "gf3d_texture.h"
+#include "InputPoller.h"
+#include "Entity.h"
 
 int main(int argc,char *argv[])
 {
@@ -24,6 +26,9 @@ int main(int argc,char *argv[])
     Model *model2;
     Matrix4 modelMat2;
     
+	screenWidth = 1200;
+	screenHeight = 700;
+
     for (a = 1; a < argc;a++)
     {
         if (strcmp(argv[a],"-disable_validate") == 0)
@@ -35,18 +40,19 @@ int main(int argc,char *argv[])
     init_logger("gf3d.log");    
     slog("gf3d begin");
     gf3d_vgraphics_init(
-        "gf3d",                 //program name
-        1200,                   //screen width
-        700,                    //screen height
-        vector4d(0.51,0.75,1,1),//background color
-        0,                      //fullscreen
-        validate                //validation
+        "gf3d",						//program name
+        screenWidth,				//screen width
+		screenHeight,				//screen height
+        vector4d(0.51,0.75,1,1),	//background color
+        0,							//fullscreen
+        validate					//validation
     );
 	slog_sync();
 
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
+
 	model = gf3d_model_load("dino");
 	gfc_matrix_identity(modelMat);
 	model2 = gf3d_model_load("dino");
@@ -55,23 +61,46 @@ int main(int argc,char *argv[])
             modelMat2,
             vector3d(10,0,0)
         );
+
+	// do SDL stuff
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	//Entity player;
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
         
-        gf3d_vgraphics_rotate_camera(0.001);
-        gfc_matrix_rotate(
+		// Poll
+		int lastXMousePos = xMousePos;
+		int lastYMousePos = yMousePos;
+		PollForInput();
+
+		// ROTATE CAMERA
+		//slog("DELTA: %i", xMouseDelta);
+		gf3d_vgraphics_rotate_camera((xMousePos - lastXMousePos) * xMouseDelta, 'y', 0.00001);
+		gf3d_vgraphics_rotate_camera((yMousePos - lastYMousePos) * yMouseDelta, 'x', 0.00001);
+
+	/*	else
+			gf3d_vgraphics_rotate_camera(xMousePos + lastXMousePos, 'y', 0.0001);*/
+		
+		//gf3d_vgraphics_rotate_camera(yPos, 'x', 0.02);
+		
+		// ROTATE THE DINOS
+        /*gfc_matrix_rotate(
             modelMat,
             modelMat,
             0.002,
-            vector3d(1,0,0));
-        gfc_matrix_rotate(
+            vector3d(1,0,0));*/
+        /*gfc_matrix_rotate(
             modelMat2,
             modelMat2,
             0.002,
-            vector3d(0,0,1));
+            vector3d(0,0,1));*/
+
+		// MOVE PLAYER
 
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
@@ -80,7 +109,7 @@ int main(int argc,char *argv[])
             commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
                 gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
-                gf3d_model_draw(model2,bufferFrame,commandBuffer,modelMat2);
+                //gf3d_model_draw(model2,bufferFrame,commandBuffer,modelMat2);
                 
             gf3d_command_rendering_end(commandBuffer);
             

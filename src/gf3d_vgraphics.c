@@ -24,6 +24,8 @@
 #include "gf3d_commands.h"
 #include "gf3d_texture.h"
 
+int screenWidth = 1200;
+int screenHeight = 700;
 
 typedef struct
 {
@@ -186,6 +188,12 @@ void gf3d_vgraphics_setup(
                              SDL_WINDOWPOS_UNDEFINED,
                              renderWidth, renderHeight,
                              flags);
+
+	// lock cursor to center of screen
+	//SDL_WarpMouseInWindow(gf3d_vgraphics.main_window, screenWidth / 2, screenHeight / 2);
+	//SDL_SetWindowGrab(gf3d_vgraphics.main_window, SDL_TRUE);
+	//SDL_ShowCursor(0);
+
 	slog_sync();
     if (!gf3d_vgraphics.main_window)
     {
@@ -657,14 +665,30 @@ uint32_t gf3d_vgraphics_find_memory_type(uint32_t typeFilter, VkMemoryPropertyFl
     return 0;
 }
 
-void gf3d_vgraphics_rotate_camera(float degrees)
+// ROTATE CAMERA 
+/*
+	@brief rotates camera a number of degrees about an axis
+	@param degrees the number of degrees to rotate the camera
+	@param axis the axis to rotate the camera about
+*/
+void gf3d_vgraphics_rotate_camera(float degrees, char axis, float sens)
 {
-    gfc_matrix_rotate(
-        gf3d_vgraphics.ubo.view,
-        gf3d_vgraphics.ubo.view,
-        degrees,
-        vector3d(0,0,1));
-
+	if (axis == 'y')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			degrees * sens,
+			vector3d(0,0,1)); // about y
+	}
+	else if (axis == 'x')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			degrees * sens,
+			vector3d(1, 0, 0)); // about y
+	}
 }
 
 Pipeline *gf3d_vgraphics_get_graphics_pipeline()
