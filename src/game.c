@@ -13,6 +13,13 @@
 #include "InputPoller.h"
 #include "Entity.h"
 
+void CreateEntities()
+{
+	InitEntity(1);
+
+	CreateEntity("dino");
+}
+
 int main(int argc,char *argv[])
 {
     int done = 0;
@@ -51,14 +58,14 @@ int main(int argc,char *argv[])
 
     // main game loop
     slog("gf3d main loop begin");
-	slog_sync();
+
+	CreateEntities();
 
 	model = gf3d_model_load("dino");
 	gfc_matrix_identity(modelMat);
-	model2 = gf3d_model_load("dino");
-    gfc_matrix_identity(modelMat2);
+
     gfc_matrix_make_translation(
-            modelMat2,
+            modelMat,
             vector3d(10,0,0)
         );
 
@@ -80,8 +87,8 @@ int main(int argc,char *argv[])
 
 		// ROTATE CAMERA
 		//slog("DELTA: %i", xMouseDelta);
-		gf3d_vgraphics_rotate_camera((xMousePos - lastXMousePos) * xMouseDelta, 'y', 0.00001);
-		gf3d_vgraphics_rotate_camera((yMousePos - lastYMousePos) * yMouseDelta, 'x', 0.00001);
+		//gf3d_vgraphics_rotate_camera((xMousePos - lastXMousePos) * xMouseDelta, 'y', 0.00001);
+		//gf3d_vgraphics_rotate_camera((yMousePos - lastYMousePos) * yMouseDelta, 'x', 0.00001);
 
 	/*	else
 			gf3d_vgraphics_rotate_camera(xMousePos + lastXMousePos, 'y', 0.0001);*/
@@ -106,12 +113,20 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
-            commandBuffer = gf3d_command_rendering_begin(bufferFrame);
+        commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-                gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
+        gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
+
+		int i;
+		Entity* entityList = GetEntityList();
+		int entityCount = GetEntityCount();
+		for (i = 0; i < entityCount; i++)
+		{
+			gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+		}
                 //gf3d_model_draw(model2,bufferFrame,commandBuffer,modelMat2);
                 
-            gf3d_command_rendering_end(commandBuffer);
+        gf3d_command_rendering_end(commandBuffer);
             
         gf3d_vgraphics_render_end(bufferFrame);
 
