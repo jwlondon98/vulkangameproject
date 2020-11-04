@@ -6,13 +6,11 @@
 
 typedef enum
 {
-	Down, Up
+	RELEASED, PRESSED
 }KeyState;
 
-KeyState wBtn;
-KeyState aBtn;
-KeyState sBtn;
-KeyState dBtn;
+KeyState mouseBtn;
+KeyState enterBtn;
 
 int screenWidth;
 int screenHeight;
@@ -28,7 +26,7 @@ int yMouseDelta;
 void GetMousePos();
 void GetDeltaMousePos(int* x, int* y);
 
-void HandleKey(SDL_Keycode keycode, KeyState state);
+void HandleKey(SDL_Keycode keycode, SDL_Event* eventType);
 
 void PollForInput();
 

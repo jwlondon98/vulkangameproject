@@ -5,14 +5,26 @@
 #include "gf3d_model.h"
 #include "gfc_vector.h"
 #include "gfc_matrix.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+typedef enum 
+{
+	WAIT, APPEAR, ATTACK, ATTACKWAIT, DEAD
+}State;
 
 typedef struct Entity_S
 {
 	Uint8			_inUse;
 	Vector3D		lastPos;
-	Vector3D		currentPos;
 	Model			*model;
 	Matrix4			modelMatrix;
+	int				renderOn;
+
+	State			state;
+	int				targetX;
+	int				targetZ;
 
 	//void (Think*)(struct Entity_S *self);
 }Entity;
@@ -26,6 +38,12 @@ void FreeEntity(Entity* entity);
 
 Entity* GetEntityList();
 int GetEntityCount();
-void MoveToPos(Matrix4 matrix, Vector3D targetPos);
+void Think(Entity* entity);
+void Step(Entity* entity, Vector3D targetPos, float speed);
+
+void Delay(float sec);
+void InitRandom();
+int GetRandomNum(int min, int max);
+
 
 #endif

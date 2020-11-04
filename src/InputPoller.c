@@ -18,8 +18,35 @@ void PollForInput()
 				GetDeltaMousePos(event.motion.xrel, event.motion.yrel);
 				GetMousePos();
 				break;
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+				HandleKey(event.key.keysym.sym, event.type, event.key.repeat);
+				break;
 		}
 	}
+}
+
+void HandleKey(SDL_Keycode keycode, SDL_Event* eventType, int repeat)
+{
+	if (eventType == SDL_KEYDOWN && repeat != 0)
+	{
+		switch (keycode)
+		{
+			case SDLK_RETURN:
+				enterBtn = PRESSED;
+				break;
+		}
+	}
+	else if (eventType == SDL_KEYUP)
+	{
+		switch (keycode)
+		{
+		case SDLK_RETURN:
+			enterBtn = RELEASED;
+			break;
+		}
+	}
+
 }
 
 /*
@@ -28,7 +55,9 @@ void PollForInput()
 void OnMousePress(SDL_MouseButtonEvent event)
 {
 	if (event.button == SDL_BUTTON_LEFT)
+	{
 		slog("LEFT MOUSE BUTTON CLICKED");
+	}
 }
 
 /*

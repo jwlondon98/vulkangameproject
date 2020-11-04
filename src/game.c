@@ -15,9 +15,11 @@
 
 void CreateEntities()
 {
-	InitEntity(1);
+	InitEntity(3);
 
-	CreateEntity("dino");
+	CreateEntity("cube");
+	CreateEntity("cube");
+	CreateEntity("cube");
 }
 
 int main(int argc,char *argv[])
@@ -59,15 +61,9 @@ int main(int argc,char *argv[])
     // main game loop
     slog("gf3d main loop begin");
 
+	InitRandom();
+
 	CreateEntities();
-
-	model = gf3d_model_load("dino");
-	gfc_matrix_identity(modelMat);
-
-    gfc_matrix_make_translation(
-            modelMat,
-            vector3d(10,0,0)
-        );
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -80,10 +76,19 @@ int main(int argc,char *argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
         
+		Entity* entityList = GetEntityList();
+		int entityCount = GetEntityCount();
+
 		// Poll
 		int lastXMousePos = xMousePos;
 		int lastYMousePos = yMousePos;
 		PollForInput();
+
+		if (enterBtn == PRESSED)
+		{
+			slog("ENTER PRESESD");
+			
+		}
 
 		// ROTATE CAMERA
 		//slog("DELTA: %i", xMouseDelta);
@@ -115,17 +120,22 @@ int main(int argc,char *argv[])
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-        gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
-
+		// loop through all entities
 		int i;
-		Entity* entityList = GetEntityList();
-		int entityCount = GetEntityCount();
 		for (i = 0; i < entityCount; i++)
 		{
-			gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
-		}
-                //gf3d_model_draw(model2,bufferFrame,commandBuffer,modelMat2);
-                
+			// if current entity is set to render..
+			if (entityList[i].renderOn == 1)
+			{
+				if (entityList[i].state == APPEAR)
+				{
+					Think(&entityList[i]);
+					//Step(&entityList[i], vector3d(-1, 0, -1), 0.1);
+				}
+
+				// draw the entity
+				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+			}		}             
         gf3d_command_rendering_end(commandBuffer);
             
         gf3d_vgraphics_render_end(bufferFrame);

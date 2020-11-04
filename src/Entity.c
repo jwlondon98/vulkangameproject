@@ -8,6 +8,8 @@ typedef struct
 
 }EntityManager;
 
+
+
 static EntityManager entityManager = {0};
 
 /*
@@ -45,6 +47,7 @@ Entity *CreateEntity(char* modelName)
 		if (!entityManager.entityList[i]._inUse)
 		{
 			entityManager.entityList[i]._inUse = 1;
+			entityManager.entityList[i].renderOn = 1;
 
 			entityManager.entityList[i].model = gf3d_model_load(modelName);
 
@@ -57,7 +60,8 @@ Entity *CreateEntity(char* modelName)
 			);
 
 			entityManager.entityList[i].lastPos = vector3d(0, 0, 0);
-			entityManager.entityList[i].currentPos = vector3d(0, 0, 0);
+			entityManager.entityList[i].targetX = GetRandomNum(-50, 50);
+			entityManager.entityList[i].targetZ = GetRandomNum(-50, 50);
 
 			return &entityManager.entityList[i];
 		}
@@ -102,17 +106,65 @@ int GetEntityCount()
 	return entityManager.entityCount;
 }
 
-void MoveToPos(Entity* entity, Vector3D targetPos)
+void Think(Entity* entity)
+{
+	if (entity->state == WAIT)
+		return;
+	else if (entity->state == APPEAR)
+	{
+		slog("STATE = ATTACK");
+		entity->renderOn = 1;
+
+		int i;
+		for (i = 0; i < 20; i++)
+			Step(entity, vector3d(1, 0, 0), .1);
+
+		entity->state = ATTACK;
+	}
+	else if (entity->state == ATTACK)
+	{
+		Delay(1);
+		entity->state = APPEAR;
+	}
+}
+
+void Step(Entity* entity, Vector3D targetPos, float speed)
 {
 	Vector3D lastPos = entity->lastPos;
-	Vector3D currentPos = entity->currentPos;
 	
-	entity->lastPos = currentPos;
+	float xPos = targetPos.x + lastPos.x;
+	float yPos = targetPos.y + lastPos.y;
+	float zPos = targetPos.z + lastPos.z;
 
 	gfc_matrix_make_translation(
 		entity->modelMatrix,
-		vector3d(targetPos.x - currentPos.x, targetPos.y - currentPos.y, targetPos.z - currentPos.z)
+		vector3d(xPos * speed, yPos * speed, zPos * speed)
 	);
 
-	entity->currentPos = targetPos;
+	entity->lastPos = vector3d(xPos, yPos, zPos);
+
+	slog("move to pos: (%f ,%f, %f)", xPos, yPos, zPos);
+}
+
+void Delay(float sec)
+{
+	// Converting time into milli_seconds 
+	float milli_seconds = 1000 * sec;
+
+	// Storing start time 
+	clock_t start_time = clock();
+
+	// looping till required time is not achieved 
+	while (clock() < start_time + milli_seconds);
+}
+
+void InitRandom()
+{
+	time_t t;
+	srand((unsigned)time(&t));
+}
+
+int GetRandomNum(int min, int max)
+{
+	return ((rand() % (max - min + 1)) + min);
 }
