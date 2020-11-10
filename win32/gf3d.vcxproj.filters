@@ -102,6 +102,21 @@
     <ClInclude Include="gf3d_entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="eol_3d_op.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Raycaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -194,5 +209,26 @@
     <ClCompile Include="..\src\gf3d_vqueues.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="..\src\Entity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\InputPoller.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eol_3d_op.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Raycaster.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
   </ItemGroup>
 </Project>

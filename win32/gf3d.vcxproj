@@ -42,13 +42,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;J:\Programming\College\Vulkan\vulkangameproject\win32;$(IncludePath)</IncludePath>
     <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.2.154.1\Lib32;$(LibraryPath)</LibraryPath>
     <OutDir>..\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_json\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\simple_logger\include;J:\Programming\College\Vulkan\vulkangameproject\gfc\include;J:\Programming\Libraries\SDL2_image-2.0.5\include;J:\Programming\Libraries\SDL2_mixer-2.0.4\include;J:\Programming\Libraries\SDL2_ttf-2.0.15\include;J:\Programming\Libraries\SDL2-2.0.12\include;J:\Programming\College\Vulkan\vulkangameproject\include;C:\VulkanSDK\1.2.154.1\Include;J:\Programming\College\Vulkan\vulkangameproject\win32;$(IncludePath)</IncludePath>
     <LibraryPath>J:\Programming\Libraries\SDL2-2.0.12\lib\x86;J:\Programming\Libraries\SDL2_image-2.0.5\lib\x86;J:\Programming\Libraries\SDL2_mixer-2.0.4\lib\x86;J:\Programming\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\VulkanSDK\1.2.154.1\Lib32;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
   </PropertyGroup>
@@ -113,7 +113,16 @@
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="gf3d_entity.h" />
+=======
+    <ClInclude Include="..\include\InputPoller.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="eol_3d_op.h" />
+    <ClInclude Include="Gun.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Raycaster.h" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -146,6 +155,14 @@
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="..\src\InputPoller.c" />
+    <ClCompile Include="Collider.c" />
+    <ClCompile Include="eol_3d_op.c" />
+    <ClCompile Include="Gun.c" />
+    <ClCompile Include="Raycaster.c" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
