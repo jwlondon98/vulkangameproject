@@ -51,6 +51,11 @@ Entity *CreateEntity(char* modelName)
 
 			entityManager.entityList[i].model = gf3d_model_load(modelName);
 
+			// create a collider for the entity
+			entityManager.entityList[i].collider = CreateCollider();
+			entityManager.entityList[i].collider->extents = vector3d(1, 1, 1);
+			entityManager.entityList[i].collider->Update(vector3d(0, 0, 0));
+
 			// set model's position to world origin
 			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
 

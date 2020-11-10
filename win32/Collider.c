@@ -4,6 +4,7 @@ Collider* CreateCollider()
 {
 	Collider* collider;
 	collider = malloc(sizeof(Collider));
+	atexit(FreeCollider);
 	return collider;
 }
 

@@ -127,6 +127,9 @@ int main(int argc,char *argv[])
 			// if current entity is set to render..
 			if (entityList[i].renderOn == 1)
 			{
+				// update the entity's collider position
+				entityList[i].collider->Update(entityList[i].lastPos);
+
 				if (entityList[i].state == APPEAR)
 				{
 					Think(&entityList[i]);
@@ -135,7 +138,9 @@ int main(int argc,char *argv[])
 
 				// draw the entity
 				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
-			}		}             
+			}
+		}
+             
         gf3d_command_rendering_end(commandBuffer);
             
         gf3d_vgraphics_render_end(bufferFrame);

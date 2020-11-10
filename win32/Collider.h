@@ -11,7 +11,7 @@ typedef struct Collider_S
 	Vector3D min;
 	Vector3D max;
 
-	void(*Update)(struct Collider *c, Vector3D newCenter);
+	void(*Update)(Vector3D newCenter);
 
 }Collider;
 
