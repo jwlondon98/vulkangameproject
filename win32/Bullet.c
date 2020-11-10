@@ -8,9 +8,9 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	bullet->model = gf3d_model_load("cube");
 	bullet->speed = 1;
 	bullet->lastPos = spawnPos;
-	bullet->collider = CreateCollider();
+	/*bullet->collider = CreateCollider();
 	bullet->collider->extents = vector3d(1, 1, 1);
-	UpdateCollider(bullet->collider, vector3d(0, 0, 0));
+	UpdateCollider(bullet->collider, vector3d(0, 0, 0));*/
 
 	// set model's position to world origin
 	gfc_matrix_identity(bullet->modelMatrix);
@@ -75,7 +75,7 @@ void Move(Bullet* bullet)
 
 	bullet->lastPos = vector3d(0, yPos, 0);
 
-	UpdateCollider(bullet->collider, bullet->lastPos);
+	//UpdateCollider(bullet->collider, bullet->lastPos);
 
 	if (yPos <= -300)
 		FreeBullet(bullet);

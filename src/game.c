@@ -140,7 +140,7 @@ int main(int argc,char *argv[])
 			if (entityList[i].renderOn == 1)
 			{
 				// update the entity's collider position
-				UpdateCollider(entityList[i].collider, entityList[i].lastPos);
+				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
 				if (entityList[i].state == APPEAR)
 				{

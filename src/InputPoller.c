@@ -117,14 +117,14 @@ Vector3D ScreenPointToWorldPoint(Vector3D screenPoint)
 	GetCameraViewMatrix(viewMatrix);
 
 	// get view matrix inverse
-	gfc_matrix_inverse(viewMatrix);
+	//gfc_matrix_inverse(viewMatrix);
 
 	// multiply world matrix and inverse of view matrix
 	Matrix4 matrix;
 	gfc_matrix_multiply(matrix, worldMatrix, viewMatrix);
 
 	// transpose the matrix
-	gfc_matrix_transpose(matrix);
+	//gfc_matrix_transpose(matrix);
 
 	// create matrix for screen point
 	Matrix4* screenPointMatrix;

@@ -3,8 +3,7 @@
 
 #include "gf3d_model.h"
 #include <simple_logger.h>
-#include <Collider.h>
-#include <Entity.h>
+#include "Entity.h"
 
 typedef struct Bullet_S
 {
@@ -12,8 +11,6 @@ typedef struct Bullet_S
 	Model*		model;
 	Matrix4		modelMatrix;
 	int			speed;
-
-	Collider*	collider;
 
 	Vector3D	lastPos;
 }Bullet;

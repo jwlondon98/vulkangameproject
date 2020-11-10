@@ -11,8 +11,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../win32//Collider.h"
-
 typedef enum 
 {
 	WAIT, APPEAR, ATTACK, ATTACKWAIT, DEAD
@@ -25,8 +23,6 @@ typedef struct Entity_S
 	Model			*model;
 	Matrix4			modelMatrix;
 	int				renderOn;
-
-	Collider*		collider;
 
 	State			state;
 	int				targetX;
