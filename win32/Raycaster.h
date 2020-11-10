@@ -30,7 +30,7 @@ void Raycast(Ray* ray);
 
 Ray CreateRay(Vector3D origin, Vector3D direction);
 
-Vector3D GetNormalizedMouseCoordinates(int mouseX, int mouseY);
+//Vector3D GetNormalizedMouseCoordinates(int mouseX, int mouseY);
 
 Vector4D CreateClipCoordinates(Vector3D normMouseCoords);
 

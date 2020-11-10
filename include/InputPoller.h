@@ -1,8 +1,12 @@
+#pragma once
+
 #ifndef __GF3D_INPUTPOLLER_H__
 #define __GF3D_INPUTPOLLER_H__
 
 #include <SDL.h>  
 #include <simple_logger.h>
+#include <gfc_vector.h>
+#include "gf3d_vgraphics.h"
 
 typedef enum
 {
@@ -29,7 +33,12 @@ void GetDeltaMousePos(int* x, int* y);
 void HandleKey(SDL_Keycode keycode, SDL_Event* eventType);
 
 void PollForInput();
+int PollForMouseClick();
 
-void OnMousePress(SDL_MouseButtonEvent event);
+int OnMousePress(SDL_MouseButtonEvent event);
+
+Vector3D ScreenPointToWorldPoint(Vector3D screenPoint);
+
+Vector3D GetNormalizedMouseCoordinates(int mouseX, int mouseY);
 
 #endif

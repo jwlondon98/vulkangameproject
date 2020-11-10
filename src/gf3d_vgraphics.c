@@ -730,5 +730,10 @@ VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format)
     return imageView;
 }
 
+void GetCameraViewMatrix(Matrix4 out)
+{
+	out = gf3d_vgraphics.ubo.view;
+}
+
 /*eol@eof*/
 

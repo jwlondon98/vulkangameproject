@@ -15,7 +15,7 @@ void FreeCollider(Collider* collider)
 	memset(collider, 0, sizeof(Collider));
 }
 
-void Update(Collider *c, Vector3D newCenter)
+void UpdateCollider(Collider *c, Vector3D newCenter)
 {
 	// set new center
 	c->center = newCenter;

@@ -12,14 +12,15 @@
 #include "gf3d_texture.h"
 #include "InputPoller.h"
 #include "Entity.h"
+#include "Gun.h";
 
 void CreateEntities()
 {
 	InitEntity(3);
 
 	CreateEntity("cube");
-	CreateEntity("cube");
-	CreateEntity("cube");
+	//CreateEntity("cube");
+	//CreateEntity("cube");
 }
 
 int main(int argc,char *argv[])
@@ -70,6 +71,10 @@ int main(int argc,char *argv[])
 
 	//Entity player;
 
+	// create a gun for the player
+	Gun* gun = CreateGun(10);
+	Bullet* bulletList = GetBulletList();
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -84,11 +89,18 @@ int main(int argc,char *argv[])
 		int lastYMousePos = yMousePos;
 		PollForInput();
 
+		if (mouseBtn == PRESSED)
+		{
+			Shoot(gun, vector3d(0, 1000, 0));
+			mouseBtn = RELEASED;
+		}
+
 		if (enterBtn == PRESSED)
 		{
 			slog("ENTER PRESESD");
 			
 		}
+
 
 		// ROTATE CAMERA
 		//slog("DELTA: %i", xMouseDelta);
@@ -128,7 +140,7 @@ int main(int argc,char *argv[])
 			if (entityList[i].renderOn == 1)
 			{
 				// update the entity's collider position
-				entityList[i].collider->Update(entityList[i].lastPos);
+				UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
 				if (entityList[i].state == APPEAR)
 				{
@@ -138,6 +150,17 @@ int main(int argc,char *argv[])
 
 				// draw the entity
 				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+			}
+		}
+
+		// render bullet and move it
+		int j;
+		for (j = 0; j < gun->ammoCount; j++)
+		{
+			if (bulletList[j]._inUse && bulletList[j].model != NULL)
+			{
+				BulletThink(&bulletList[j], entityList, entityCount);
+				gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
 			}
 		}
              
