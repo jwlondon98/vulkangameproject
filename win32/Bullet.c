@@ -31,6 +31,9 @@ void FreeBullet(Bullet* bullet )
 {
 	if (!bullet) return;
 
+	slog("bullet destroyed");
+
+
 	gf3d_model_free(bullet->model);
 
 	bullet->_inUse = 0;

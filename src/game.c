@@ -18,6 +18,9 @@ void CreateEntities()
 {
 	InitEntity(3);
 
+	// invisible wall to destroy passed bullets
+	CreateEntity("cube", 0, vector3d(0,-100,0));
+
 	CreateEntity("cube", 1, vector3d(0,-50,0));
 	//CreateEntity("cube2", 1, vector3d(0,0,0));
 	//CreateEntity("cube");
@@ -73,7 +76,7 @@ int main(int argc,char *argv[])
 	//Entity player;
 
 	// create a gun for the player
-	Gun* gun = CreateGun(10);
+	Gun* gun = CreateGun(100);
 	Bullet* bulletList = GetBulletList();
 
     while(!done)

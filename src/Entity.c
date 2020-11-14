@@ -48,6 +48,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 
 			if (render == 1)
 				entityManager.entityList[i].renderOn = 1;
+			else
+				entityManager.entityList[i].renderOn = 0;
 
 			entityManager.entityList[i].model = gf3d_model_load(modelName);
 
