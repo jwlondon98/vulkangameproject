@@ -39,10 +39,13 @@ void FreeGun(Gun* gun)
 
 Bullet* Shoot(Gun *g, Vector3D spawnPos)
 {
-	slog("spawnPos: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
-
 	if (g->ammoCount <= 0)
+	{
+		slog("out of ammo");
 		return;
+	}
+
+	slog("spawnPos: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
 
 	Bullet* bullet;
 	int i;
@@ -51,8 +54,8 @@ Bullet* Shoot(Gun *g, Vector3D spawnPos)
 		if (bulletManager.bulletList[i]._inUse == 0)
 		{
 			bullet = CreateBullet(spawnPos);
-			bulletManager.bulletList[i]._inUse = 1;
 			bulletManager.bulletList[i] = *bullet;
+			bulletManager.bulletList[i]._inUse = 1;
 			g->ammoCount -= 1;
 			return &bullet;
 		}

@@ -4,6 +4,7 @@
 #include "gf3d_model.h"
 #include <simple_logger.h>
 #include "Entity.h"
+#include "Collider.h"
 
 typedef struct Bullet_S
 {
@@ -13,6 +14,8 @@ typedef struct Bullet_S
 	int			speed;
 
 	Vector3D	lastPos;
+
+	Collider*	collider;
 }Bullet;
 
 Bullet* CreateBullet(Vector3D spawnPos);
@@ -20,5 +23,7 @@ void FreeBullet(Bullet* bullet);
 
 void BulletThink(Bullet* bullet, Entity* entities, int entityCount);
 void Move(Bullet* bullet);
+
+int GetDistance(float yPos1, float yPos2);
 
 #endif

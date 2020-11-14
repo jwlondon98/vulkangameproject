@@ -37,7 +37,7 @@ void InitEntity(Uint32 maxEntities)
 /*
 	@brief Creates a new entity 
 */
-Entity *CreateEntity(char* modelName)
+Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 {
 	int i;
 	for (i = 0; i < entityManager.entityCount; i++)
@@ -45,25 +45,27 @@ Entity *CreateEntity(char* modelName)
 		if (!entityManager.entityList[i]._inUse)
 		{
 			entityManager.entityList[i]._inUse = 1;
-			entityManager.entityList[i].renderOn = 1;
+
+			if (render == 1)
+				entityManager.entityList[i].renderOn = 1;
 
 			entityManager.entityList[i].model = gf3d_model_load(modelName);
 
 
 			// create a collider for the entity
-			//entityManager.entityList[i].collider = CreateCollider();
-			//entityManager.entityList[i].collider->extents = vector3d(1, 1, 1);
-			//UpdateCollider(entityManager.entityList[i].collider, vector3d(0, 0, 0));
+			entityManager.entityList[i].collider = CreateCollider();
+			entityManager.entityList[i].collider->extents = vector3d(1, 1, 1);
+			UpdateCollider(entityManager.entityList[i].collider, spawnPos);
 
 			// set model's position to world origin
 			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
 
 			gfc_matrix_make_translation(
 				entityManager.entityList[i].modelMatrix,
-				vector3d(0, 0, 0)
+				spawnPos
 			);
 
-			entityManager.entityList[i].lastPos = vector3d(0, 0, 0);
+			entityManager.entityList[i].lastPos = spawnPos;
 			//entityManager.entityList[i].targetX = GetRandomNum(-50, 50);
 			//entityManager.entityList[i].targetZ = GetRandomNum(-50, 50);
 

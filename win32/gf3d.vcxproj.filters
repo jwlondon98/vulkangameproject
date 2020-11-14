@@ -120,6 +120,9 @@
     <ClInclude Include="Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -228,6 +231,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

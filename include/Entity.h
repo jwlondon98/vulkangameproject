@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "Collider.h"
 
 typedef enum 
 {
@@ -28,13 +29,15 @@ typedef struct Entity_S
 	int				targetX;
 	int				targetZ;
 
+	Collider*		collider;
+
 	//void (Think*)(struct Entity_S *self);
 }Entity;
 
 //void Think(struct Entity_S *self);
 
 void InitEntity(Uint32 maxEntities);
-Entity* CreateEntity(char* modelName);
+Entity* CreateEntity(char* modelName, int render, Vector3D spawnPos);
 void CloseEntity();
 void FreeEntity(Entity* entity);
 

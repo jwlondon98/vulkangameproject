@@ -18,7 +18,8 @@ void CreateEntities()
 {
 	InitEntity(3);
 
-	CreateEntity("cube");
+	CreateEntity("cube", 1, vector3d(0,-50,0));
+	//CreateEntity("cube2", 1, vector3d(0,0,0));
 	//CreateEntity("cube");
 	//CreateEntity("cube");
 }
@@ -91,16 +92,14 @@ int main(int argc,char *argv[])
 
 		if (mouseBtn == PRESSED)
 		{
-			Shoot(gun, vector3d(0, 1000, 0));
+			Shoot(gun, vector3d(0, 20, 0));
 			mouseBtn = RELEASED;
 		}
 
 		if (enterBtn == PRESSED)
 		{
 			slog("ENTER PRESESD");
-			
 		}
-
 
 		// ROTATE CAMERA
 		//slog("DELTA: %i", xMouseDelta);
@@ -111,20 +110,6 @@ int main(int argc,char *argv[])
 			gf3d_vgraphics_rotate_camera(xMousePos + lastXMousePos, 'y', 0.0001);*/
 		
 		//gf3d_vgraphics_rotate_camera(yPos, 'x', 0.02);
-		
-		// ROTATE THE DINOS
-        /*gfc_matrix_rotate(
-            modelMat,
-            modelMat,
-            0.002,
-            vector3d(1,0,0));*/
-        /*gfc_matrix_rotate(
-            modelMat2,
-            modelMat2,
-            0.002,
-            vector3d(0,0,1));*/
-
-		// MOVE PLAYER
 
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
@@ -152,18 +137,19 @@ int main(int argc,char *argv[])
 				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
 			}
 		}
-
+             
 		// render bullet and move it
 		int j;
 		for (j = 0; j < gun->ammoCount; j++)
 		{
-			if (bulletList[j]._inUse && bulletList[j].model != NULL)
+			if (bulletList[j]._inUse)
 			{
 				BulletThink(&bulletList[j], entityList, entityCount);
+
 				gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
 			}
 		}
-             
+
         gf3d_command_rendering_end(commandBuffer);
             
         gf3d_vgraphics_render_end(bufferFrame);
