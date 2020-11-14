@@ -29,12 +29,16 @@ void UpdateCollider(Collider *c, Vector3D newCenter)
 
 int DetectCollision(Collider *collider1, Collider *collider2)
 {
+	if (collider1 == NULL || collider2 == NULL)
+		return;
+
+	//slog("Collider1 X: %f Collider2 X: %f", collider1->min.x, collider2->min.x);
 	/*if ((collider1->min.x <= collider2->max.x && collider1->max.x >= collider2->min.x) &&
-	//slog("Collider1 Y: %f Collider2 Y: %f", collider1->min.y, collider1->max.y);
 		(collider1->min.y <= collider2->max.y && collider1->max.y >= collider2->min.y) &&
 		(collider1->min.z <= collider2->max.z && collider1->max.z >= collider2->min.z))
 	*/
-	if (collider1->min.y <= collider2->max.y)
+	if (collider1->min.y <= collider2->max.y &&
+		collider1->max.x >= collider2->min.x)
 	{
 		slog("collision detected");
 		return 1;

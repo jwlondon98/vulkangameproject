@@ -19,6 +19,8 @@ KeyState enterBtn;
 int screenWidth;
 int screenHeight;
 
+int gunPos;
+
 // actual mouse positions
 int xMousePos;
 int yMousePos;

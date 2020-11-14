@@ -5,12 +5,12 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	Bullet* bullet;
 	bullet = malloc(sizeof(Bullet));
 
-	bullet->model = gf3d_model_load("cube2");
+	bullet->model = gf3d_model_load("bullet");
 	bullet->speed = 1;
 	bullet->lastPos = spawnPos;
 	bullet->collider = CreateCollider();
-	bullet->collider->extents = vector3d(1, 1, 1);
-	UpdateCollider(bullet->collider, vector3d(0, 0, 0));
+	bullet->collider->extents = vector3d(0.1, 0.1, 0.1);
+	UpdateCollider(bullet->collider, spawnPos);
 
 	// set model's position to world origin
 	gfc_matrix_identity(bullet->modelMatrix);
@@ -49,8 +49,11 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 		// if a collision between the bullet and any of the rendered entities occurs..
 		if (entities[i]._inUse == 1 && DetectCollision(bullet->collider, entities[i].collider) == 1)
 		{
-			entities[i]._inUse = 0;
-			entities[i].renderOn = 0;
+			if (entities[i].renderOn == 1)
+			{
+				entities[i]._inUse = 0;
+				entities[i].renderOn = 0;
+			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);
 		}
@@ -68,16 +71,16 @@ void Move(Bullet* bullet)
 
 	Vector3D lastPos = bullet->lastPos;
 
-	float xPos = lastPos.x + bullet->speed;
+	float xPos = lastPos.x;
 	float yPos = lastPos.y - bullet->speed;
 	float zPos = lastPos.z + bullet->speed;
 
 	gfc_matrix_make_translation(
 		bullet->modelMatrix,
-		vector3d(0, yPos, 0)
+		vector3d(xPos, yPos, 0)
 	);
 
-	bullet->lastPos = vector3d(0, yPos, 0);
+	bullet->lastPos = vector3d(xPos, yPos, 0);
 
 	UpdateCollider(bullet->collider, bullet->lastPos);
 

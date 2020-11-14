@@ -234,9 +234,12 @@ Texture *gf3d_texture_load(char *filename)
     gf3d_vgraphics_create_buffer(imageSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, &stagingBuffer, &stagingBufferMemory);
     
     SDL_LockSurface(surface);
-        vkMapMemory(gf3d_texture.device, stagingBufferMemory, 0, imageSize, 0, &data);
-            memcpy(data, surface->pixels, imageSize);
-        vkUnmapMemory(gf3d_texture.device, stagingBufferMemory);
+    vkMapMemory(gf3d_texture.device, stagingBufferMemory, 0, imageSize, 0, &data);
+    
+	memcpy(data, surface->pixels, imageSize);
+	slog("load texture");
+    vkUnmapMemory(gf3d_texture.device, stagingBufferMemory);
+
     SDL_UnlockSurface(surface);    
     
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;

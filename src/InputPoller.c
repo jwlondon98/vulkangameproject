@@ -38,12 +38,21 @@ int PollForMouseClick()
 
 void HandleKey(SDL_Keycode keycode, SDL_Event* eventType, int repeat)
 {
-	if (eventType == SDL_KEYDOWN && repeat != 0)
+	if (eventType == SDL_KEYDOWN)
 	{
 		switch (keycode)
 		{
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
+				break;
+			case SDLK_1:
+				gunPos = -1;
+				break;
+			case SDLK_2:
+				gunPos = 0;
+				break;
+			case SDLK_3:
+				gunPos = 1;
 				break;
 		}
 	}

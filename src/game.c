@@ -18,10 +18,14 @@ void CreateEntities()
 {
 	InitEntity(3);
 
-	// invisible wall to destroy passed bullets
+	// invisible walls to destroy passed bullets
+	CreateEntity("cube", 0, vector3d(10,-100,0));
 	CreateEntity("cube", 0, vector3d(0,-100,0));
+	CreateEntity("cube", 0, vector3d(-10,-100,0));
 
-	CreateEntity("cube", 1, vector3d(0,-50,0));
+	//CreateEntity("enemy", 1, vector3d(0,-50,0));
+	CreateEntity("friendly", 1, vector3d(10,-50,0));
+	//CreateEntity("weapondrop", 1, vector3d(-100,-50,0));
 	//CreateEntity("cube2", 1, vector3d(0,0,0));
 	//CreateEntity("cube");
 	//CreateEntity("cube");
@@ -95,7 +99,12 @@ int main(int argc,char *argv[])
 
 		if (mouseBtn == PRESSED)
 		{
-			Shoot(gun, vector3d(0, 20, 0));
+			if (gunPos == -1)
+				Shoot(gun, vector3d(10, 50, 0));
+			else if (gunPos == 0)
+				Shoot(gun, vector3d(0, 50, 0));
+			else if (gunPos == 1)
+				Shoot(gun, vector3d(-10, 50, 0));
 			mouseBtn = RELEASED;
 		}
 
