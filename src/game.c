@@ -25,7 +25,7 @@ void CreateEntities()
 
 	CreateEntity("enemy", 1, vector3d(0,-50,0));
 	CreateEntity("friendly", 1, vector3d(10,-50,0));
-	CreateEntity("weapondrop", 1, vector3d(0,-50,0));
+	CreateEntity("weapondrop", 1, vector3d(-10,-50,0));
 }
 
 int main(int argc,char *argv[])
@@ -136,9 +136,10 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
+				Think(&entityList[i]);
 				if (entityList[i].state == APPEAR)
 				{
-					Think(&entityList[i]);
+					//Think(&entityList[i]);
 					//Step(&entityList[i], vector3d(-1, 0, -1), 0.1);
 				}
 

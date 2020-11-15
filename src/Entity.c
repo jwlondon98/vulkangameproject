@@ -61,6 +61,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			entityManager.entityList[i].collider = CreateCollider();
 			entityManager.entityList[i].collider->extents = vector3d(1, 1, 1);
 
+			entityManager.entityList[i].speed = 0.5;
+
 			// set model's position to world origin
 			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
 
@@ -119,6 +121,8 @@ int GetEntityCount()
 
 void Think(Entity* entity)
 {
+	MoveEntity(entity);
+
 	if (entity->state == WAIT)
 		return;
 	else if (entity->state == APPEAR)
@@ -136,6 +140,33 @@ void Think(Entity* entity)
 	{
 		Delay(1);
 		entity->state = APPEAR;
+	}
+}
+
+void MoveEntity(Entity* entity)
+{
+	if (entity->_inUse == 0)
+		return;
+
+	Vector3D lastPos = entity->lastPos;
+
+	float xPos = lastPos.x;
+	float yPos = lastPos.y + entity->speed;
+	float zPos = lastPos.z + entity->speed;
+
+	gfc_matrix_make_translation(
+		entity->modelMatrix,
+		vector3d(xPos, yPos, 0)
+	);
+
+	entity->lastPos = vector3d(xPos, yPos, 0);
+
+	UpdateCollider(entity->collider, entity->lastPos);
+
+	if (yPos >= 50)
+	{
+		entity->renderOn = 0;
+		entity->_inUse = 0;
 	}
 }
 

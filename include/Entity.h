@@ -25,6 +25,8 @@ typedef struct Entity_S
 	Matrix4			modelMatrix;
 	int				renderOn;
 
+	float			speed;
+
 	State			state;
 	int				targetX;
 	int				targetZ;
@@ -44,6 +46,7 @@ void FreeEntity(Entity* entity);
 Entity* GetEntityList();
 int GetEntityCount();
 void Think(Entity* entity);
+void MoveEntity(Entity* entity);
 void Step(Entity* entity, Vector3D targetPos, float speed);
 
 void Delay(float sec);
