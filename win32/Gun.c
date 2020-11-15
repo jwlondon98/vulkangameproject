@@ -15,12 +15,11 @@ CreateGun(int ammoCount)
 {
 	gun.initialAmmoCount = ammoCount;
 	gun.ammoCount = ammoCount;
-	slog("initial gun ammo count %i", gun.ammoCount);
 	gun.gunType = Pistol;
 	bulletManager.bulletList = gfc_allocate_array(sizeof(Bullet), ammoCount);
 
 	// spawn bullet to act as gun location holder
-	gun.gunLoc = CreateEntity("gun", 1, vector3d(0,10,0));
+	//gun.gunLoc = CreateEntity("gun", 1, vector3d(0,10,0));
 
 	atexit(FreeGun);
 }

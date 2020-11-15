@@ -149,13 +149,10 @@ int main(int argc,char *argv[])
              
 		// render bullet and move it
 		int j;
-		slog("gun ammo count %i", gun.ammoCount);
 		for (j = 0; j < gun.ammoCount; j++)
 		{
 			if (bulletList[j]._inUse == 1)
 			{
-				slog("hi");
-
 				BulletThink(&bulletList[j], entityList, entityCount);
 
 				gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
