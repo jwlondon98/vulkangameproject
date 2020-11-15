@@ -44,8 +44,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 	{
 		if (!entityManager.entityList[i]._inUse)
 		{
-			slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
-				spawnPos.y, spawnPos.z);
+			/*slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
+				spawnPos.y, spawnPos.z);*/
 
 			entityManager.entityList[i]._inUse = 1;
 
@@ -67,6 +67,9 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				entityManager.entityList[i].entityType = Hostage;
 			else if (modelName == "weapondrop")
 				entityManager.entityList[i].entityType = WeaponDrop;
+
+			if (modelName != "gun")
+				entityManager.entityList[i].state = MOVE;
 
 			// create a collider for the entity
 			entityManager.entityList[i].collider = CreateCollider();
@@ -132,25 +135,16 @@ int GetEntityCount()
 
 void Think(Entity* entity)
 {
-	MoveEntity(entity);
-
 	if (entity->state == WAIT)
 		return;
-	else if (entity->state == APPEAR)
+	else if (entity->state == MOVE)
 	{
-		slog("STATE = ATTACK");
-		entity->renderOn = 1;
-
-		int i;
-		/*for (i = 0; i < 20; i++)
-			Step(entity, vector3d(1, 0, 0), .1);*/
-
-		entity->state = ATTACK;
+		MoveEntity(entity);
+		return;
 	}
 	else if (entity->state == ATTACK)
 	{
 		//Delay(1);
-		entity->state = APPEAR;
 	}
 }
 

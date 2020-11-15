@@ -11,7 +11,7 @@ typedef enum
 	Pistol, Shotgun, Machinegun
 }GunType;
 
-typedef struct Gun_S
+struct Gun
 {
 	float fireRate;
 	int initialAmmoCount;
@@ -19,21 +19,21 @@ typedef struct Gun_S
 
 	int score;
 
-	Bullet* gunLoc;
+	Entity* gunLoc;
 
 	GunType gunType;
-}Gun;
+};
 
-static Gun gun;
+extern struct Gun gun;
 
-Gun* CreateGun(int ammoCount);
-void FreeGun(Gun* gun);
+CreateGun(int ammoCount);
+void FreeGun();
 
-void Shoot(Gun *g, Vector3D spawnPos);
+void Shoot(Vector3D spawnPos);
 
 Bullet* GetBulletList();
 
-void ChangeGun(Gun* gun);
+void ChangeGun();
 
 void AddScore(int amt);
 

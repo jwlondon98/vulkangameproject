@@ -5,7 +5,10 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	Bullet* bullet;
 	bullet = malloc(sizeof(Bullet));
 
+	slog("bullet created");
+
 	bullet->model = gf3d_model_load("bullet");
+	bullet->_inUse = 1;
 	bullet->speed = 1;
 	bullet->lastPos = spawnPos;
 	bullet->collider = CreateCollider();
@@ -21,8 +24,6 @@ Bullet* CreateBullet(Vector3D spawnPos)
 		spawnPos
 	);
 
-	slog("bullet created");
-
 	atexit(FreeBullet);
 	return bullet;
 }
@@ -30,9 +31,6 @@ Bullet* CreateBullet(Vector3D spawnPos)
 void FreeBullet(Bullet* bullet )
 {
 	if (!bullet) return;
-
-	slog("bullet destroyed");
-
 
 	gf3d_model_free(bullet->model);
 
@@ -58,6 +56,9 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 
 			if (entities[i].renderOn == 1)
 			{
+				if (entities[i].entityType == Gun)
+					return;
+
 				// free entity
 				entities[i]._inUse = 0;
 				entities[i].renderOn = 0;
@@ -95,6 +96,7 @@ void HandleEntityHit(Entity* entity, Bullet* bullet)
 		case Target:
 			break;
 		case WeaponDrop:
+			slog("weapon drop hit");
 			ChangeGun();
 			break;
 	}

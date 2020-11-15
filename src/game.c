@@ -77,7 +77,9 @@ int main(int argc,char *argv[])
 	//Entity player;
 
 	// create a gun for the player
-	Gun* gun = CreateGun(100);
+	struct Gun gun;
+	CreateGun(100);
+	slog("initial2 gun ammo count %i", gun.ammoCount);
 	Bullet* bulletList = GetBulletList();
 
     while(!done)
@@ -97,14 +99,14 @@ int main(int argc,char *argv[])
 		if (mouseBtn == PRESSED)
 		{
 			if (gunPos == -1)
-				Shoot(gun, vector3d(10, 50, 0));
+				Shoot(vector3d(10, 50, 0));
 			else if (gunPos == 0)
-				Shoot(gun, vector3d(0, 50, 0));
+				Shoot(vector3d(0, 50, 0));
 			else if (gunPos == 1)
-				Shoot(gun, vector3d(-10, 50, 0));
+				Shoot(vector3d(-10, 50, 0));
 
-			//if (gun->gunType != Machinegun)
-			//	mouseBtn = RELEASED;
+			if (gun.gunType != Machinegun)
+				mouseBtn = RELEASED;
 		}
 
 		if (enterBtn == PRESSED)
@@ -139,11 +141,6 @@ int main(int argc,char *argv[])
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
 				Think(&entityList[i]);
-				if (entityList[i].state == APPEAR)
-				{
-					//Think(&entityList[i]);
-					//Step(&entityList[i], vector3d(-1, 0, -1), 0.1);
-				}
 
 				// draw the entity
 				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
@@ -152,10 +149,13 @@ int main(int argc,char *argv[])
              
 		// render bullet and move it
 		int j;
-		for (j = 0; j < gun->ammoCount; j++)
+		slog("gun ammo count %i", gun.ammoCount);
+		for (j = 0; j < gun.ammoCount; j++)
 		{
-			if (bulletList[j]._inUse)
+			if (bulletList[j]._inUse == 1)
 			{
+				slog("hi");
+
 				BulletThink(&bulletList[j], entityList, entityCount);
 
 				gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);

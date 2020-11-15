@@ -16,12 +16,12 @@
 
 typedef enum 
 {
-	WAIT, APPEAR, ATTACK, ATTACKWAIT, DEAD
+	WAIT, MOVE, ATTACK
 }State;
 
 typedef enum
 {
-	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop
+	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop, Gun
 }EntityType;
 
 typedef struct Entity_S

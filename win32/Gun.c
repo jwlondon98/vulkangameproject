@@ -9,58 +9,59 @@ typedef struct
 
 static BulletManager bulletManager = { 0 };
 
-Gun* CreateGun(int ammoCount)
+struct Gun gun;
+
+CreateGun(int ammoCount)
 {
-	Gun* gun;
-	gun = malloc(sizeof(Gun));
-	gun->initialAmmoCount = ammoCount;
-	gun->ammoCount = ammoCount;
-	gun->gunType = Pistol;
+	gun.initialAmmoCount = ammoCount;
+	gun.ammoCount = ammoCount;
+	slog("initial gun ammo count %i", gun.ammoCount);
+	gun.gunType = Pistol;
 	bulletManager.bulletList = gfc_allocate_array(sizeof(Bullet), ammoCount);
 
 	// spawn bullet to act as gun location holder
-	gun->gunLoc = CreateBullet(vector3d(0,10,0));
+	gun.gunLoc = CreateEntity("gun", 1, vector3d(0,10,0));
 
 	atexit(FreeGun);
-	return gun;
 }
 
-void FreeGun(Gun* gun)
+void FreeGun()
 {
 	// free any bullets we need to still free
 	int i;
-	for (i = 0; i < gun->initialAmmoCount; i++)
+	for (i = 0; i < gun.initialAmmoCount; i++)
 		FreeBullet(&bulletManager.bulletList[i]);
 
 	memset(&bulletManager, 0, sizeof(BulletManager));
-	memset(gun, 0, sizeof(Gun));
+	//memset(gun, 0, sizeof(Gun));
 }
 
-void Shoot(Gun *g, Vector3D spawnPos)
+void Shoot(Vector3D spawnPos)
 {
-	if (g->ammoCount <= 0)
+
+	if (gun.ammoCount <= 0)
 	{
 		slog("out of ammo");
 		return;
 	}
 
-	slog("spawnPos: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
+	//slog("spawnPos: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
 
 	int i;
-	for (i = 0; i < g->initialAmmoCount; i++)
+	for (i = 0; i < gun.initialAmmoCount; i++)
 	{
+
 		if (bulletManager.bulletList[i]._inUse == 0)
 		{
-			if (g->gunType == Pistol)
+			if (gun.gunType == Pistol)
 			{
 				Bullet* bullet;
 				bullet = CreateBullet(spawnPos);
 				bulletManager.bulletList[i] = *bullet;
-				bulletManager.bulletList[i]._inUse = 1;
 				//g->ammoCount -= 1;
 				return;
 			}
-			else if (g->gunType == Shotgun)
+			else if (gun.gunType == Shotgun)
 			{
 				int j;
 				for (j = 0; j < 2; j++)
@@ -73,14 +74,17 @@ void Shoot(Gun *g, Vector3D spawnPos)
 					else if (j == 2)
 						bullet = CreateBullet(vector3d(10, 50, 0));
 					bulletManager.bulletList[i] = *bullet;
-					bulletManager.bulletList[i]._inUse = 1;
 					//g->ammoCount -= 1;
 					return;
 				}
 			}
-			else if (g->gunType == Machinegun)
+			else if (gun.gunType == Machinegun)
 			{
-				
+				Bullet* bullet;
+				bullet = CreateBullet(spawnPos);
+				bulletManager.bulletList[i] = *bullet;
+				//g->ammoCount -= 1;
+				return;
 			}
 		}
 	}
@@ -117,7 +121,6 @@ void ChangeGun()
 	if (lastGunType == gun.gunType)
 	{
 		slog("same gun type. changing gun again");
-		ChangeGun(gun);
 	}
 }
 
