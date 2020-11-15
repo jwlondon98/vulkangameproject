@@ -67,7 +67,7 @@ int OnMousePress(SDL_MouseButtonEvent event)
 {
 	if (event.button == SDL_BUTTON_LEFT)
 	{
-		slog("left mouse press");
+		//slog("left mouse press");
 		mouseBtn = PRESSED;
 		return 1;
 	}
@@ -79,7 +79,7 @@ int OnMouseRelease(SDL_MouseButtonEvent event)
 {
 	if (event.button == SDL_BUTTON_LEFT)
 	{
-		slog("left mouse release");
+		//slog("left mouse release");
 		mouseBtn = RELEASED;
 		return 1;
 	}

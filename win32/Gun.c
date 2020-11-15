@@ -37,7 +37,6 @@ void FreeGun()
 
 void Shoot(Vector3D spawnPos)
 {
-
 	if (gun.ammoCount <= 0)
 	{
 		slog("out of ammo");
@@ -49,11 +48,12 @@ void Shoot(Vector3D spawnPos)
 	int i;
 	for (i = 0; i < gun.initialAmmoCount; i++)
 	{
-
 		if (bulletManager.bulletList[i]._inUse == 0)
 		{
 			if (gun.gunType == Pistol)
 			{
+				slog("shooting pistol");
+
 				Bullet* bullet;
 				bullet = CreateBullet(spawnPos);
 				bulletManager.bulletList[i] = *bullet;
@@ -62,23 +62,18 @@ void Shoot(Vector3D spawnPos)
 			}
 			else if (gun.gunType == Shotgun)
 			{
-				int j;
-				for (j = 0; j < 2; j++)
-				{
-					Bullet* bullet;
-					if (j == 0)
-						bullet = CreateBullet(vector3d(-10, 50, 0));
-					else if (j == 1)
-						bullet = CreateBullet(vector3d(0, 50, 0));
-					else if (j == 2)
-						bullet = CreateBullet(vector3d(10, 50, 0));
-					bulletManager.bulletList[i] = *bullet;
-					//g->ammoCount -= 1;
-					return;
-				}
+				slog("shooting shotgun");
+
+				Bullet* bullet;
+				bullet = CreateBullet(vector3d(spawnPos.x, 50, 0));
+				bulletManager.bulletList[i] = *bullet;
+				//g->ammoCount -= 1;
+				return;
 			}
 			else if (gun.gunType == Machinegun)
 			{
+				slog("shooting machinegun");
+
 				Bullet* bullet;
 				bullet = CreateBullet(spawnPos);
 				bulletManager.bulletList[i] = *bullet;
@@ -115,6 +110,8 @@ void ChangeGun()
 		gun.gunType = Machinegun;
 		slog("gun type changed to machinegun");
 	}
+
+	gun.gunType = Shotgun;
 
 	// make sure you don't get the same gun type twice in a row
 	if (lastGunType == gun.gunType)

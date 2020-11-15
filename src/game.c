@@ -77,9 +77,7 @@ int main(int argc,char *argv[])
 	//Entity player;
 
 	// create a gun for the player
-	struct Gun gun;
 	CreateGun(100);
-	slog("initial2 gun ammo count %i", gun.ammoCount);
 	Bullet* bulletList = GetBulletList();
 
     while(!done)
@@ -98,20 +96,24 @@ int main(int argc,char *argv[])
 
 		if (mouseBtn == PRESSED)
 		{
-			if (gunPos == -1)
+			if (gun.gunType != Shotgun)
+			{
+				if (gunPos == -1)
+					Shoot(vector3d(10, 50, 0));
+				else if (gunPos == 0)
+					Shoot(vector3d(0, 50, 0));
+				else if (gunPos == 1)
+					Shoot(vector3d(-10, 50, 0));
+			}
+			else
+			{
 				Shoot(vector3d(10, 50, 0));
-			else if (gunPos == 0)
 				Shoot(vector3d(0, 50, 0));
-			else if (gunPos == 1)
 				Shoot(vector3d(-10, 50, 0));
+			}
 
 			if (gun.gunType != Machinegun)
 				mouseBtn = RELEASED;
-		}
-
-		if (enterBtn == PRESSED)
-		{
-			slog("ENTER PRESESD");
 		}
 
 		// ROTATE CAMERA

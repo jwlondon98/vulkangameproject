@@ -5,7 +5,7 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	Bullet* bullet;
 	bullet = malloc(sizeof(Bullet));
 
-	slog("bullet created");
+	slog("bullet created at: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
 
 	bullet->model = gf3d_model_load("bullet");
 	bullet->_inUse = 1;
@@ -67,6 +67,7 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 				// handle the entity hit 
 				HandleEntityHit(&entities[i], bullet);
 
+				// delay and spawn new entity
 				Delay(10);
 			}
 			bullet->_inUse = 0;
