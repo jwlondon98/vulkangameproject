@@ -111,8 +111,6 @@ void ChangeGun()
 		slog("gun type changed to machinegun");
 	}
 
-	gun.gunType = Shotgun;
-
 	// make sure you don't get the same gun type twice in a row
 	if (lastGunType == gun.gunType)
 	{

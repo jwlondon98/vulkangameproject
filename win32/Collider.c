@@ -37,7 +37,7 @@ int DetectCollision(Collider *collider1, Collider *collider2, int entityIndex)
 		collider1->max.x <= collider2->max.x
 		/*collider1->center.x == collider2->center.x*/)
 	{
-		slog("collision detected");
+		//slog("collision detected");
 		//slog("collider1 center: (%f, %f, %f)", collider1->center.x, collider1->center.y, collider1->center.z);
 		//slog("collider2 center: (%f, %f, %f)", collider2->center.x, collider2->center.y, collider2->center.z);
 		//slog("\nCollider1 minX: %f maxX: %f", collider1->min.x, collider1->max.x);

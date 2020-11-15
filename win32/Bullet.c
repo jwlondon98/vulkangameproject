@@ -68,7 +68,7 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 				HandleEntityHit(&entities[i], bullet);
 
 				// delay and spawn new entity
-				Delay(10);
+				Delay(1.2);
 			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);
@@ -97,7 +97,6 @@ void HandleEntityHit(Entity* entity, Bullet* bullet)
 		case Target:
 			break;
 		case WeaponDrop:
-			slog("weapon drop hit");
 			ChangeGun();
 			break;
 	}

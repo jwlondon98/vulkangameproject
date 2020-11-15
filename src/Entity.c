@@ -175,20 +175,26 @@ void MoveEntity(Entity* entity)
 	}
 }
 
-static int DelayEntityCreation(void *ptr, float sec)
+static int DelayEntityCreation(void *data)
 {
+	DelayData *delayData = data;
+	float sec = delayData->delayLength;
+
+	slog("about to delay: %f", sec);
+
 	SDL_Delay(sec);
+
+	slog("delay done");
 
 	RandomEntitySpawn();
 }
 
 void Delay(float sec)
 {
-	// Converting time into milli_seconds 
-	float milli_seconds = 1000 * sec;
-
+	DelayData* delayData = malloc(sizeof(DelayData));
+	delayData->delayLength = sec * 1000;
 	SDL_Thread *thread;
-	thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", (void *)NULL, milli_seconds);
+	thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
 }
 
 void RandomEntitySpawn()

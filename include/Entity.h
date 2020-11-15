@@ -24,6 +24,11 @@ typedef enum
 	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop, Gun
 }EntityType;
 
+typedef struct DelayData_S 
+{
+	float delayLength;
+}DelayData;
+
 typedef struct Entity_S
 {
 	Uint8			_inUse;
@@ -63,6 +68,6 @@ int GetRandomNum(int min, int max);
 
 void RandomEntitySpawn();
 
-static int DelayEntityCreation(void *ptr, float sec);
+static int DelayEntityCreation(void *data);
 
 #endif
