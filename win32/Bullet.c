@@ -49,17 +49,19 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 		// if a collision between the bullet and any of the rendered entities occurs..
 		if (entities[i]._inUse == 1 && DetectCollision(bullet->collider, entities[i].collider, i) == 1)
 		{
-			slog("\nlast bullet pos: (%f, %f, %f)", bullet->lastPos.x,
-				bullet->lastPos.y, bullet->lastPos.z);
+			/*slog("\nlast bullet pos: (%f, %f, %f)", bullet->lastPos.x,
+				bullet->lastPos.y, bullet->lastPos.z);*/
 
-			Vector3D lastEntityPos = entities[i].lastPos;
-			slog("\nlast entity pos: (%f, %f, %f)", lastEntityPos.x,
-				lastEntityPos.y, lastEntityPos.z);
+			//Vector3D lastEntityPos = entities[i].lastPos;
+			/*slog("\nlast entity pos: (%f, %f, %f)", lastEntityPos.x,
+				lastEntityPos.y, lastEntityPos.z);*/
 
 			if (entities[i].renderOn == 1)
 			{
 				entities[i]._inUse = 0;
 				entities[i].renderOn = 0;
+
+				Delay(10);
 			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);

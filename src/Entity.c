@@ -131,14 +131,14 @@ void Think(Entity* entity)
 		entity->renderOn = 1;
 
 		int i;
-		for (i = 0; i < 20; i++)
-			Step(entity, vector3d(1, 0, 0), .1);
+		/*for (i = 0; i < 20; i++)
+			Step(entity, vector3d(1, 0, 0), .1);*/
 
 		entity->state = ATTACK;
 	}
 	else if (entity->state == ATTACK)
 	{
-		Delay(1);
+		//Delay(1);
 		entity->state = APPEAR;
 	}
 }
@@ -167,25 +167,16 @@ void MoveEntity(Entity* entity)
 	{
 		entity->renderOn = 0;
 		entity->_inUse = 0;
+
+		Delay();
 	}
 }
 
-void Step(Entity* entity, Vector3D targetPos, float speed)
+static int DelayEntityCreation(void *ptr, float sec)
 {
-	Vector3D lastPos = entity->lastPos;
-	
-	float xPos = targetPos.x + lastPos.x;
-	float yPos = targetPos.y + lastPos.y;
-	float zPos = targetPos.z + lastPos.z;
+	SDL_Delay(sec);
 
-	gfc_matrix_make_translation(
-		entity->modelMatrix,
-		vector3d(xPos * speed, yPos * speed, zPos * speed)
-	);
-
-	entity->lastPos = vector3d(xPos, yPos, zPos);
-
-	slog("move to pos: (%f ,%f, %f)", xPos, yPos, zPos);
+	CreateEntity("enemy", 1, vector3d(0, -50, 0));
 }
 
 void Delay(float sec)
@@ -193,11 +184,13 @@ void Delay(float sec)
 	// Converting time into milli_seconds 
 	float milli_seconds = 1000 * sec;
 
-	// Storing start time 
-	clock_t start_time = clock();
+	SDL_Thread *thread;
+	thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", (void *)NULL, milli_seconds);
+}
 
-	// looping till required time is not achieved 
-	while (clock() < start_time + milli_seconds);
+void RandomEntitySpawn()
+{
+
 }
 
 void InitRandom()

@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <SDL_thread.h>
+#include <SDL.h>
 #include "Collider.h"
 
 typedef enum 
@@ -47,11 +49,13 @@ Entity* GetEntityList();
 int GetEntityCount();
 void Think(Entity* entity);
 void MoveEntity(Entity* entity);
-void Step(Entity* entity, Vector3D targetPos, float speed);
 
 void Delay(float sec);
 void InitRandom();
 int GetRandomNum(int min, int max);
 
+void RandomEntitySpawn();
+
+static int DelayEntityCreation(void *ptr, float sec);
 
 #endif
