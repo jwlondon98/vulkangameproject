@@ -16,19 +16,16 @@
 
 void CreateEntities()
 {
-	InitEntity(3);
+	InitEntity(10);
 
 	// invisible walls to destroy passed bullets
 	CreateEntity("cube", 0, vector3d(10,-100,0));
 	CreateEntity("cube", 0, vector3d(0,-100,0));
 	CreateEntity("cube", 0, vector3d(-10,-100,0));
 
-	//CreateEntity("enemy", 1, vector3d(0,-50,0));
+	CreateEntity("enemy", 1, vector3d(0,-50,0));
 	CreateEntity("friendly", 1, vector3d(10,-50,0));
-	//CreateEntity("weapondrop", 1, vector3d(-100,-50,0));
-	//CreateEntity("cube2", 1, vector3d(0,0,0));
-	//CreateEntity("cube");
-	//CreateEntity("cube");
+	CreateEntity("weapondrop", 1, vector3d(0,-50,0));
 }
 
 int main(int argc,char *argv[])

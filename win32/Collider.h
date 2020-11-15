@@ -15,4 +15,4 @@ void FreeCollider(Collider* collider);
 
 void UpdateCollider(Collider *c, Vector3D newCenter);
 
-int DetectCollision(Collider *collider1, Collider *collider2);
+int DetectCollision(Collider *collider1, Collider *collider2, int entityIndex);

@@ -44,6 +44,9 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 	{
 		if (!entityManager.entityList[i]._inUse)
 		{
+			slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
+				spawnPos.y, spawnPos.z);
+
 			entityManager.entityList[i]._inUse = 1;
 
 			if (render == 1)
@@ -57,7 +60,6 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			// create a collider for the entity
 			entityManager.entityList[i].collider = CreateCollider();
 			entityManager.entityList[i].collider->extents = vector3d(1, 1, 1);
-			UpdateCollider(entityManager.entityList[i].collider, spawnPos);
 
 			// set model's position to world origin
 			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
@@ -66,6 +68,7 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				entityManager.entityList[i].modelMatrix,
 				spawnPos
 			);
+			UpdateCollider(entityManager.entityList[i].collider, spawnPos);
 
 			entityManager.entityList[i].lastPos = spawnPos;
 			//entityManager.entityList[i].targetX = GetRandomNum(-50, 50);
