@@ -56,6 +56,17 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 
 			entityManager.entityList[i].model = gf3d_model_load(modelName);
 
+			// assign entity type based on model name
+			if (modelName == "enemy1")
+				entityManager.entityList[i].entityType = EnemyBasic;
+			else if (modelName == "enemy2")
+				entityManager.entityList[i].entityType = EnemyAdvanced;
+			else if (modelName == "target")
+				entityManager.entityList[i].entityType = Target;
+			else if (modelName == "hostage")
+				entityManager.entityList[i].entityType = Hostage;
+			else if (modelName == "weapondrop")
+				entityManager.entityList[i].entityType = WeaponDrop;
 
 			// create a collider for the entity
 			entityManager.entityList[i].collider = CreateCollider();
@@ -167,8 +178,6 @@ void MoveEntity(Entity* entity)
 	{
 		entity->renderOn = 0;
 		entity->_inUse = 0;
-
-		Delay();
 	}
 }
 
@@ -176,7 +185,7 @@ static int DelayEntityCreation(void *ptr, float sec)
 {
 	SDL_Delay(sec);
 
-	CreateEntity("enemy", 1, vector3d(0, -50, 0));
+	RandomEntitySpawn();
 }
 
 void Delay(float sec)
@@ -190,6 +199,35 @@ void Delay(float sec)
 
 void RandomEntitySpawn()
 {
+	int randEntity = GetRandomNum(0, 4);
+	int randTrack = GetRandomNum(0, 2);
+
+	float spawnPosX;
+	if (randTrack == 0)
+		spawnPosX = -10;
+	else if (randTrack == 1)
+		spawnPosX = 0;
+	else if (randTrack == 2)
+		spawnPosX = 10;
+
+	switch (randEntity)
+	{
+		case 0:
+			CreateEntity("enemy1", 1, vector3d(spawnPosX, -50, 0));
+			break;
+		case 1:
+			CreateEntity("enemy2", 1, vector3d(spawnPosX, -50, 0));
+			break;
+		case 2:
+			CreateEntity("hostage", 1, vector3d(spawnPosX, -50, 0));
+			break;
+		case 3:
+			CreateEntity("weapondrop", 1, vector3d(spawnPosX, -50, 0));
+			break;
+		case 4:
+			CreateEntity("target", 1, vector3d(spawnPosX, -50, 0));
+			break;
+	}
 
 }
 

@@ -19,6 +19,11 @@ typedef enum
 	WAIT, APPEAR, ATTACK, ATTACKWAIT, DEAD
 }State;
 
+typedef enum
+{
+	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop
+}EntityType;
+
 typedef struct Entity_S
 {
 	Uint8			_inUse;
@@ -32,6 +37,8 @@ typedef struct Entity_S
 	State			state;
 	int				targetX;
 	int				targetZ;
+
+	EntityType		entityType;
 
 	Collider*		collider;
 

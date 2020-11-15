@@ -35,9 +35,9 @@ void GetDeltaMousePos(int* x, int* y);
 void HandleKey(SDL_Keycode keycode, SDL_Event* eventType);
 
 void PollForInput();
-int PollForMouseClick();
 
 int OnMousePress(SDL_MouseButtonEvent event);
+int OnMouseRelease(SDL_MouseButtonEvent event);
 
 Vector3D ScreenPointToWorldPoint(Vector3D screenPoint);
 

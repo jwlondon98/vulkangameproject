@@ -58,8 +58,13 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 
 			if (entities[i].renderOn == 1)
 			{
+				// free entity
 				entities[i]._inUse = 0;
 				entities[i].renderOn = 0;
+				//FreeEntity(&entities[i]);
+
+				// handle the entity hit 
+				HandleEntityHit(&entities[i], bullet);
 
 				Delay(10);
 			}
@@ -71,6 +76,27 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 		{
 			Move(bullet);
 		}
+	}
+}
+
+void HandleEntityHit(Entity* entity, Bullet* bullet)
+{
+	int randNum;
+
+	EntityType entType = entity->entityType;
+	switch (entType)
+	{
+		case EnemyBasic:
+			break;
+		case EnemyAdvanced:
+			break;
+		case Hostage:
+			break;
+		case Target:
+			break;
+		case WeaponDrop:
+			ChangeGun();
+			break;
 	}
 }
 
@@ -95,15 +121,4 @@ void Move(Bullet* bullet)
 	UpdateCollider(bullet->collider, bullet->lastPos);
 
 	//slog("bullet moved to pos: (%f ,%f, %f)", xPos, yPos, zPos);
-}
-
-int GetDistance(float yPos1, float yPos2)
-{
-	if (yPos1 <= yPos2)
-	{
-		slog("distance of 0 reached. there was a collision");
-		return 1;
-	}
-	else
-		return 0;
 }

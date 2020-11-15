@@ -14,6 +14,8 @@ void PollForInput()
 			case SDL_MOUSEBUTTONDOWN:
 				OnMousePress(event.button);
 				break;
+			case SDL_MOUSEBUTTONUP:
+				OnMouseRelease(event.button);
 			case SDL_MOUSEMOTION:
 				GetDeltaMousePos(event.motion.xrel, event.motion.yrel);
 				GetMousePos();
@@ -26,17 +28,7 @@ void PollForInput()
 	}
 }
 
-int PollForMouseClick()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_MOUSEBUTTONDOWN)
-			return OnMousePress(event.button);
-	}
-}
-
-void HandleKey(SDL_Keycode keycode, SDL_Event* eventType, int repeat)
+void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 {
 	if (eventType == SDL_KEYDOWN)
 	{
@@ -80,6 +72,18 @@ int OnMousePress(SDL_MouseButtonEvent event)
 		return 1;
 	}
 	else 
+		return 0;
+}
+
+int OnMouseRelease(SDL_MouseButtonEvent event)
+{
+	if (event.button == SDL_BUTTON_LEFT)
+	{
+		slog("left mouse release");
+		mouseBtn = RELEASED;
+		return 1;
+	}
+	else
 		return 0;
 }
 

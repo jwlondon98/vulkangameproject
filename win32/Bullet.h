@@ -24,6 +24,6 @@ void FreeBullet(Bullet* bullet);
 void BulletThink(Bullet* bullet, Entity* entities, int entityCount);
 void Move(Bullet* bullet);
 
-int GetDistance(float yPos1, float yPos2);
+void HandleEntityHit(Entity* entity, Bullet* bullet);
 
 #endif
