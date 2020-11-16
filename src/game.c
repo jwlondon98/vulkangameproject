@@ -23,9 +23,9 @@ void CreateEntities()
 	CreateEntity("cube", 0, vector3d(0,-100,0));
 	CreateEntity("cube", 0, vector3d(-10,-100,0));
 
-	//CreateEntity("enemy", 1, vector3d(0,-50,0));
-	//CreateEntity("friendly", 1, vector3d(10,-50,0));
-	CreateEntity("weapondrop", 1, vector3d(-10,-50,0));
+	CreateEntity("enemy1", 1, vector3d(10,-50,0));
+	CreateEntity("enemy1", 1, vector3d(0,-50,0));
+	CreateEntity("enemy1", 1, vector3d(-10,-50,0));
 }
 
 int main(int argc,char *argv[])
@@ -145,7 +145,8 @@ int main(int argc,char *argv[])
 				Think(&entityList[i]);
 
 				// draw the entity
-				gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+				if (entityList[i].model)
+					gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
 			}
 		}
              
@@ -157,7 +158,8 @@ int main(int argc,char *argv[])
 			{
 				BulletThink(&bulletList[j], entityList, entityCount);
 
-				gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
+				if (bulletList[j].model)
+					gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
 			}
 		}
 

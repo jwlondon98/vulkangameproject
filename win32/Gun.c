@@ -90,11 +90,19 @@ Bullet* GetBulletList()
 	return bulletManager.bulletList;
 }
 
-void ChangeGun()
+void StartGunChange()
+{
+	SDL_Thread *thread;
+
+	thread = SDL_CreateThread(ChangeGun, "ChangeGun", (void *)NULL);
+}
+
+static int ChangeGun(void * data)
 {
 	GunType lastGunType = gun.gunType;
 
-	int randNum = GetRandomNum(0, 2);
+	InitRandom();
+	int randNum = GetRandomNum(0, 3);
 	if (randNum == 0)
 	{
 		gun.gunType = Pistol;

@@ -24,6 +24,6 @@ void FreeBullet(Bullet* bullet);
 void BulletThink(Bullet* bullet, Entity* entities, int entityCount);
 void Move(Bullet* bullet);
 
-void HandleEntityHit(Entity* entity, Bullet* bullet);
+void HandleEntityHit(EntityType entType, Bullet* bullet);
 
 #endif

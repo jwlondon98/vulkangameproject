@@ -170,8 +170,9 @@ void MoveEntity(Entity* entity)
 
 	if (yPos >= 50)
 	{
-		entity->renderOn = 0;
-		entity->_inUse = 0;
+		FreeEntity(entity);
+
+		Delay(0.1);
 	}
 }
 
@@ -180,27 +181,32 @@ static int DelayEntityCreation(void *data)
 	DelayData *delayData = data;
 	float sec = delayData->delayLength;
 
-	slog("about to delay: %f", sec);
-
 	SDL_Delay(sec);
 
-	slog("delay done");
-
 	RandomEntitySpawn();
+
+	return 1;
 }
 
 void Delay(float sec)
 {
 	DelayData* delayData = malloc(sizeof(DelayData));
 	delayData->delayLength = sec * 1000;
+
 	SDL_Thread *thread;
 	thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
 }
 
 void RandomEntitySpawn()
 {
-	int randEntity = GetRandomNum(0, 4);
+	//slog("RANDOM ENTITY SPAWN");
+
+	InitRandom();
+
+	int randEntity = GetRandomNum(0, 5);
 	int randTrack = GetRandomNum(0, 2);
+
+	slog("RANDOM ENTITY: %i", randEntity);
 
 	float spawnPosX;
 	if (randTrack == 0)
@@ -233,11 +239,11 @@ void RandomEntitySpawn()
 
 void InitRandom()
 {
-	time_t t;
-	srand((unsigned)time(&t));
+	srand(time(NULL));
 }
 
 int GetRandomNum(int min, int max)
 {
-	return ((rand() % (max - min + 1)) + min);
+	return rand() % (max - min) + min;
 }
+

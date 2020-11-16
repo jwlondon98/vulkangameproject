@@ -33,7 +33,9 @@ void Shoot(Vector3D spawnPos);
 
 Bullet* GetBulletList();
 
-void ChangeGun();
+void StartGunChange();
+
+static int ChangeGun(void * data);
 
 void AddScore(int amt);
 

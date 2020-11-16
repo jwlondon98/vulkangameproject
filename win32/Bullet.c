@@ -5,7 +5,7 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	Bullet* bullet;
 	bullet = malloc(sizeof(Bullet));
 
-	slog("bullet created at: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
+	//slog("bullet created at: (%f, %f, %f)", spawnPos.x, spawnPos.y, spawnPos.z);
 
 	bullet->model = gf3d_model_load("bullet");
 	bullet->_inUse = 1;
@@ -62,13 +62,13 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 				// free entity
 				entities[i]._inUse = 0;
 				entities[i].renderOn = 0;
-				//FreeEntity(&entities[i]);
 
 				// handle the entity hit 
-				HandleEntityHit(&entities[i], bullet);
+				HandleEntityHit(entities[i].entityType, bullet);
 
+				FreeEntity(&entities[i]);
 				// delay and spawn new entity
-				Delay(1.2);
+				Delay(0.5);
 			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);
@@ -81,11 +81,9 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 	}
 }
 
-void HandleEntityHit(Entity* entity, Bullet* bullet)
+void HandleEntityHit(EntityType entType, Bullet* bullet)
 {
 	int randNum;
-
-	EntityType entType = entity->entityType;
 	switch (entType)
 	{
 		case EnemyBasic:
@@ -97,7 +95,7 @@ void HandleEntityHit(Entity* entity, Bullet* bullet)
 		case Target:
 			break;
 		case WeaponDrop:
-			ChangeGun();
+			StartGunChange();
 			break;
 	}
 }
