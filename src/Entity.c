@@ -172,7 +172,7 @@ void MoveEntity(Entity* entity)
 	{
 		FreeEntity(entity);
 
-		Delay(0.1);
+		Delay(1);
 	}
 }
 
@@ -247,3 +247,7 @@ int GetRandomNum(int min, int max)
 	return rand() % (max - min) + min;
 }
 
+float GetRandomFloat(float min, float max)
+{
+	return (float)(rand()) / (float)((RAND_MAX)) * max;
+}

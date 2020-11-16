@@ -68,7 +68,7 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 
 				FreeEntity(&entities[i]);
 				// delay and spawn new entity
-				Delay(0.5);
+				Delay(2);
 			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);
