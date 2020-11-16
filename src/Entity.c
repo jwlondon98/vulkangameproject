@@ -264,7 +264,7 @@ void RandomEntitySpawn()
 	int randEntity = GetRandomNum(0, 5);
 	int randTrack = GetRandomNum(0, 2);
 
-	slog("RANDOM ENTITY: %i", randEntity);
+	//slog("RANDOM ENTITY: %i", randEntity);
 
 	float spawnPosX;
 	if (randTrack == 0)

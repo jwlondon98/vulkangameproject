@@ -154,8 +154,13 @@ int main(int argc,char *argv[])
 
 				if (entityList[i].state == ATTACK)
 				{
-					EnemyShoot(entityList[i].lastPos);
-					entityList[i].state = WAIT;
+					if (entityList[i].entityType == EnemyAdvanced)
+					{
+						EnemyShoot(entityList[i].lastPos);
+						entityList[i].state = WAIT;
+					}
+					else
+						entityList[i].state = MOVE;
 				}
 
 				// draw the entity
