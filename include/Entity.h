@@ -16,7 +16,7 @@
 
 typedef enum 
 {
-	WAIT, MOVE, ATTACK
+	WAIT, MOVE, ATTACK, NONE
 }State;
 
 typedef enum
@@ -24,10 +24,10 @@ typedef enum
 	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop, Gun
 }EntityType;
 
-typedef struct DelayData_S 
+typedef enum
 {
-	float delayLength;
-}DelayData;
+	EntityCreate, EnemyBullet
+}DelayType;
 
 typedef struct Entity_S
 {
@@ -52,6 +52,12 @@ typedef struct Entity_S
 	//void (Think*)(struct Entity_S *self);
 }Entity;
 
+typedef struct DelayData_S 
+{
+	float delayLength;
+	Entity* entity;
+}DelayData;
+
 //void Think(struct Entity_S *self);
 
 void InitEntity(Uint32 maxEntities);
@@ -64,12 +70,13 @@ int GetEntityCount();
 void Think(Entity* entity);
 void MoveEntity(Entity* entity);
 
-void Delay(float sec);
+void Delay(float sec, DelayType delayType, Entity* entity);
 void InitRandom();
 int GetRandomNum(int min, int max);
 
 void RandomEntitySpawn();
 
 static int DelayEntityCreation(void *data);
+static int DelayEnemyBullet(void *data);
 
 #endif

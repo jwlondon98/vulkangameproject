@@ -1,5 +1,7 @@
 #include "Gun.h"
 
+struct Gun gun;
+
 typedef struct
 {
 	Bullet		*bulletList;		/* list of entities */
@@ -9,14 +11,14 @@ typedef struct
 
 static BulletManager bulletManager = { 0 };
 
-struct Gun gun;
-
-CreateGun(int ammoCount)
+void CreateGun(int ammoCount)
 {
 	gun.initialAmmoCount = ammoCount;
 	gun.ammoCount = ammoCount;
 	gun.gunType = Pistol;
 	bulletManager.bulletList = gfc_allocate_array(sizeof(Bullet), ammoCount);
+
+	gun.EnemyShoot = EnemyShoot;
 
 	// spawn bullet to act as gun location holder
 	//gun.gunLoc = CreateEntity("gun", 1, vector3d(0,10,0));
@@ -55,7 +57,7 @@ void Shoot(Vector3D spawnPos)
 				slog("shooting pistol");
 
 				Bullet* bullet;
-				bullet = CreateBullet(spawnPos);
+				bullet = CreateBullet(spawnPos, 0);
 				bulletManager.bulletList[i] = *bullet;
 				//g->ammoCount -= 1;
 				return;
@@ -65,7 +67,7 @@ void Shoot(Vector3D spawnPos)
 				slog("shooting shotgun");
 
 				Bullet* bullet;
-				bullet = CreateBullet(vector3d(spawnPos.x, 50, 0));
+				bullet = CreateBullet(vector3d(spawnPos.x, 50, 0), 0);
 				bulletManager.bulletList[i] = *bullet;
 				//g->ammoCount -= 1;
 				return;
@@ -75,7 +77,7 @@ void Shoot(Vector3D spawnPos)
 				slog("shooting machinegun");
 
 				Bullet* bullet;
-				bullet = CreateBullet(spawnPos);
+				bullet = CreateBullet(spawnPos, 0);
 				bulletManager.bulletList[i] = *bullet;
 				//g->ammoCount -= 1;
 				return;
@@ -83,6 +85,26 @@ void Shoot(Vector3D spawnPos)
 		}
 	}
 	return NULL;
+}
+
+void EnemyShoot(Vector3D spawnPos)
+{
+	slog("enemy shoot");
+	Bullet* bullet;
+	int i;
+	for (i = 0; i < gun.initialAmmoCount; i++)
+	{
+		if (bulletManager.bulletList[i]._inUse == 0)
+		{
+			bullet = CreateBullet(spawnPos, 1);
+			bullet->speed = 1;
+
+			bulletManager.bulletList[i] = *bullet;
+
+			slog("enemy bullet created");
+			return;
+		}
+	}
 }
 
 Bullet* GetBulletList()

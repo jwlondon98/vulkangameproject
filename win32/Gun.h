@@ -24,14 +24,17 @@ struct Gun
 	Entity* gunLoc;
 
 	GunType gunType;
+
+	void(*EnemyShoot)(Vector3D spawnPos);
 };
 
 extern struct Gun gun;
 
-CreateGun(int ammoCount);
+void CreateGun(int ammoCount);
 void FreeGun();
 
 void Shoot(Vector3D spawnPos);
+void EnemyShoot(Vector3D spawnPos);
 
 Bullet* GetBulletList();
 

@@ -24,7 +24,7 @@ void CreateEntities()
 	CreateEntity("cube", 0, vector3d(-10,-100,0));
 
 	CreateEntity("enemy1", 1, vector3d(10,-50,0));
-	CreateEntity("enemy1", 1, vector3d(0,-50,0));
+	CreateEntity("enemy2", 1, vector3d(0,-50,0));
 	CreateEntity("enemy1", 1, vector3d(-10,-50,0));
 }
 
@@ -77,7 +77,7 @@ int main(int argc,char *argv[])
 	//Entity player;
 
 	// create a gun for the player
-	CreateGun(100);
+	CreateGun(300);
 	Bullet* bulletList = GetBulletList();
 
     while(!done)
@@ -148,7 +148,14 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
-				Think(&entityList[i]);
+				if (entityList[i].state != NONE)
+					Think(&entityList[i]);
+
+				if (entityList[i].state == ATTACK)
+				{
+					EnemyShoot(entityList[i].lastPos);
+					entityList[i].state = WAIT;
+				}
 
 				// draw the entity
 				if (entityList[i].model)
@@ -163,6 +170,12 @@ int main(int argc,char *argv[])
 			if (bulletList[j]._inUse == 1)
 			{
 				BulletThink(&bulletList[j], entityList, entityCount);
+
+				if (bulletList[j].lastPos.y > 50)
+				{
+					slog("enemy bullet passed player. destroying");
+					FreeBullet(&bulletList[j]);
+				}
 
 				if (bulletList[j].model)
 					gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);

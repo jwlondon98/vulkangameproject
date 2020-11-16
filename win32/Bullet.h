@@ -15,10 +15,12 @@ typedef struct Bullet_S
 
 	Vector3D	lastPos;
 
+	int			enemyBullet;
+
 	Collider*	collider;
 }Bullet;
 
-Bullet* CreateBullet(Vector3D spawnPos);
+Bullet* CreateBullet(Vector3D spawnPos, int enemyBullet);
 void FreeBullet(Bullet* bullet);
 
 void BulletThink(Bullet* bullet, Entity* entities, int entityCount);

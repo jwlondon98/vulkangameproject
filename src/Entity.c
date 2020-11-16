@@ -74,6 +74,12 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			if (modelName != "gun")
 				entityManager.entityList[i].state = MOVE;
 
+			if (modelName == "enemy2")
+			{
+				entityManager.entityList[i].state = WAIT;
+				spawnPos.y = -35;
+			}
+
 			// set entity lane
 			int lane;
 			if (spawnPos.x == 10.0)
@@ -159,7 +165,11 @@ int GetEntityCount()
 void Think(Entity* entity)
 {
 	if (entity->state == WAIT)
+	{
+		Delay(0.1, EnemyBullet, entity);
+		entity->state = NONE;
 		return;
+	}
 	else if (entity->state == MOVE)
 	{
 		MoveEntity(entity);
@@ -167,7 +177,12 @@ void Think(Entity* entity)
 	}
 	else if (entity->state == ATTACK)
 	{
-		//Delay(1);
+		// enemy shoot
+		//EnemyShoot(entity->lastPos);
+		slog("enemy attacking");
+
+		// set state back to waiting 
+		//entity->state = WAIT;
 	}
 }
 
@@ -195,7 +210,7 @@ void MoveEntity(Entity* entity)
 	{
 		FreeEntity(entity);
 
-		Delay(1);
+		Delay(1, EntityCreate, NULL);
 	}
 }
 
@@ -211,13 +226,34 @@ static int DelayEntityCreation(void *data)
 	return 1;
 }
 
-void Delay(float sec)
+static int DelayEnemyBullet(void *data)
+{
+	DelayData *delayData = data;
+	float sec = delayData->delayLength;
+	Entity* ent = delayData->entity;
+
+	SDL_Delay(sec);
+
+	ent->state = ATTACK;
+
+	return 1;
+}
+
+void Delay(float sec, DelayType delayType, Entity* entity)
 {
 	DelayData* delayData = malloc(sizeof(DelayData));
 	delayData->delayLength = sec * 1000;
 
 	SDL_Thread *thread;
-	thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
+	if (delayType == EntityCreate)
+		thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
+	else if (delayType == EnemyBullet)
+	{
+		delayData->delayLength = 1000;
+		delayData->entity = entity;
+		thread = SDL_CreateThread(DelayEnemyBullet, "DelayEnemyBullet", delayData);
+	}
+
 }
 
 void RandomEntitySpawn()
@@ -260,7 +296,6 @@ void RandomEntitySpawn()
 			CreateEntity("enemy1", 1, vector3d(spawnPosX, -50, 0));
 			break;
 	}
-
 }
 
 void InitRandom()

@@ -1,6 +1,6 @@
 #include "Bullet.h";
 
-Bullet* CreateBullet(Vector3D spawnPos)
+Bullet* CreateBullet(Vector3D spawnPos, int enemyBullet)
 {
 	Bullet* bullet;
 	bullet = malloc(sizeof(Bullet));
@@ -14,6 +14,9 @@ Bullet* CreateBullet(Vector3D spawnPos)
 	bullet->collider = CreateCollider();
 	bullet->collider->extents = vector3d(0.1, 0.1, 0.1);
 	UpdateCollider(bullet->collider, spawnPos);
+
+	// is the bullet an enemy bullet?
+	bullet->enemyBullet = enemyBullet;
 
 	// set model's position to world origin
 	gfc_matrix_identity(bullet->modelMatrix);
@@ -59,6 +62,10 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 				if (entities[i].entityType == Gun)
 					return;
 
+				// keep enemy from killing itself
+				if (bullet->enemyBullet == 1)
+					return;
+
 				// free entity
 				entities[i]._inUse = 0;
 				entities[i].renderOn = 0;
@@ -68,7 +75,7 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 
 				FreeEntity(&entities[i]);
 				// delay and spawn new entity
-				Delay(2);
+				Delay(2, EntityCreate, &entities[i]);
 			}
 			bullet->_inUse = 0;
 			FreeBullet(bullet);
@@ -108,7 +115,11 @@ void Move(Bullet* bullet)
 	Vector3D lastPos = bullet->lastPos;
 
 	float xPos = lastPos.x;
-	float yPos = lastPos.y - bullet->speed;
+	float yPos;
+	if (bullet->enemyBullet == 0)
+		yPos = lastPos.y - bullet->speed;
+	else
+		yPos = lastPos.y + bullet->speed;
 	float zPos = lastPos.z + bullet->speed;
 
 	gfc_matrix_make_translation(
