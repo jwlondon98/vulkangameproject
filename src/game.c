@@ -16,7 +16,7 @@
 
 void CreateEntities()
 {
-	InitEntity(10);
+	InitEntity(20);
 
 	// invisible walls to destroy passed bullets
 	CreateEntity("cube", 0, vector3d(10,-100,0));
@@ -116,6 +116,12 @@ int main(int argc,char *argv[])
 				mouseBtn = RELEASED;
 		}
 
+		if (spaceBtn == PRESSED)
+		{
+			SaveHostage(entityList, entityCount);
+			spaceBtn = RELEASED;
+		}
+
 		// ROTATE CAMERA
 		//slog("DELTA: %i", xMouseDelta);
 		//gf3d_vgraphics_rotate_camera((xMousePos - lastXMousePos) * xMouseDelta, 'y', 0.00001);
@@ -137,7 +143,7 @@ int main(int argc,char *argv[])
 		for (i = 0; i < entityCount; i++)
 		{
 			// if current entity is set to render..
-			if (entityList[i].renderOn == 1)
+			if (entityList[i]._inUse == 1 && entityList[i].renderOn == 1)
 			{
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
@@ -165,7 +171,12 @@ int main(int argc,char *argv[])
 
         gf3d_command_rendering_end(commandBuffer);
             
-        gf3d_vgraphics_render_end(bufferFrame);
+        int rendEnd = gf3d_vgraphics_render_end(bufferFrame);
+		if (rendEnd == 1)
+		{
+			slog("failed to end render. force quitting to save computer from dying");
+			done = 1;
+		}
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
     }    

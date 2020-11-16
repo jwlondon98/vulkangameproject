@@ -130,3 +130,30 @@ void AddScore(int amt)
 {
 	
 }
+
+void SaveHostage(Entity* entities, int count)
+{
+	slog("saving hostage");
+
+	int i;
+	for (i = 0; i < count; i++)
+	{
+		if (entities[i].entityType != Hostage)
+			continue;
+
+		if (gun.gunType == Shotgun)
+			entities[i].speed = 2;
+		else
+		{
+			slog("GUN LANE: %i", gun.lane);
+			slog("ENTITY LANE: %i", entities[i].lane);
+			if (gun.lane == entities[i].lane)
+			{
+				slog("CORRECT LANE");
+				entities[i].speed = 2;
+			}
+			else
+				slog("INCORRECT LANE");
+		}
+	}
+}

@@ -44,6 +44,7 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 	{
 		if (!entityManager.entityList[i]._inUse)
 		{
+			slog("entity spawned");
 			/*slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
 				spawnPos.y, spawnPos.z);*/
 
@@ -64,12 +65,31 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			else if (modelName == "target")
 				entityManager.entityList[i].entityType = Target;
 			else if (modelName == "hostage")
+			{
 				entityManager.entityList[i].entityType = Hostage;
+			}
 			else if (modelName == "weapondrop")
 				entityManager.entityList[i].entityType = WeaponDrop;
 
 			if (modelName != "gun")
 				entityManager.entityList[i].state = MOVE;
+
+			// set entity lane
+			int lane;
+			if (spawnPos.x == 10.0)
+				lane = -1;
+			else if (spawnPos.x == 0.0)
+				lane = 0;
+			else if (spawnPos.x == -10.0)
+				lane = 1;
+			entityManager.entityList[i].lane = lane;
+
+			if (modelName == "hostage")
+			{
+				slog("HOSTAGE SPAWN POSX: %f", spawnPos.x);
+				slog("HOSTAGE LANE: %i", lane);
+				spawnPos.x = spawnPos.x + 2;
+			}
 
 			// create a collider for the entity
 			entityManager.entityList[i].collider = CreateCollider();
@@ -117,6 +137,9 @@ void CloseEntity()
 void FreeEntity(Entity *entity)
 {
 	if (!entity) return;
+
+	entity->_inUse = 0;
+	entity->renderOn = 0;
 
 	gf3d_model_free(entity->model);
 	memset(entity, 0, sizeof(Entity));
@@ -232,6 +255,9 @@ void RandomEntitySpawn()
 			break;
 		case 4:
 			CreateEntity("target", 1, vector3d(spawnPosX, -50, 0));
+			break;
+		default:
+			CreateEntity("enemy1", 1, vector3d(spawnPosX, -50, 0));
 			break;
 	}
 

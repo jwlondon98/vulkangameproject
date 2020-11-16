@@ -429,7 +429,7 @@ Uint32 gf3d_vgraphics_render_begin()
     return imageIndex;
 }
 
-void gf3d_vgraphics_render_end(Uint32 imageIndex)
+int gf3d_vgraphics_render_end(Uint32 imageIndex)
 {
     VkPresentInfoKHR presentInfo = {0};
     VkSubmitInfo submitInfo = {0};
@@ -452,10 +452,23 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
-    
-    if (vkQueueSubmit(gf3d_vqueues_get_graphics_queue(), 1, &submitInfo, VK_NULL_HANDLE) != VK_SUCCESS)
+
+	VkQueue queue = gf3d_vqueues_get_graphics_queue();
+	if (queue == NULL)
+	{
+		slog("GRAPHICS QUEUE IS NULL");
+	}
+
+	VkResult result = vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE);
+    if (result != VK_SUCCESS)
     {
         slog("failed to submit draw command buffer!");
+		if (result == VK_ERROR_OUT_OF_HOST_MEMORY)
+			slog("ERROR OUT OF HOST MEMORY");
+		else if (result == VK_ERROR_OUT_OF_DEVICE_MEMORY)
+			slog("ERROR OUT OF DEVICE MEMORY");
+
+		return 1;
     }
     
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -469,6 +482,8 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     presentInfo.pResults = NULL; // Optional
     
     vkQueuePresentKHR(gf3d_vqueues_get_present_queue(), &presentInfo);
+
+	return 0;
 }
 
 /**

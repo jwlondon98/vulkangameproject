@@ -43,6 +43,8 @@ typedef struct Entity_S
 	int				targetX;
 	int				targetZ;
 
+	int				lane;
+
 	EntityType		entityType;
 
 	Collider*		collider;

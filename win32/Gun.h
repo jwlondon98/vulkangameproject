@@ -19,6 +19,8 @@ struct Gun
 
 	int score;
 
+	int lane;
+
 	Entity* gunLoc;
 
 	GunType gunType;
@@ -38,5 +40,7 @@ void StartGunChange();
 static int ChangeGun(void * data);
 
 void AddScore(int amt);
+
+void SaveHostage(Entity* entities, int count);
 
 #endif

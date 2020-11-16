@@ -37,14 +37,20 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
 				break;
+			case SDLK_SPACE:
+				spaceBtn = PRESSED;
+				break;
 			case SDLK_1:
 				gunPos = -1;
+				gun.lane = -1;
 				break;
 			case SDLK_2:
 				gunPos = 0;
+				gun.lane = 0;
 				break;
 			case SDLK_3:
 				gunPos = 1;
+				gun.lane = 1;
 				break;
 		}
 	}
@@ -52,9 +58,12 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 	{
 		switch (keycode)
 		{
-		case SDLK_RETURN:
-			enterBtn = RELEASED;
-			break;
+			case SDLK_RETURN:
+				enterBtn = RELEASED;
+				break;
+			case SDLK_SPACE:
+				spaceBtn = RELEASED;
+				break;
 		}
 	}
 

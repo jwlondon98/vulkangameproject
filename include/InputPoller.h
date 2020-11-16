@@ -7,6 +7,7 @@
 #include <simple_logger.h>
 #include <gfc_vector.h>
 #include "gf3d_vgraphics.h"
+#include "../win32/Gun.h"
 
 typedef enum
 {
@@ -15,6 +16,7 @@ typedef enum
 
 KeyState mouseBtn;
 KeyState enterBtn;
+KeyState spaceBtn;
 
 int screenWidth;
 int screenHeight;
