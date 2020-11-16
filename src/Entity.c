@@ -166,7 +166,7 @@ void Think(Entity* entity)
 {
 	if (entity->state == WAIT)
 	{
-		Delay(0.1, EnemyBullet, entity);
+		Delay(2, EnemyBullet, entity);
 		entity->state = NONE;
 		return;
 	}
@@ -253,7 +253,6 @@ void Delay(float sec, DelayType delayType, Entity* entity)
 		delayData->entity = entity;
 		thread = SDL_CreateThread(DelayEnemyBullet, "DelayEnemyBullet", delayData);
 	}
-
 }
 
 void RandomEntitySpawn()

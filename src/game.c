@@ -148,7 +148,8 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
-				if (entityList[i].state != NONE)
+				if (entityList[i].state != NONE ||
+					entityList[i].state != WAIT)
 					Think(&entityList[i]);
 
 				if (entityList[i].state == ATTACK)
