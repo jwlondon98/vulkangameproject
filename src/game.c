@@ -78,7 +78,7 @@ int main(int argc,char *argv[])
 	//Entity player;
 
 	// create a gun for the player
-	CreateGun(300);
+	CreateGun(Pistol, 300);
 	Bullet* bulletList = GetBulletList();
 
     while(!done)
@@ -158,6 +158,26 @@ int main(int argc,char *argv[])
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
+		// render bullet and move it
+		int j;
+		for (j = 0; j < gun.ammoCount; j++)
+		{
+			if (bulletList[j]._inUse == 1)
+			{
+				BulletThink(&bulletList[j], entityList, entityCount);
+
+				if (bulletList[j].lastPos.y > 50)
+				{
+					//slog("enemy bullet passed player. destroying");
+					AddScore(&entityList[0], -20);
+					FreeBullet(&bulletList[j]);
+				}
+
+				if (bulletList[j].model)
+					gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
+			}
+		}
+
 		// loop through all entities
 		int i;
 		for (i = 0; i < entityCount; i++)
@@ -177,7 +197,7 @@ int main(int argc,char *argv[])
 					if (entityList[i].entityType == EnemyAdvanced)
 					{
 						EnemyShoot(entityList[i].lastPos);
-						entityList[i].state = WAIT;
+						entityList[i].state = NONE;
 					}
 					else
 						entityList[i].state = MOVE;
@@ -189,25 +209,7 @@ int main(int argc,char *argv[])
 			}
 		}
              
-		// render bullet and move it
-		int j;
-		for (j = 0; j < gun.ammoCount; j++)
-		{
-			if (bulletList[j]._inUse == 1)
-			{
-				BulletThink(&bulletList[j], entityList, entityCount);
-
-				if (bulletList[j].lastPos.y > 50)
-				{
-					slog("enemy bullet passed player. destroying");
-					AddScore(&entityList[0], -20);
-					FreeBullet(&bulletList[j]);
-				}
-
-				if (bulletList[j].model)
-					gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
-			}
-		}
+		
 
         gf3d_command_rendering_end(commandBuffer);
             
@@ -215,6 +217,8 @@ int main(int argc,char *argv[])
 		if (rendEnd == 1)
 		{
 			slog("failed to end render. force quitting to save computer from dying");
+			CloseEntity();
+			CloseGun();
 			done = 1;
 		}
 

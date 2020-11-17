@@ -62,8 +62,12 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 			if (entities[i].renderOn == 1)
 			{
 				// keep enemy from killing itself
-				if (bullet->enemyBullet == 1)
+				/*if (bullet->enemyBullet == 1)
+				{
+					bullet->_inUse = 0;
+					FreeBullet(bullet);
 					return;
+				}*/
 
 				// handle adding score
 				if (entities[i].entityType == EnemyBasic)

@@ -30,7 +30,8 @@ struct Gun
 
 extern struct Gun gun;
 
-void CreateGun(int ammoCount);
+void CreateGun(GunType gunType, int ammoCount);
+void CloseGun(); 
 void FreeGun();
 
 void Shoot(Vector3D spawnPos);

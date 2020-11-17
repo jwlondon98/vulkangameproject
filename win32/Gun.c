@@ -11,11 +11,11 @@ typedef struct
 
 static BulletManager bulletManager = { 0 };
 
-void CreateGun(int ammoCount)
+void CreateGun(GunType gunType, int ammoCount)
 {
 	gun.initialAmmoCount = ammoCount;
 	gun.ammoCount = ammoCount;
-	gun.gunType = Pistol;
+	gun.gunType = gunType;
 	bulletManager.bulletList = gfc_allocate_array(sizeof(Bullet), ammoCount);
 
 	gun.EnemyShoot = EnemyShoot;
@@ -23,18 +23,35 @@ void CreateGun(int ammoCount)
 	// spawn bullet to act as gun location holder
 	//gun.gunLoc = CreateEntity("gun", 1, vector3d(0,10,0));
 
+	atexit(CloseGun);
 	atexit(FreeGun);
+}
+
+void CloseGun()
+{
+	int i;
+	if (&bulletManager != NULL)
+	{
+		for (i = 0; i < bulletManager.bulletCount; i++)
+		{
+			FreeBullet(&bulletManager.bulletList[i]);
+		}
+		free(bulletManager.bulletList);
+	}
+
+	memset(&bulletManager, 0, sizeof(BulletManager));
+	slog("Entity System closed");
 }
 
 void FreeGun()
 {
 	// free any bullets we need to still free
-	int i;
+	/*int i;
 	for (i = 0; i < gun.initialAmmoCount; i++)
-		FreeBullet(&bulletManager.bulletList[i]);
+		FreeBullet(&bulletManager.bulletList[i]);*/
 
-	memset(&bulletManager, 0, sizeof(BulletManager));
-	//memset(gun, 0, sizeof(Gun));
+	//memset(&bulletManager, 0, sizeof(BulletManager));
+	memset(&gun, 0, sizeof(Gun));
 }
 
 void Shoot(Vector3D spawnPos)

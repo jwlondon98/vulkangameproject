@@ -187,7 +187,7 @@ void Think(Entity* entity)
 	if (entity->state == WAIT)
 	{
 		Delay(2, EnemyBullet, entity);
-		entity->state = NONE;
+		//entity->state = NONE;
 		return;
 	}
 	else if (entity->state == MOVE)
@@ -287,18 +287,22 @@ void Delay(float sec, DelayType delayType, Entity* entity)
 
 	SDL_Thread *thread;
 	if (delayType == EntityCreate)
-		thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
+	{
+		RandomEntitySpawn();
+		//thread = SDL_CreateThread(DelayEntityCreation, "DelayEntityCreation", delayData);
+	}
 	else if (delayType == EnemyBullet)
 	{
 		delayData->delayLength = 1000;
 		delayData->entity = entity;
-		thread = SDL_CreateThread(DelayEnemyBullet, "DelayEnemyBullet", delayData);
+		entity->state = ATTACK;
+		//thread = SDL_CreateThread(DelayEnemyBullet, "DelayEnemyBullet", delayData);
 	}
 	else if (delayType == HostageDeath)
 	{
 		delayData->delayLength = 5000;
 		delayData->entity = entity;
-		thread = SDL_CreateThread(DelayHostageDeath, "DelayHostageDeath", delayData);
+		//thread = SDL_CreateThread(DelayHostageDeath, "DelayHostageDeath", delayData);
 	}
 }
 
