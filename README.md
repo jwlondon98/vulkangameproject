@@ -41,8 +41,3 @@ There are 3 different lanes: left, center, and right. Pressing the number keys (
 1. Pistol - Left click to shoot
 2. Machine Gun - Hold left click to shoot without having to reclick
 3. Shotgun - Shoots down all 3 lanes on click. When player has shotgun, hostages can be saved without changing lanes.
-
-### BUGS
-There are few game-breaking bugs that are inconsistent. I have unfortunately not been able to fix them yet:
-1. The game fails to get a free descriptor set at times. Unsure of how to fix this. Error stating cannot allocate any more descriptor sets prints out.
-2. gf3d_vgraphics_render_end has a bug where vkQueueSubmit returns an unsuccessful result. Printed Error: "failed to submit draw command buffer!"
