@@ -54,7 +54,7 @@ void Shoot(Vector3D spawnPos)
 		{
 			if (gun.gunType == Pistol)
 			{
-				slog("shooting pistol");
+				//slog("shooting pistol");
 
 				Bullet* bullet;
 				bullet = CreateBullet(spawnPos, 0);
@@ -64,7 +64,7 @@ void Shoot(Vector3D spawnPos)
 			}
 			else if (gun.gunType == Shotgun)
 			{
-				slog("shooting shotgun");
+				//slog("shooting shotgun");
 
 				Bullet* bullet;
 				bullet = CreateBullet(vector3d(spawnPos.x, 50, 0), 0);
@@ -74,7 +74,7 @@ void Shoot(Vector3D spawnPos)
 			}
 			else if (gun.gunType == Machinegun)
 			{
-				slog("shooting machinegun");
+				//slog("shooting machinegun");
 
 				Bullet* bullet;
 				bullet = CreateBullet(spawnPos, 0);
@@ -89,7 +89,7 @@ void Shoot(Vector3D spawnPos)
 
 void EnemyShoot(Vector3D spawnPos)
 {
-	slog("enemy shoot");
+	//slog("enemy shoot");
 	Bullet* bullet;
 	int i;
 	for (i = 0; i < gun.initialAmmoCount; i++)
@@ -128,34 +128,29 @@ static int ChangeGun(void * data)
 	if (randNum == 0)
 	{
 		gun.gunType = Pistol;
-		slog("gun type changed to pistol");
+		//slog("gun type changed to pistol");
 	}
 	else if (randNum == 1)
 	{
 		gun.gunType = Shotgun;
-		slog("gun type changed to shotgun");
+		//slog("gun type changed to shotgun");
 	}
 	else if (randNum == 2)
 	{
 		gun.gunType = Machinegun;
-		slog("gun type changed to machinegun");
+		//slog("gun type changed to machinegun");
 	}
 
 	// make sure you don't get the same gun type twice in a row
 	if (lastGunType == gun.gunType)
 	{
-		slog("same gun type. changing gun again");
+		//slog("same gun type. changing gun again");
 	}
-}
-
-void AddScore(int amt)
-{
-	
 }
 
 void SaveHostage(Entity* entities, int count)
 {
-	slog("saving hostage");
+	//slog("saving hostage");
 
 	int i;
 	for (i = 0; i < count; i++)
@@ -167,15 +162,13 @@ void SaveHostage(Entity* entities, int count)
 			entities[i].speed = 2;
 		else
 		{
-			slog("GUN LANE: %i", gun.lane);
-			slog("ENTITY LANE: %i", entities[i].lane);
+			//slog("GUN LANE: %i", gun.lane);
+			//slog("ENTITY LANE: %i", entities[i].lane);
 			if (gun.lane == entities[i].lane)
 			{
-				slog("CORRECT LANE");
+				//slog("CORRECT LANE");
 				entities[i].speed = 2;
 			}
-			else
-				slog("INCORRECT LANE");
 		}
 	}
 }

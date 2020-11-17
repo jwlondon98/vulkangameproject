@@ -44,7 +44,7 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 	{
 		if (!entityManager.entityList[i]._inUse)
 		{
-			slog("entity spawned");
+			//slog("entity spawned");
 			/*slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
 				spawnPos.y, spawnPos.z);*/
 
@@ -55,21 +55,38 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			else
 				entityManager.entityList[i].renderOn = 0;
 
-			entityManager.entityList[i].model = gf3d_model_load(modelName);
+			if (modelName != "player")
+				entityManager.entityList[i].model = gf3d_model_load(modelName);
+			else 
+				entityManager.entityList[i].model = gf3d_model_load("cube");
 
 			// assign entity type based on model name
 			if (modelName == "enemy1")
+			{
 				entityManager.entityList[i].entityType = EnemyBasic;
+				//slog("enemy basic spawned");
+			}
 			else if (modelName == "enemy2")
+			{
 				entityManager.entityList[i].entityType = EnemyAdvanced;
+				//slog("enemy advanced spawned");
+			}
 			else if (modelName == "target")
+			{
 				entityManager.entityList[i].entityType = Target;
+				//slog("target spawned");
+			
+			}
 			else if (modelName == "hostage")
 			{
 				entityManager.entityList[i].entityType = Hostage;
+				//slog("hostage spawned");
 			}
 			else if (modelName == "weapondrop")
+			{
 				entityManager.entityList[i].entityType = WeaponDrop;
+				//slog("weapondrop spawned");
+			}
 
 			if (modelName != "gun")
 				entityManager.entityList[i].state = MOVE;
@@ -79,6 +96,9 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				entityManager.entityList[i].state = WAIT;
 				spawnPos.y = -35;
 			}
+
+			if (modelName == "player")
+				entityManager.entityList[i].state = NONE;
 
 			// set entity lane
 			int lane;
@@ -92,8 +112,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 
 			if (modelName == "hostage")
 			{
-				slog("HOSTAGE SPAWN POSX: %f", spawnPos.x);
-				slog("HOSTAGE LANE: %i", lane);
+				//slog("HOSTAGE SPAWN POSX: %f", spawnPos.x);
+				//slog("HOSTAGE LANE: %i", lane);
 				spawnPos.x = spawnPos.x + 2;
 			}
 
@@ -179,7 +199,7 @@ void Think(Entity* entity)
 	{
 		// enemy shoot
 		//EnemyShoot(entity->lastPos);
-		slog("enemy attacking");
+		//slog("enemy attacking");
 
 		// set state back to waiting 
 		//entity->state = WAIT;
@@ -208,6 +228,11 @@ void MoveEntity(Entity* entity)
 
 	if (yPos >= 50)
 	{
+		if (entity->entityType == Hostage && entity->state == MOVE)
+			AddScore(&entityManager.entityList[0], 60);
+		else if (entity->entityType == EnemyBasic || entity->entityType == EnemyAdvanced)
+			AddScore(&entityManager.entityList[0], -40);
+
 		FreeEntity(entity);
 
 		Delay(1, EntityCreate, NULL);
@@ -239,6 +264,22 @@ static int DelayEnemyBullet(void *data)
 	return 1;
 }
 
+static int DelayHostageDeath(void *data)
+{
+	DelayData *delayData = data;
+	Entity* ent = delayData->entity;
+
+	AddScore(&entityManager.entityList[0], -40);
+
+	// free entity
+	ent->_inUse = 0;
+	ent->renderOn = 0;
+
+	FreeEntity(&ent);
+	// delay and spawn new entity
+	Delay(2, EntityCreate, &ent);
+}
+
 void Delay(float sec, DelayType delayType, Entity* entity)
 {
 	DelayData* delayData = malloc(sizeof(DelayData));
@@ -252,6 +293,12 @@ void Delay(float sec, DelayType delayType, Entity* entity)
 		delayData->delayLength = 1000;
 		delayData->entity = entity;
 		thread = SDL_CreateThread(DelayEnemyBullet, "DelayEnemyBullet", delayData);
+	}
+	else if (delayType == HostageDeath)
+	{
+		delayData->delayLength = 5000;
+		delayData->entity = entity;
+		thread = SDL_CreateThread(DelayHostageDeath, "DelayHostageDeath", delayData);
 	}
 }
 
@@ -310,4 +357,10 @@ int GetRandomNum(int min, int max)
 float GetRandomFloat(float min, float max)
 {
 	return (float)(rand()) / (float)((RAND_MAX)) * max;
+}
+
+void AddScore(Entity* entity, int amt)
+{
+	entity->score += amt;
+	slog("PLAYER SCORE: %i", entity->score);
 }

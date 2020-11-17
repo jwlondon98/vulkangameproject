@@ -19,6 +19,7 @@ void CreateEntities()
 	InitEntity(20);
 
 	// invisible walls to destroy passed bullets
+	CreateEntity("player", 0, vector3d(0, -1000, 0));
 	CreateEntity("cube", 0, vector3d(10,-100,0));
 	CreateEntity("cube", 0, vector3d(0,-100,0));
 	CreateEntity("cube", 0, vector3d(-10,-100,0));
@@ -118,8 +119,27 @@ int main(int argc,char *argv[])
 
 		if (spaceBtn == PRESSED)
 		{
+			int k;
+			for (k = 0; k < entityCount; k++)
+			{
+				if (entityList[k].entityType != Hostage)
+					continue;
+
+				entityList[k].speed = 2;
+			}
 			SaveHostage(entityList, entityCount);
-			spaceBtn = RELEASED;
+			//spaceBtn = RELEASED;
+		}
+		else if (spaceBtn == RELEASED)
+		{
+			int k;
+			for (k = 0; k < entityCount; k++)
+			{
+				if (entityList[k].entityType != Hostage)
+					continue;
+
+				entityList[k].speed = 0.5;
+			}
 		}
 
 		// ROTATE CAMERA
@@ -180,6 +200,7 @@ int main(int argc,char *argv[])
 				if (bulletList[j].lastPos.y > 50)
 				{
 					slog("enemy bullet passed player. destroying");
+					AddScore(&entityList[0], -20);
 					FreeBullet(&bulletList[j]);
 				}
 

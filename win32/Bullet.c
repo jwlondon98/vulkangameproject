@@ -35,9 +35,10 @@ void FreeBullet(Bullet* bullet )
 {
 	if (!bullet) return;
 
+	bullet->_inUse = 0;
+
 	gf3d_model_free(bullet->model);
 
-	bullet->_inUse = 0;
 	memset(bullet, 0, sizeof(Bullet));
 }
 
@@ -50,6 +51,7 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 		// if a collision between the bullet and any of the rendered entities occurs..
 		if (entities[i]._inUse == 1 && DetectCollision(bullet->collider, entities[i].collider, i) == 1)
 		{
+			//slog("bullet hit entity");
 			/*slog("\nlast bullet pos: (%f, %f, %f)", bullet->lastPos.x,
 				bullet->lastPos.y, bullet->lastPos.z);*/
 
@@ -59,12 +61,17 @@ void BulletThink(Bullet* bullet, Entity* entities, int entityCount)
 
 			if (entities[i].renderOn == 1)
 			{
-				if (entities[i].entityType == Gun)
-					return;
-
 				// keep enemy from killing itself
 				if (bullet->enemyBullet == 1)
 					return;
+
+				// handle adding score
+				if (entities[i].entityType == EnemyBasic)
+					AddScore(&entities[0], 25);
+				else if (entities[i].entityType == EnemyAdvanced)
+					AddScore(&entities[0], 50);
+				else if (entities[i].entityType == Target)
+					AddScore(&entities[0], 100);
 
 				// free entity
 				entities[i]._inUse = 0;

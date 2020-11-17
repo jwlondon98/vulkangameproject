@@ -26,7 +26,7 @@ typedef enum
 
 typedef enum
 {
-	EntityCreate, EnemyBullet
+	EntityCreate, EnemyBullet, HostageDeath
 }DelayType;
 
 typedef struct Entity_S
@@ -44,6 +44,7 @@ typedef struct Entity_S
 	int				targetZ;
 
 	int				lane;
+	int				score;
 
 	EntityType		entityType;
 
@@ -78,5 +79,8 @@ void RandomEntitySpawn();
 
 static int DelayEntityCreation(void *data);
 static int DelayEnemyBullet(void *data);
+static int DelayHostageDeath(void *data);
+
+void AddScore(Entity* entity, int amt);
 
 #endif
