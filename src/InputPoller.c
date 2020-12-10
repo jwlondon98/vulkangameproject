@@ -1,4 +1,6 @@
 #include "InputPoller.h"
+#include "PositionRecorder.h"
+#include "EntitySpawner.h"
 
 /*
 	@brief Polls for input
@@ -43,14 +45,34 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_1:
 				gunPos = -1;
 				gun.lane = -1;
+				SelectEntity(1);
 				break;
 			case SDLK_2:
 				gunPos = 0;
 				gun.lane = 0;
+				SelectEntity(2);
 				break;
 			case SDLK_3:
 				gunPos = 1;
 				gun.lane = 1;
+				break;
+			case SDLK_w:
+				MovePR(vector3d(0, 0, 1));
+				break;
+			case SDLK_a:
+				MovePR(vector3d(-1, 0, 0));
+				break;
+			case SDLK_s:
+				MovePR(vector3d(0, 0, -1));
+				break;
+			case SDLK_d:
+				MovePR(vector3d(1, 0, 0));
+				break;
+			case SDLK_q:
+				MovePR(vector3d(0, -1, 0));
+				break;
+			case SDLK_e:
+				MovePR(vector3d(0, 1, 0));
 				break;
 		}
 	}

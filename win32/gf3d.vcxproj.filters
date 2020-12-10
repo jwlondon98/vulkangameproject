@@ -123,6 +123,12 @@
     <ClInclude Include="Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PositionRecorder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitySpawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -234,6 +240,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collider.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionRecorder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EntitySpawner.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

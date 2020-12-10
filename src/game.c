@@ -12,7 +12,8 @@
 #include "gf3d_texture.h"
 #include "InputPoller.h"
 #include "Entity.h"
-#include "Gun.h";
+#include "Gun.h"
+#include "PositionRecorder.h"
 
 void CreateEntities()
 {
@@ -68,9 +69,12 @@ int main(int argc,char *argv[])
     // main game loop
     slog("gf3d main loop begin");
 
+	// Create PositionRecorder
+	CreatePR();
+
 	InitRandom();
 
-	CreateEntities();
+	//CreateEntities();
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
