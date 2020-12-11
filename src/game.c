@@ -75,6 +75,7 @@ int main(int argc,char *argv[])
 	InitRandom();
 
 	//CreateEntities();
+	InitEntity(100);
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -155,7 +156,6 @@ int main(int argc,char *argv[])
 			gf3d_vgraphics_rotate_camera(xMousePos + lastXMousePos, 'y', 0.0001);*/
 		
 		//gf3d_vgraphics_rotate_camera(yPos, 'x', 0.02);
-
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();

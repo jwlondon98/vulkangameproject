@@ -2,6 +2,7 @@
 #define __POSITIONRECORDER_H__
 
 #include "gf3d_model.h"
+#include "gf3d_vgraphics.h"
 #include <simple_logger.h>
 
 typedef struct PositionRecorder

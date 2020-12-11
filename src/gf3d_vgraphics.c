@@ -706,6 +706,14 @@ void gf3d_vgraphics_rotate_camera(float degrees, char axis, float sens)
 	}
 }
 
+void gf3d_vgraphics_translate_camera(Vector3D moveVect)
+{
+	gfc_matrix_make_translation(
+		gf3d_vgraphics.ubo.view,
+		moveVect
+	);
+}
+
 Pipeline *gf3d_vgraphics_get_graphics_pipeline()
 {
     return gf3d_vgraphics.pipe;

@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "PositionRecorder.h"
+#include <simple_logger.h>
 
 char* lastEntityName;
 

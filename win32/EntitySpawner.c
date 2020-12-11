@@ -16,6 +16,15 @@ void SelectEntity(int index)
 
 void SpawnEntity()
 {
-	slog("Entity Spawned using Entity Spawner");
-	CreateEntity(lastEntityName, 1, posRec.currentPos);
+	if (!lastEntityName)
+		lastEntityName = "wall";
+
+	slog("%s spawned at (%f, %f, %f)", 
+		lastEntityName, posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
+
+	Vector3D spawnPos = vector3d(
+		0 - posRec.currentPos.x, 0 - posRec.currentPos.y, 0 - posRec.currentPos.z
+	);
+
+	CreateEntity(lastEntityName, 1, spawnPos);
 }

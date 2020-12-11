@@ -38,6 +38,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 		{
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
+				SpawnEntity();
 				break;
 			case SDLK_SPACE:
 				spaceBtn = PRESSED;
@@ -60,19 +61,19 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				MovePR(vector3d(0, 0, 1));
 				break;
 			case SDLK_a:
-				MovePR(vector3d(-1, 0, 0));
+				MovePR(vector3d(1, 0, 0));
 				break;
 			case SDLK_s:
 				MovePR(vector3d(0, 0, -1));
 				break;
 			case SDLK_d:
-				MovePR(vector3d(1, 0, 0));
+				MovePR(vector3d(-1, 0, 0));
 				break;
 			case SDLK_q:
-				MovePR(vector3d(0, -1, 0));
+				MovePR(vector3d(0, 1, 0));
 				break;
 			case SDLK_e:
-				MovePR(vector3d(0, 1, 0));
+				MovePR(vector3d(0, -1, 0));
 				break;
 		}
 	}

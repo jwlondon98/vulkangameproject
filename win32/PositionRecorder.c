@@ -39,6 +39,8 @@ void MovePR(Vector3D moveVect)
 		vector3d(xPos, yPos, zPos)
 	);
 
+	gf3d_vgraphics_translate_camera(vector3d(xPos, yPos, zPos));
+
 	posRec.currentPos = vector3d(xPos, yPos, zPos);
 
 	slog("Pos Rec moved to (%f, %f, %f)", xPos, yPos, zPos);
