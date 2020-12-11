@@ -24,7 +24,7 @@ void PollForInput()
 				break;
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-				HandleKey(event.key.keysym.sym, event.type, event.key.repeat);
+				HandleKey(event.key.keysym.sym, event.type);
 				break;
 		}
 	}
@@ -38,10 +38,12 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 		{
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
-				SpawnEntity();
 				break;
 			case SDLK_SPACE:
 				spaceBtn = PRESSED;
+				break;
+			case SDLK_EQUALS:
+				equalsBtn = PRESSED;
 				break;
 			case SDLK_1:
 				gunPos = -1;
@@ -83,6 +85,11 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 		{
 			case SDLK_RETURN:
 				enterBtn = RELEASED;
+				SpawnEntity();
+				break;
+			case SDLK_EQUALS:
+				equalsBtn = RELEASED;
+				//LoadJSON();
 				break;
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;

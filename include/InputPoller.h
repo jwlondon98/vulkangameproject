@@ -8,6 +8,7 @@
 #include <gfc_vector.h>
 #include "gf3d_vgraphics.h"
 #include "../win32/Gun.h"
+#include "TextFileHandler.h"
 
 typedef enum
 {
@@ -16,6 +17,7 @@ typedef enum
 
 KeyState mouseBtn;
 KeyState enterBtn;
+KeyState equalsBtn;
 KeyState spaceBtn;
 
 int screenWidth;
