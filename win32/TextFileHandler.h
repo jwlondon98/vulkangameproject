@@ -4,17 +4,15 @@
 #include "../gfc/simple_json/include/simple_json.h"
 #include "../gfc/include/gfc_vector.h"
 #include "simple_logger.h"
+#include "EntitySpawner.h"
 
 SJson* jsonFile;
+int	 fileWasLoaded;
 
 void CreateJSONFile();
 
-void WriteJSONStr(char* key, char *value);
+void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVal);
 
-void WriteJSONVect(char* key, Vector3D value, int keyVal);
-
-void WriteJSON(char* key, char* entityType, Vector3D vect, int insert);
-
-void LoadJSON(void(*SpawnSpecificEntity)(char*, Vector3D));
+void LoadJSON();
 
 #endif

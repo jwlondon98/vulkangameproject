@@ -209,7 +209,9 @@ int main(int argc,char *argv[])
 
 				// draw the entity
 				if (entityList[i].model)
+				{
 					gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+				}
 			}
 		}
              

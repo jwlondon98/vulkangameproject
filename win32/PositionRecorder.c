@@ -72,7 +72,7 @@ void MovePR(Vector3D moveVect)
 			WriteJSON(
 				lastSpawnedEntity->jsonKey,
 				lastSpawnedEntity->entityName,
-				lastSpawnedEntity->lastPos, 1, lastSpawnedEntity->entityNum);
+				lastSpawnedEntity->lastPos, 1, lastSpawnedEntity->entityNum-1);
 
 			sj_save(jsonFile, "Level1.json");
 		}

@@ -44,9 +44,9 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 	{
 		if (!entityManager.entityList[i]._inUse)
 		{
-			//slog("entity spawned");
-			/*slog("\nspawn pos%i: (%f, %f, %f)", i, spawnPos.x,
-				spawnPos.y, spawnPos.z);*/
+			slog("entity %s spawned", modelName);
+			slog("\nspawn pos: (%f, %f, %f)", spawnPos.x,
+				spawnPos.y, spawnPos.z);
 
 			entityManager.entityList[i]._inUse = 1;
 
@@ -87,6 +87,11 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				entityManager.entityList[i].entityType = WeaponDrop;
 				//slog("weapondrop spawned");
 			}
+			else
+			{
+				entityManager.entityList[i].entityType = None;
+			}
+
 
 			if (modelName != "gun")
 				entityManager.entityList[i].state = MOVE;
@@ -325,9 +330,9 @@ void RandomEntitySpawn()
 	else if (randTrack == 2)
 		spawnPosX = 10;
 
-	switch (randEntity)
-	{
-		case 0:
+	//switch (randEntity)
+	//{
+		/*case 0:
 			CreateEntity("enemy1", 1, vector3d(spawnPosX, -50, 0));
 			break;
 		case 1:
@@ -344,8 +349,8 @@ void RandomEntitySpawn()
 			break;
 		default:
 			CreateEntity("enemy1", 1, vector3d(spawnPosX, -50, 0));
-			break;
-	}
+			break;*/
+	//}
 }
 
 void InitRandom()

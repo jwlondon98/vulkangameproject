@@ -5,24 +5,6 @@ void CreateJSONFile()
 	jsonFile = sj_object_new();
 }
 
-void WriteJSONStr(char* key, char* value)
-{
-	sj_object_insert(jsonFile, key, sj_new_str(value));
-}
-
-void WriteJSONVect(char* key, Vector3D value)
-{
-	char str1[80];
-	char str2[80];
-	char str3[80];
-	snprintf(str1, sizeof str1, "%s%s", key, "x");
-	snprintf(str2, sizeof str2, "%s%s", key, "y");
-	snprintf(str3, sizeof str3, "%s%s", key, "z");
-	sj_object_insert(jsonFile, str1, sj_new_float(value.x));
-	sj_object_insert(jsonFile, str2, sj_new_float(value.y));
-	sj_object_insert(jsonFile, str3, sj_new_float(value.z));
-}
-
 void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVal)
 {
 	SJString *str1 = sj_string_new_text(entityType);
@@ -32,6 +14,9 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 	SJString *vectStrY = sj_string_new_float(vect.y);
 	SJString *vectStrZ = sj_string_new_float(vect.z);
 	SJString *endStr = sj_string_new_text(")");
+
+	SJString *realKeyStr = sj_string_new_text(key);
+	int realKeyVal = sj_string_as_integer(realKeyStr);
 
 	sj_string_concat(str1, paren);
 	sj_string_concat(str1, vectStrX);
@@ -43,52 +28,89 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 
 	char *vectStr = sj_string_get_text(str1);
 
-	slog("KEYVAL: %i", keyVal);
+	slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
 
-	if (insert == 1)
-		sj_object_insertByIndex(jsonFile, key, sj_new_str(vectStr), keyVal);
-	else
-		sj_object_insert(jsonFile, key, sj_new_str(vectStr));
-
+	//if (insert == 1)
+		sj_object_insertByIndex(jsonFile, key, sj_new_str(vectStr), realKeyVal);
+	//else
+		//sj_object_insert(jsonFile, key, sj_new_str(vectStr));
 }
 
-void LoadJSON(void(*SpawnSpecificEntity)(char*, Vector3D))
+void LoadJSON()
 {
 	jsonFile = sj_load("Level1.json");
+	SJson *tempFile = sj_copy(jsonFile);
+	fileWasLoaded = 1;
 
 	SJString* jsonStr = sj_object_to_json_string(jsonFile);
+	SJList* jsonList = jsonFile->v.array;
+	int numElements = sj_list_get_count(jsonList);
+	char *text = sj_string_get_text(jsonStr);
+
+	char* entityName;
+	char* xValStr;
+	char* yValStr;
+	char* zValStr;
+
+	SJString *xJStr;
+	SJString *yJStr;
+	SJString *zJStr;
+
+	float xVal;
+	float yVal;
+	float zVal;
+
 	int i;
-	char* key;
-	char str[80];
-	for (i = 0; i < 4; i++)
+	char *valueStr;
+	SJString *keyStr;
+	char *splitStr;
+
+	for (i = 0; i < numElements; i++)
 	{
-		// Get entity name
-		SJString* indexStr = sj_string_new_integer(i);
-		key = sj_string_get_text(indexStr);
-		char* entityName = sj_object_get_value_as_string(jsonFile, key);
-		slog(entityName);
+		keyStr = sj_string_new_integer(i);
+		valueStr = sj_object_get_value_as_string(jsonFile, sj_string_get_text(keyStr));
+		slog("VALUE: %s", valueStr);
 
-		// get x float val
-		SJString* keyX= sj_string_new_text("x");
-		SJString* xKey = indexStr;
-		sj_string_concat(xKey, keyX);
-		float xVal;
-		sj_string_as_float(xKey, &xVal);
+		// split for entity name
+		splitStr = strtok(valueStr, " ");
+		entityName = splitStr;
+		printf("%s\n", entityName);
 
-		// get y float val
-		SJString* keyY = sj_string_new_text("y");
-		SJString* yKey = indexStr;
-		sj_string_concat(yKey, keyY);
-		float yVal;
-		sj_string_as_float(yKey, &yVal);
+		// split for xVal
+		splitStr = strtok(NULL, " ");
+		xValStr = splitStr;
+		xValStr++[strlen(xValStr) - 1] = 0;
+		printf("%s\n", xValStr);
 
-		// get z float val
-		SJString* keyZ = sj_string_new_text("z");
-		SJString* zKey = indexStr;
-		sj_string_concat(zKey, keyZ);
-		float zVal;
-		sj_string_as_float(zKey, &zVal);
+		// split for yVal
+		splitStr = strtok(NULL, " ");
+		yValStr = splitStr;
+		yValStr[strlen(yValStr) - 1] = 0;
+		printf("%s\n", yValStr);
 
-		//SpawnSpectificEntity(entityName, vector3d(xVal, yVal, zVal));
+		// split for zVal
+		splitStr = strtok(NULL, " ");
+		zValStr = splitStr;
+		zValStr[strlen(zValStr) - 1] = 0;
+		printf("%s\n", zValStr);
+
+		// Convert vals to floats
+		xJStr = sj_string_new_text(xValStr);
+		yJStr = sj_string_new_text(yValStr);
+		zJStr = sj_string_new_text(zValStr);
+		zVal = sj_string_as_float(xJStr);
+		yVal = sj_string_as_float(yJStr);
+		zVal = sj_string_as_float(zJStr);
+
+		entityNum = i;
+		slog("entity num: %i", entityNum);
+
+		// Spawn
+		SpawnEntityAtPos(valueStr, vector3d(xVal, yVal, zVal), entityNum);
 	}
+
+	jsonFile = tempFile;
+	SJString *file = sj_object_to_json_string(jsonFile);
+	char *fileText = sj_string_get_text(file);
+	slog(fileText);
 }

@@ -21,12 +21,12 @@ typedef enum
 
 typedef enum
 {
-	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop, Gun
+	Target, EnemyBasic, EnemyAdvanced, Hostage, WeaponDrop, Gun, None
 }EntityType;
 
 typedef enum
 {
-	EntityCreate, EnemyBullet, HostageDeath
+	EntityCreate, EnemyBullet, HostageDeath, NoDelay
 }DelayType;
 
 typedef struct Entity_S

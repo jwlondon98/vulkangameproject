@@ -14,6 +14,7 @@ Entity* lastSpawnedEntity;
 
 void SelectEntity(int index);
 void SpawnEntity();
+void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, int entNum);
 
 void DestroyEntity();
 
