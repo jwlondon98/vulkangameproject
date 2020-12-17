@@ -55,8 +55,6 @@ void MovePR(Vector3D moveVect)
 
 	if (posRec.lastEntityLocked == 1)
 	{
-		slog("LOCKED");
-
 		gfc_matrix_make_translation(
 			lastSpawnedEntity->modelMatrix,
 			vector3d(entityXPos, entityYPos, entityZPos)
@@ -64,15 +62,25 @@ void MovePR(Vector3D moveVect)
 
 		lastSpawnedEntity->lastPos = vector3d(entityXPos, entityYPos, entityZPos);
 
-		slog("LAST SPAWNED ENTITY current pos at (%f, %f, %f)",
+		/*slog("LAST SPAWNED ENTITY current pos at (%f, %f, %f)",
 			lastSpawnedEntity->lastPos.x, lastSpawnedEntity->lastPos.y, lastSpawnedEntity->lastPos.z);
+		*/
+
+		// Record position to JSON
+		if (lastSpawnedEntity->jsonKey)
+		{
+			WriteJSON(
+				lastSpawnedEntity->jsonKey,
+				lastSpawnedEntity->entityName,
+				lastSpawnedEntity->lastPos, 1, lastSpawnedEntity->entityNum);
+
+			sj_save(jsonFile, "Level1.json");
+		}
 	}
-	else
-		slog("NOT LOCKED");
 
 	posRec.currentPos = vector3d(xPos, yPos, zPos);
-	slog("POSREC current pos at (%f, %f, %f)",
-		posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
+	//slog("POSREC current pos at (%f, %f, %f)",
+	//	posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
 
 	//slog("Pos Rec moved to (%f, %f, %f)", xPos, yPos, zPos);
 }

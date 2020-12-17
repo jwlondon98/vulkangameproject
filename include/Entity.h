@@ -51,6 +51,9 @@ typedef struct Entity_S
 	Collider*		collider;
 
 	int				entityNum;
+	char*			entityName;
+	char*			jsonKey;
+	char*			jsonValue;
 
 	//void (Think*)(struct Entity_S *self);
 }Entity;

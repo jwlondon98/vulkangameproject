@@ -23,6 +23,35 @@ void WriteJSONVect(char* key, Vector3D value)
 	sj_object_insert(jsonFile, str3, sj_new_float(value.z));
 }
 
+void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVal)
+{
+	SJString *str1 = sj_string_new_text(entityType);
+	SJString *paren = sj_string_new_text(" (");
+	SJString *vectStrX = sj_string_new_float(vect.x);
+	SJString *str2 = sj_string_new_text(", ");
+	SJString *vectStrY = sj_string_new_float(vect.y);
+	SJString *vectStrZ = sj_string_new_float(vect.z);
+	SJString *endStr = sj_string_new_text(")");
+
+	sj_string_concat(str1, paren);
+	sj_string_concat(str1, vectStrX);
+	sj_string_concat(str1, str2);
+	sj_string_concat(str1, vectStrY);
+	sj_string_concat(str1, str2);
+	sj_string_concat(str1, vectStrZ);
+	sj_string_concat(str1, endStr);
+
+	char *vectStr = sj_string_get_text(str1);
+
+	slog("KEYVAL: %i", keyVal);
+
+	if (insert == 1)
+		sj_object_insertByIndex(jsonFile, key, sj_new_str(vectStr), keyVal);
+	else
+		sj_object_insert(jsonFile, key, sj_new_str(vectStr));
+
+}
+
 void LoadJSON(void(*SpawnSpecificEntity)(char*, Vector3D))
 {
 	jsonFile = sj_load("Level1.json");

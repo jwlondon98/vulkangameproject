@@ -35,18 +35,17 @@ void SpawnEntity()
 		0 - posRec.currentPos.x, 0 - posRec.currentPos.y, 0 - posRec.currentPos.z
 	);
 
-	char key[3];
-	itoa(entityNum, key, 10);
+	SJString *keyStr = sj_string_new_integer(entityNum);
+	char *key = sj_string_get_text(keyStr);
 
-	WriteJSONStr(key, lastEntityName);
-	WriteJSONVect(key, spawnPos);
+	WriteJSON(key, lastEntityName, spawnPos, 0, 0);
 
 	lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos);
+	lastSpawnedEntity->jsonKey = key;
+	lastSpawnedEntity->entityName = lastEntityName;
+	lastSpawnedEntity->entityNum = entityNum;
 	lastSpawnedEntity->lastPos = spawnPos;
-	if (lastSpawnedEntity)
-		slog("WE HAVE A LAST SPAWNED ENTITY");
 	entityNum++;
-	slog("entitynum: %i", entityNum);
 
 	sj_save(jsonFile, "Level1.json");
 }

@@ -11,7 +11,9 @@ void CreateJSONFile();
 
 void WriteJSONStr(char* key, char *value);
 
-void WriteJSONVect(char* key, Vector3D value);
+void WriteJSONVect(char* key, Vector3D value, int keyVal);
+
+void WriteJSON(char* key, char* entityType, Vector3D vect, int insert);
 
 void LoadJSON(void(*SpawnSpecificEntity)(char*, Vector3D));
 
