@@ -3,6 +3,7 @@
 
 #include "../gfc/simple_json/include/simple_json.h"
 #include "../gfc/include/gfc_vector.h"
+#include "simple_logger.h"
 
 SJson* jsonFile;
 

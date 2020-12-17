@@ -50,6 +50,8 @@ typedef struct Entity_S
 
 	Collider*		collider;
 
+	int				entityNum;
+
 	//void (Think*)(struct Entity_S *self);
 }Entity;
 

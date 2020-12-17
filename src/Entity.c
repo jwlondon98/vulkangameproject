@@ -97,7 +97,7 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				spawnPos.y = -35;
 			}
 
-			if (modelName == "player" || modelName == "wall")
+			if (modelName == "player" || modelName == "wall" || modelName == "wall2")
 				entityManager.entityList[i].state = NONE;
 
 			// set entity lane

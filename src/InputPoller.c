@@ -45,19 +45,22 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_EQUALS:
 				equalsBtn = PRESSED;
 				break;
+			case SDLK_LSHIFT:
+				leftShiftBtn = PRESSED;
+				break;
 			case SDLK_1:
-				gunPos = -1;
-				gun.lane = -1;
+				/*gunPos = -1;
+				gun.lane = -1;*/
 				SelectEntity(1);
 				break;
 			case SDLK_2:
-				gunPos = 0;
-				gun.lane = 0;
+			/*	gunPos = 0;
+				gun.lane = 0;*/
 				SelectEntity(2);
 				break;
 			case SDLK_3:
-				gunPos = 1;
-				gun.lane = 1;
+				/*gunPos = 1;
+				gun.lane = 1;*/
 				break;
 			case SDLK_w:
 				MovePR(vector3d(0, 0, 1));
@@ -77,6 +80,27 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_e:
 				MovePR(vector3d(0, -1, 0));
 				break;
+			case SDLK_LEFT:
+				if (leftShiftBtn == PRESSED)
+					Rotate(-1.0, 'z');
+				else
+					Rotate(1.0, 'y');
+				break;
+			case SDLK_RIGHT:
+				if (leftShiftBtn == PRESSED)
+					Rotate(1.0, 'z');
+				else
+					Rotate(-1.0, 'y');
+				break;
+			case SDLK_DOWN:
+				Rotate(-1.0, 'x');
+				break;
+			case SDLK_UP:
+				Rotate(1.0, 'x');
+				break;
+			case SDLK_BACKSPACE:
+				DestroyEntity();
+				break;
 		}
 	}
 	else if (eventType == SDL_KEYUP)
@@ -93,6 +117,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;
+				EnableDisableEntityLock();
+				break;
+			case SDLK_LSHIFT:
+				leftShiftBtn = RELEASED;
 				break;
 		}
 	}

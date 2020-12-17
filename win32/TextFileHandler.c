@@ -60,6 +60,6 @@ void LoadJSON(void(*SpawnSpecificEntity)(char*, Vector3D))
 		float zVal;
 		sj_string_as_float(zKey, &zVal);
 
-		SpawnSpectificEntity(entityName, vector3d(xVal, yVal, zVal));
+		//SpawnSpectificEntity(entityName, vector3d(xVal, yVal, zVal));
 	}
 }

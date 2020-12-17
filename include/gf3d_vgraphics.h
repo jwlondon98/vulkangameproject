@@ -7,6 +7,7 @@
 
 #include "gf3d_pipeline.h"
 #include "gf3d_commands.h"
+#include "Entity.h"
 
 #define GF3D_VGRAPHICS_DISCRETE 1   //Choosing whether to use discrete [1] or integrated graphics [0]
 
@@ -43,6 +44,8 @@ void gf3d_vgraphics_copy_buffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDevice
 uint32_t gf3d_vgraphics_find_memory_type(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 void gf3d_vgraphics_rotate_camera(float degrees, char axis, float sens);
+void gf3d_vgraphics_rotate_camera_about_entity(Entity* ent, Vector3D camPos, float degrees, char axis, float sens);
+void gf3d_vgraphics_rotate_entity(Entity* ent, float degrees, char axis, float sens);
 
 VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index);
 UniformBufferObject gf3d_vgraphics_get_uniform_buffer_object();

@@ -9,12 +9,15 @@
 
 char* lastEntityName;
 int entityNum;
+Entity* lastSpawnedEntity;
 
 
 void SelectEntity(int index);
 void SpawnEntity();
 
-typedef void(*SpawnSpecificEntity)(char*, Vector3D);
-extern void SpawnSpecificEntity(char* entityName, Vector3D spawnPos);
+void DestroyEntity();
+
+//typedef void(*SpawnSpecificEntity)(char*, Vector3D);
+//extern void SpawnSpecificEntity(char* entityName, Vector3D spawnPos);
 
 #endif

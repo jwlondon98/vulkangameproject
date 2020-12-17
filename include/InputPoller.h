@@ -19,6 +19,7 @@ KeyState mouseBtn;
 KeyState enterBtn;
 KeyState equalsBtn;
 KeyState spaceBtn;
+KeyState leftShiftBtn;
 
 int screenWidth;
 int screenHeight;

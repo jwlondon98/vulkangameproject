@@ -109,7 +109,7 @@ void gf3d_vgraphics_init(
     gfc_matrix_identity(gf3d_vgraphics.ubo.proj);
     gfc_matrix_view(
         gf3d_vgraphics.ubo.view,
-        vector3d(2,40,2),
+        vector3d(0,0,0),
         vector3d(0,0,0),
         vector3d(0,0,1)
     );
@@ -118,7 +118,7 @@ void gf3d_vgraphics_init(
         45 * GFC_DEGTORAD,
         renderWidth/(float)renderHeight,
         0.1f,
-        100
+        300
     );
     
     gf3d_vgraphics.ubo.proj[1][1] *= -1;
@@ -688,21 +688,93 @@ uint32_t gf3d_vgraphics_find_memory_type(uint32_t typeFilter, VkMemoryPropertyFl
 */
 void gf3d_vgraphics_rotate_camera(float degrees, char axis, float sens)
 {
-	if (axis == 'y')
+	float rads = degrees * (3.14159 / 180);
+
+	if (axis == 'x')
 	{
 		gfc_matrix_rotate(
 			gf3d_vgraphics.ubo.view,
 			gf3d_vgraphics.ubo.view,
-			degrees * sens,
-			vector3d(0,0,1)); // about y
+			rads * sens,
+			vector3d(1, 0, 0)); // about z
 	}
-	else if (axis == 'x')
+	else if (axis == 'y')
 	{
 		gfc_matrix_rotate(
 			gf3d_vgraphics.ubo.view,
 			gf3d_vgraphics.ubo.view,
-			degrees * sens,
-			vector3d(1, 0, 0)); // about y
+			rads * sens,
+			vector3d(0, 1, 0)); // about y
+	}
+	else if (axis == 'z')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			rads * sens,
+			vector3d(0, 0, 1)); // about z
+	}
+}
+
+void gf3d_vgraphics_rotate_camera_about_entity(Entity* ent, Vector3D camPos, float degrees, char axis, float sens)
+{
+	float rads = degrees * (3.14159 / 180);
+
+	if (axis == 'x')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			rads * sens,
+			vector3d(1, 0, 0)); // about z
+	}
+	else if (axis == 'y')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			rads * sens,
+			vector3d(0, 1, 0)); // about y
+	}
+	else if (axis == 'z')
+	{
+		gfc_matrix_rotate(
+			gf3d_vgraphics.ubo.view,
+			gf3d_vgraphics.ubo.view,
+			rads * sens,
+			vector3d(0, 0, 1)); // about z
+	}
+
+	//gfc_matrix_view(gf3d_vgraphics.ubo.view, camPos, camPos, vector3d(0, 0, 1));
+}
+
+void gf3d_vgraphics_rotate_entity(Entity* ent, float degrees, char axis, float sens)
+{
+	float rads = degrees * (3.14159 / 180);
+
+	if (axis == 'x')
+	{
+		gfc_matrix_rotate(
+			ent->modelMatrix,
+			ent->modelMatrix,
+			rads * sens,
+			vector3d(1, 0, 0)); // about z
+	}
+	else if (axis == 'y')
+	{
+		gfc_matrix_rotate(
+			ent->modelMatrix,
+			ent->modelMatrix,
+			rads * sens,
+			vector3d(0, 1, 0)); // about y
+	}
+	else if (axis == 'z')
+	{
+		gfc_matrix_rotate(
+			ent->modelMatrix,
+			ent->modelMatrix,
+			rads * sens,
+			vector3d(0, 0, 1)); // about z
 	}
 }
 
