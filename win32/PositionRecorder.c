@@ -53,7 +53,7 @@ void MovePR(Vector3D moveVect)
 
 	gf3d_vgraphics_translate_camera(vector3d(xPos, yPos, zPos));
 
-	if (posRec.lastEntityLocked == 1)
+	if (posRec.lastEntityLocked == 1 && lastSpawnedEntity)
 	{
 		gfc_matrix_make_translation_noIdentity(
 			lastSpawnedEntity->modelMatrix,

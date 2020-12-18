@@ -81,6 +81,7 @@ void CloseEntity();
 void FreeEntity(Entity* entity);
 
 Entity* GetEntityList();
+Entity* GetLastAvailableEntity();
 int GetEntityCount();
 void Think(Entity* entity);
 void MoveEntity(Entity* entity);

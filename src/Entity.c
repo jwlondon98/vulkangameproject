@@ -195,6 +195,17 @@ Entity* GetEntityList()
 	return entityManager.entityList;
 }
 
+Entity* GetLastAvailableEntity()
+{
+	int i;
+	for (i = entityManager.entityCount - 1; i > 0; i++)
+	{
+		Entity* ent = &entityManager.entityList[i];
+		if (ent && ent->_inUse == 1)
+			return ent;
+	}
+}
+
 int GetEntityCount()
 {
 	return entityManager.entityCount;

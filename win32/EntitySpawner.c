@@ -83,10 +83,16 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 
 void DestroyEntity()
 {
-	if (posRec.lastEntityLocked == 1)
+	return;
+
+	if (posRec.lastEntityLocked == 1 && lastSpawnedEntity)
 	{
+		sj_list_delete_last(jsonFile->v.array);
+		//sj_list_delete_nth(jsonFile->v.array, lastSpawnedEntity->entityNum);
+		sj_save(jsonFile, "Level1.json");
 		FreeEntity(lastSpawnedEntity);
 		posRec.lastEntityLocked = 0;
+		lastSpawnedEntity = NULL;
 		slog("entity destroyed");
 	}
 }
