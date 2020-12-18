@@ -14,6 +14,11 @@
 #include <SDL.h>
 #include "Collider.h"
 
+typedef enum
+{
+	LevelEdit, Game
+}GameMode;
+
 typedef enum 
 {
 	WAIT, MOVE, ATTACK, NONE
@@ -36,6 +41,8 @@ typedef struct Entity_S
 	Model			*model;
 	Matrix4			modelMatrix;
 	int				renderOn;
+
+	int				canThink;
 
 	float			speed;
 
@@ -66,7 +73,7 @@ typedef struct DelayData_S
 
 //void Think(struct Entity_S *self);
 
-void InitEntity(Uint32 maxEntities);
+void InitEntity(Uint32 maxEntities, GameMode gameMode);
 Entity* CreateEntity(char* modelName, int render, Vector3D spawnPos);
 void CloseEntity();
 void FreeEntity(Entity* entity);

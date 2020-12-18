@@ -17,7 +17,7 @@
 
 void CreateEntities()
 {
-	InitEntity(20);
+	InitEntity(20, Game);
 
 	// invisible walls to destroy passed bullets
 	CreateEntity("player", 0, vector3d(0, -1000, 0));
@@ -75,7 +75,7 @@ int main(int argc,char *argv[])
 	InitRandom();
 
 	//CreateEntities();
-	InitEntity(100);
+	InitEntity(100, LevelEdit);
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -194,7 +194,13 @@ int main(int argc,char *argv[])
 
 				if (entityList[i].state != NONE ||
 					entityList[i].state != WAIT)
-					Think(&entityList[i]);
+				{
+					if (entityList[i].canThink == 1)
+					{
+						slog("entity %s is thinking", entityList[i].entityName);
+						Think(&entityList[i]);
+					}
+				}
 
 				if (entityList[i].state == ATTACK)
 				{

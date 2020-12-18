@@ -6,6 +6,7 @@ typedef struct
 	Entity		*entityList;		/* list of entities */
 	Uint32		entityCount;		/* numer of current active entities */
 
+	GameMode	gameMode;
 }EntityManager;
 
 static EntityManager entityManager = {0};
@@ -13,7 +14,7 @@ static EntityManager entityManager = {0};
 /*
 	@brief Initializes an entity
 */
-void InitEntity(Uint32 maxEntities)
+void InitEntity(Uint32 maxEntities, GameMode gm)
 {
 	if (entityManager.entityList != NULL)
 	{
@@ -30,6 +31,7 @@ void InitEntity(Uint32 maxEntities)
 	}
 
 	entityManager.entityCount = maxEntities;
+	entityManager.gameMode = gm;
 	atexit(CloseEntity);
 	slog("Entity System intiialized");
 }
@@ -92,6 +94,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 				entityManager.entityList[i].entityType = None;
 			}
 
+			// CAN THINK SET HERE -- CHANGE TO 0 to stop thinking for all entities
+			//entityManager.entityList[i].canThink = 1;
 
 			if (modelName != "gun")
 				entityManager.entityList[i].state = MOVE;
@@ -103,7 +107,10 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 			}
 
 			if (modelName == "player" || modelName == "wall" || modelName == "wall2")
+			{
 				entityManager.entityList[i].state = NONE;
+				entityManager.entityList[i].canThink = 0;
+			}
 
 			// set entity lane
 			int lane;

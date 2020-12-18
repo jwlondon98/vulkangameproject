@@ -28,7 +28,7 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 
 	char *vectStr = sj_string_get_text(str1);
 
-	slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
+	//slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
 
 	if (insert == 1)
 		sj_object_update_object(jsonFile, key, sj_new_str(vectStr), keyVal);

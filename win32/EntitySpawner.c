@@ -41,14 +41,14 @@ void SpawnEntity()
 	if (fileWasLoaded == 1)
 	{
 		offset = 0;
-		slog("SPAWN ENTITY FILE WAS LOADED");
+		//slog("SPAWN ENTITY FILE WAS LOADED");
 		keyStr = sj_string_new_integer(entityNum + offset);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum + offset);
 	}
 	else
 	{
-		slog("SPAWN ENTITY FILE WAS NOT LOADED");
+		//slog("SPAWN ENTITY FILE WAS NOT LOADED");
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum);
@@ -74,7 +74,6 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, int entNum)
 
 	lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos);
 	lastSpawnedEntity->entityName = entityName;
-	lastSpawnedEntity->lastPos = spawnPos;
 	lastSpawnedEntity->entityNum = entNum;
 }
 
