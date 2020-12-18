@@ -72,7 +72,9 @@ void MovePR(Vector3D moveVect)
 			WriteJSON(
 				lastSpawnedEntity->jsonKey,
 				lastSpawnedEntity->entityName,
-				lastSpawnedEntity->lastPos, 1, lastSpawnedEntity->entityNum);
+				lastSpawnedEntity->lastPos, 
+				lastSpawnedEntity->lastRot, 
+				1, lastSpawnedEntity->entityNum);
 
 			sj_save(jsonFile, "Level1.json");
 		}
@@ -83,6 +85,18 @@ void MovePR(Vector3D moveVect)
 	//	posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
 
 	//slog("Pos Rec moved to (%f, %f, %f)", xPos, yPos, zPos);
+}
+
+void UpdateEntRot()
+{
+	WriteJSON(
+		lastSpawnedEntity->jsonKey,
+		lastSpawnedEntity->entityName,
+		lastSpawnedEntity->lastPos,
+		lastSpawnedEntity->lastRot,
+		1, lastSpawnedEntity->entityNum);
+
+	sj_save(jsonFile, "Level1.json");
 }
 
 void RotateCamera(float dir, char axis)
@@ -105,14 +119,9 @@ void RotateCameraAboutEntity(float dir, char axis)
 		gf3d_vgraphics_rotate_camera_about_entity(lastSpawnedEntity, posRec.currentPos, dir, 'z', 1);
 }
 
-void RotateEntity(float dir, char axis)
+void RotateEntity(Entity* ent, Vector3D rot)
 {
-	if (axis == 'x')
-		gf3d_vgraphics_rotate_entity(lastSpawnedEntity, dir, 'x', 1);
-	else if (axis == 'y')
-		gf3d_vgraphics_rotate_entity(lastSpawnedEntity, dir, 'y', 1);
-	else if (axis == 'z')
-		gf3d_vgraphics_rotate_entity(lastSpawnedEntity, dir, 'z', 1);
+	gf3d_vgraphics_rotate_entityByVectRads(ent, vector3d(rot.x, rot.y, rot.z));
 }
 
 void Rotate(float dir, char axis)
@@ -121,12 +130,16 @@ void Rotate(float dir, char axis)
 		RotateCamera(dir, axis);
 	else
 	{
-		if (axis == 'x')
-			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(90, 0, 0));
-		else if (axis == 'y')
-			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(0, 90, 0));
-		else if (axis == 'z')
+		/*if (axis == 'x')
+			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(90, 0, 0));*/
+		/*else if (axis == 'y')
+			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(0, 90, 0));*/
+		if (axis == 'y')
 			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(0, 0, 90));
+		else
+			return;
+	
+		UpdateEntRot();
 	}
 }	
 

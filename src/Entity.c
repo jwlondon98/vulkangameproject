@@ -39,7 +39,7 @@ void InitEntity(Uint32 maxEntities, GameMode gm)
 /*
 	@brief Creates a new entity 
 */
-Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
+Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D rot)
 {
 	int i;
 	for (i = 0; i < entityManager.entityCount; i++)
@@ -137,16 +137,22 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos)
 
 			// set model's position to world origin
 			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
-
 			gfc_matrix_make_translation(
 				entityManager.entityList[i].modelMatrix,
 				spawnPos
 			);
+			entityManager.entityList[i].lastPos = spawnPos;
+
+			slog("end create entity");
+			// rotate entity
+			RotateEntity(&entityManager.entityList[i], rot);
+			entityManager.entityList[i].lastRot = rot;
+
 			UpdateCollider(entityManager.entityList[i].collider, spawnPos);
 
-			entityManager.entityList[i].lastPos = spawnPos;
 			//entityManager.entityList[i].targetX = GetRandomNum(-50, 50);
 			//entityManager.entityList[i].targetZ = GetRandomNum(-50, 50);
+
 
 			return &entityManager.entityList[i];
 		}

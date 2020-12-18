@@ -24,12 +24,13 @@ void CreatePR();
 void FreePR();
 
 void MovePR(Vector3D moveVect);
+void UpdateEntRot();
 
 void EnableDisableEntityLock();
 
 void Rotate(float dir, char axis);
 void RotateCamera(float dir, char axis);
 void RotateCameraAboutEntity(float dir, char axis);
-void RotateEntity(float dir, char axis);
+void RotateEntity(Entity* ent, Vector3D rot);
 
 #endif

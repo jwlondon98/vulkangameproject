@@ -113,7 +113,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_EQUALS:
 				equalsBtn = RELEASED;
-				//LoadJSON();
+				LoadJSON();
 				break;
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;

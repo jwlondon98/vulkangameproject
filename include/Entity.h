@@ -13,6 +13,7 @@
 #include <SDL_thread.h>
 #include <SDL.h>
 #include "Collider.h"
+#include "Entity.h"
 
 typedef enum
 {
@@ -75,7 +76,7 @@ typedef struct DelayData_S
 //void Think(struct Entity_S *self);
 
 void InitEntity(Uint32 maxEntities, GameMode gameMode);
-Entity* CreateEntity(char* modelName, int render, Vector3D spawnPos);
+Entity* CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D rot);
 void CloseEntity();
 void FreeEntity(Entity* entity);
 

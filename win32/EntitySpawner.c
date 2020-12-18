@@ -38,28 +38,31 @@ void SpawnEntity()
 	char *key;
 	int offset;
 
+	slog("hello");
+
 	if (fileWasLoaded == 1)
 	{
 		offset = 0;
 		//slog("SPAWN ENTITY FILE WAS LOADED");
 		keyStr = sj_string_new_integer(entityNum + offset);
 		key = sj_string_get_text(keyStr);
-		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum + offset);
+		WriteJSON(key, lastEntityName, spawnPos, lastSpawnedEntity->lastRot, 0, entityNum + offset);
 	}
 	else
 	{
 		//slog("SPAWN ENTITY FILE WAS NOT LOADED");
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
-		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum);
+		WriteJSON(key, lastEntityName, spawnPos, vector3d(0, 0, 0), 0, entityNum);
 	}
 
-	lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos);
+	lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, vector3d(0, 0, 0));
 	lastSpawnedEntity->jsonKey = key;
 	//slog("entity num: %i", entityNum + offset);
 	lastSpawnedEntity->entityNum = entityNum + offset;
 	lastSpawnedEntity->entityName = lastEntityName;
 	lastSpawnedEntity->lastPos = spawnPos;
+	lastSpawnedEntity->lastRot = vector3d(0, 0, 0);
 
 
 	/*SJString *file = sj_object_to_json_string(jsonFile);
@@ -68,11 +71,11 @@ void SpawnEntity()
 	sj_save(jsonFile, "Level1.json");
 }
 
-void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, int entNum)
+void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum)
 {
 	//slog("%s was loaded", entityName);
 
-	lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos);
+	lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);
 	lastSpawnedEntity->entityName = entityName;
 	lastSpawnedEntity->entityNum = entNum;
 }

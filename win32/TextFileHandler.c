@@ -5,26 +5,47 @@ void CreateJSONFile()
 	jsonFile = sj_object_new();
 }
 
-void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVal)
+void WriteJSON(char* key, char* entityType, Vector3D vect, Vector3D rot, int insert, int keyVal)
 {
+	// wall2 (0.000000, 0.000000, 0.000000), (0.000000, 0.000000, 0.000000)
+
+	// helpers
 	SJString *str1 = sj_string_new_text(entityType);
 	SJString *paren = sj_string_new_text(" (");
-	SJString *vectStrX = sj_string_new_float(vect.x);
+	SJString *parenNoSpace = sj_string_new_text("(");
 	SJString *str2 = sj_string_new_text(", ");
-	SJString *vectStrY = sj_string_new_float(vect.y);
-	SJString *vectStrZ = sj_string_new_float(vect.z);
 	SJString *endStr = sj_string_new_text(")");
 
+	// pos strings
+	SJString *vectStrX = sj_string_new_float(vect.x);
+	SJString *vectStrY = sj_string_new_float(vect.y);
+	SJString *vectStrZ = sj_string_new_float(vect.z);
+
+	// rot strings
+	SJString *rotStrX = sj_string_new_float(rot.x);
+	SJString *rotStrY = sj_string_new_float(rot.y);
+	SJString *rotStrZ = sj_string_new_float(rot.z);
+
+	// key string
 	SJString *realKeyStr = sj_string_new_text(key);
 	int realKeyVal = sj_string_as_integer(realKeyStr);
 
-	sj_string_concat(str1, paren);
-	sj_string_concat(str1, vectStrX);
-	sj_string_concat(str1, str2);
-	sj_string_concat(str1, vectStrY);
-	sj_string_concat(str1, str2);
-	sj_string_concat(str1, vectStrZ);
-	sj_string_concat(str1, endStr);
+	// concat strings
+	sj_string_concat(str1, paren);			// wall2 (
+	sj_string_concat(str1, vectStrX);		// 0.000000
+	sj_string_concat(str1, str2);			// , 
+	sj_string_concat(str1, vectStrY);		// 0.000000
+	sj_string_concat(str1, str2);			// ,
+	sj_string_concat(str1, vectStrZ);		// 0.000000
+	sj_string_concat(str1, endStr);			//)
+	sj_string_concat(str1, str2);			// ,
+	sj_string_concat(str1, parenNoSpace);	// (
+	sj_string_concat(str1, rotStrX);		// 0.000000
+	sj_string_concat(str1, str2);			// , 
+	sj_string_concat(str1, rotStrY);		// 0.000000
+	sj_string_concat(str1, str2);			// ,
+	sj_string_concat(str1, rotStrZ);		// 0.000000
+	sj_string_concat(str1, endStr);			//)
 
 	char *vectStr = sj_string_get_text(str1);
 
@@ -35,9 +56,9 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 	else
 		sj_object_insert(jsonFile, key, sj_new_str(vectStr));
 
-	SJString *file = sj_object_to_json_string(jsonFile);
-	char *fileText = sj_string_get_text(file);
-	slog(fileText);
+	//SJString *file = sj_object_to_json_string(jsonFile);
+	//char *fileText = sj_string_get_text(file);
+	//slog(fileText);
 }
 
 void LoadJSON()
@@ -55,14 +76,23 @@ void LoadJSON()
 	char* xValStr;
 	char* yValStr;
 	char* zValStr;
+	char* xRotStr;
+	char* yRotStr;
+	char* zRotStr;
 
 	SJString *xJStr;
 	SJString *yJStr;
 	SJString *zJStr;
+	SJString *xRotJStr;
+	SJString *yRotJStr;
+	SJString *zRotJStr;
 
 	float xVal;
 	float yVal;
 	float zVal;
+	float xRot;
+	float yRot;
+	float zRot;
 
 	int i;
 	char *valueStr;
@@ -96,15 +126,42 @@ void LoadJSON()
 		splitStr = strtok(NULL, " ");
 		zValStr = splitStr;
 		zValStr[strlen(zValStr) - 1] = 0;
+		zValStr[strlen(zValStr) - 2] = 0;
 		//printf("%s\n", zValStr);
+
+		// wall2 (0.000000, 0.000000, 0.000000), (0.000000, 0.000000, 0.000000)
+
+		// split for xRot
+		splitStr = strtok(NULL, " ");
+		xRotStr = splitStr;
+		xRotStr++[strlen(xRotStr) - 1] = 0;
+		//printf("%s\n", xRotStr);
+
+		// split for yRot
+		splitStr = strtok(NULL, " ");
+		yRotStr = splitStr;
+		yRotStr[strlen(yRotStr) - 1] = 0;
+		//printf("%s\n", yRotStr);
+
+		// split for zRot
+		splitStr = strtok(NULL, " ");
+		zRotStr = splitStr;
+		zRotStr[strlen(zRotStr) - 1] = 0;
+		//printf("%s\n", zRotStr);
 
 		// Convert vals to floats
 		xJStr = sj_string_new_text(xValStr);
 		yJStr = sj_string_new_text(yValStr);
 		zJStr = sj_string_new_text(zValStr);
+		xRotJStr = sj_string_new_text(xRotStr);
+		yRotJStr = sj_string_new_text(yRotStr);
+		zRotJStr = sj_string_new_text(zRotStr);
 		xVal = sj_string_as_float(xJStr);
 		yVal = sj_string_as_float(yJStr);
 		zVal = sj_string_as_float(zJStr);
+		xRot = sj_string_as_float(xRotJStr);
+		yRot = sj_string_as_float(yRotJStr);
+		zRot = sj_string_as_float(zRotJStr);
 
 		entityNum = i;
 		/*slog("entity num: %i", entityNum);
@@ -114,7 +171,11 @@ void LoadJSON()
 		slog("zVal: %f", zVal);*/
 
 		// Spawn
-		SpawnEntityAtPos(valueStr, vector3d(xVal, yVal, zVal), entityNum);
+		SpawnEntityAtPos(
+			valueStr, 
+			vector3d(xVal, yVal, zVal), 
+			vector3d(xRot, yRot, zRot), 
+			entityNum);
 	}
 
 	jsonFile = tempFile;

@@ -20,14 +20,14 @@ void CreateEntities()
 	InitEntity(20, Game);
 
 	// invisible walls to destroy passed bullets
-	CreateEntity("player", 0, vector3d(0, -1000, 0));
-	CreateEntity("cube", 0, vector3d(10,-100,0));
-	CreateEntity("cube", 0, vector3d(0,-100,0));
-	CreateEntity("cube", 0, vector3d(-10,-100,0));
+	CreateEntity("player", 0, vector3d(0, -1000, 0), vector3d(0, 0, 0));
+	CreateEntity("cube", 0, vector3d(10,-100,0), vector3d(0, 0, 0));
+	CreateEntity("cube", 0, vector3d(0,-100,0), vector3d(0, 0, 0));
+	CreateEntity("cube", 0, vector3d(-10,-100,0), vector3d(0, 0, 0));
 
-	CreateEntity("enemy1", 1, vector3d(10,-50,0));
-	CreateEntity("enemy2", 1, vector3d(0,-50,0));
-	CreateEntity("enemy1", 1, vector3d(-10,-50,0));
+	CreateEntity("enemy1", 1, vector3d(10,-50,0), vector3d(0, 0, 0));
+	CreateEntity("enemy2", 1, vector3d(0,-50,0), vector3d(0, 0, 0));
+	CreateEntity("enemy1", 1, vector3d(-10,-50,0), vector3d(0, 0, 0));
 }
 
 int main(int argc,char *argv[])
