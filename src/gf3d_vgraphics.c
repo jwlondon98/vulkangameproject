@@ -778,6 +778,39 @@ void gf3d_vgraphics_rotate_entity(Entity* ent, float degrees, char axis, float s
 	}
 }
 
+void gf3d_vgraphics_rotate_entityByVect(Entity* ent, Vector3D rot)
+{
+	float xRads = rot.x * (3.14159 / 180);
+	float yRads = rot.y * (3.14159 / 180);
+	float zRads = rot.z * (3.14159 / 180);
+
+	// rotate x
+	gfc_matrix_rotate(
+		ent->modelMatrix,
+		ent->modelMatrix,
+		xRads,
+		vector3d(1, 0, 0)); 
+
+	// rotate y
+	gfc_matrix_rotate(
+		ent->modelMatrix,
+		ent->modelMatrix,
+		yRads,
+		vector3d(0, 0, 1));
+
+	// rotate z
+	gfc_matrix_rotate(
+		ent->modelMatrix,
+		ent->modelMatrix,
+		zRads,
+		vector3d(0, 1, 0));
+
+	ent->lastRot = vector3d(
+		ent->lastRot.x + xRads,
+		ent->lastRot.y + yRads,
+		ent->lastRot.z + zRads);
+}
+
 void gf3d_vgraphics_translate_camera(Vector3D moveVect)
 {
 	gfc_matrix_make_translation(

@@ -38,6 +38,7 @@ typedef struct Entity_S
 {
 	Uint8			_inUse;
 	Vector3D		lastPos;
+	Vector3D		lastRot;
 	Model			*model;
 	Matrix4			modelMatrix;
 	int				renderOn;

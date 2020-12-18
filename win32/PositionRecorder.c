@@ -55,7 +55,7 @@ void MovePR(Vector3D moveVect)
 
 	if (posRec.lastEntityLocked == 1)
 	{
-		gfc_matrix_make_translation(
+		gfc_matrix_make_translation_noIdentity(
 			lastSpawnedEntity->modelMatrix,
 			vector3d(entityXPos, entityYPos, entityZPos)
 		);
@@ -120,7 +120,14 @@ void Rotate(float dir, char axis)
 	if (posRec.lastEntityLocked == 0)
 		RotateCamera(dir, axis);
 	else
-		RotateEntity(dir, axis);
+	{
+		if (axis == 'x')
+			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(90, 0, 0));
+		else if (axis == 'y')
+			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(0, 90, 0));
+		else if (axis == 'z')
+			gf3d_vgraphics_rotate_entityByVect(lastSpawnedEntity, vector3d(0, 0, 90));
+	}
 }	
 
 void EnableDisableEntityLock()
