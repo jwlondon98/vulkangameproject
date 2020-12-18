@@ -8,7 +8,7 @@ void SelectEntity(int index)
 			lastEntityName = "wall2";
 			break;
 		case 2:
-			lastEntityName = "enemy1";
+			lastEntityName = "trigger";
 			break;
 	}
 }

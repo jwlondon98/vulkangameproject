@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include "Gun.h"
 #include "PositionRecorder.h"
+#include "CameraSequenceController.h"
 
 void CreateEntities()
 {
@@ -32,6 +33,9 @@ void CreateEntities()
 
 int main(int argc,char *argv[])
 {
+	// CHANGE THIS IF CREATING LEVELS OR PLAYING THE GAME
+	GameMode gameMode = LevelEdit; //Game
+
     int done = 0;
     int a;
     Uint8 validate = 0;
@@ -69,22 +73,36 @@ int main(int argc,char *argv[])
     // main game loop
     slog("gf3d main loop begin");
 
-	// Create PositionRecorder
-	CreatePR();
-
 	InitRandom();
+	
+	Bullet* bulletList;
 
-	//CreateEntities();
-	InitEntity(100, LevelEdit);
+	if (gameMode == LevelEdit)
+	{
+		// Create PositionRecorder
+		CreatePR();
+
+		// Init Entity Manager
+		InitEntity(100, LevelEdit);
+	}
+	else
+	{
+		// Init Entity Manager
+		InitEntity(100, Game);
+
+		// this will be loaded from json file instead
+		//CreateEntities();
+
+		//Entity player;
+
+		// create a gun for the player
+		CreateGun(Pistol, 300);
+		bulletList = GetBulletList();
+	}
+	
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-
-	//Entity player;
-
-	// create a gun for the player
-	CreateGun(Pistol, 300);
-	Bullet* bulletList = GetBulletList();
 
     while(!done)
     {
@@ -95,47 +113,54 @@ int main(int argc,char *argv[])
 		Entity* entityList = GetEntityList();
 		int entityCount = GetEntityCount();
 
+		Entity* triggerList = GetTriggerList();
+		int triggerCount = GetTriggerCount();
+
 		// Poll
 		int lastXMousePos = xMousePos;
 		int lastYMousePos = yMousePos;
 		PollForInput();
 
-		if (mouseBtn == PRESSED)
+		if (gameMode == Game)
 		{
-			if (gun.gunType != Shotgun)
+			// Detect shooting
+			if (mouseBtn == PRESSED)
 			{
-				if (gunPos == -1)
+				if (gun.gunType != Shotgun)
+				{
+					if (gunPos == -1)
+						Shoot(vector3d(10, 50, 0));
+					else if (gunPos == 0)
+						Shoot(vector3d(0, 50, 0));
+					else if (gunPos == 1)
+						Shoot(vector3d(-10, 50, 0));
+				}
+				else
+				{
 					Shoot(vector3d(10, 50, 0));
-				else if (gunPos == 0)
 					Shoot(vector3d(0, 50, 0));
-				else if (gunPos == 1)
 					Shoot(vector3d(-10, 50, 0));
+				}
+
+				if (gun.gunType != Machinegun)
+					mouseBtn = RELEASED;
 			}
-			else
+
+			// Detect hostage pull
+			if (spaceBtn == PRESSED)
 			{
-				Shoot(vector3d(10, 50, 0));
-				Shoot(vector3d(0, 50, 0));
-				Shoot(vector3d(-10, 50, 0));
+				int k;
+				for (k = 0; k < entityCount; k++)
+				{
+					if (entityList[k].entityType != Hostage)
+						continue;
+
+					entityList[k].speed = 2;
+				}
+				SaveHostage(entityList, entityCount);
+				//spaceBtn = RELEASED;
 			}
-
-			if (gun.gunType != Machinegun)
-				mouseBtn = RELEASED;
-		}
-
-		if (spaceBtn == PRESSED)
-		{
-			int k;
-			for (k = 0; k < entityCount; k++)
-			{
-				if (entityList[k].entityType != Hostage)
-					continue;
-
-				entityList[k].speed = 2;
-			}
-			SaveHostage(entityList, entityCount);
-			//spaceBtn = RELEASED;
-		}
-		else if (spaceBtn == RELEASED)
+			else if (spaceBtn == RELEASED)
 		{
 			int k;
 			for (k = 0; k < entityCount; k++)
@@ -146,16 +171,9 @@ int main(int argc,char *argv[])
 				entityList[k].speed = 0.5;
 			}
 		}
+		}
 
-		// ROTATE CAMERA
-		//slog("DELTA: %i", xMouseDelta);
-		//gf3d_vgraphics_rotate_camera((xMousePos - lastXMousePos) * xMouseDelta, 'y', 0.00001);
-		//gf3d_vgraphics_rotate_camera((yMousePos - lastYMousePos) * yMouseDelta, 'x', 0.00001);
 
-	/*	else
-			gf3d_vgraphics_rotate_camera(xMousePos + lastXMousePos, 'y', 0.0001);*/
-		
-		//gf3d_vgraphics_rotate_camera(yPos, 'x', 0.02);
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();
@@ -163,26 +181,29 @@ int main(int argc,char *argv[])
         commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
 		// render bullet and move it
-		int j;
-		for (j = 0; j < gun.ammoCount; j++)
+		if (gameMode == Game)
 		{
-			if (bulletList[j]._inUse == 1)
+			int j;
+			for (j = 0; j < gun.ammoCount; j++)
 			{
-				BulletThink(&bulletList[j], entityList, entityCount);
-
-				if (bulletList[j].lastPos.y > 50)
+				if (bulletList[j]._inUse == 1)
 				{
-					//slog("enemy bullet passed player. destroying");
-					AddScore(&entityList[0], -20);
-					FreeBullet(&bulletList[j]);
-				}
+					BulletThink(&bulletList[j], entityList, entityCount);
 
-				if (bulletList[j].model)
-					gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
+					if (bulletList[j].lastPos.y > 50)
+					{
+						//slog("enemy bullet passed player. destroying");
+						AddScore(&entityList[0], -20);
+						FreeBullet(&bulletList[j]);
+					}
+
+					if (bulletList[j].model)
+						gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
+				}
 			}
 		}
 
-		// loop through all entities
+		// loop through all entities of the entity manager
 		int i;
 		for (i = 0; i < entityCount; i++)
 		{
@@ -192,25 +213,29 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
-				if (entityList[i].state != NONE ||
-					entityList[i].state != WAIT)
+				// handle entity thinking if the gameMode is a Game
+				if (gameMode == Game)
 				{
-					if (entityList[i].canThink == 1)
+					if (entityList[i].state != NONE ||
+						entityList[i].state != WAIT)
 					{
-						slog("entity %s is thinking", entityList[i].entityName);
-						Think(&entityList[i]);
+						if (entityList[i].canThink == 1)
+						{
+							slog("entity %s is thinking", entityList[i].entityName);
+							Think(&entityList[i]);
+						}
 					}
-				}
 
-				if (entityList[i].state == ATTACK)
-				{
-					if (entityList[i].entityType == EnemyAdvanced)
+					if (entityList[i].state == ATTACK)
 					{
-						EnemyShoot(entityList[i].lastPos);
-						entityList[i].state = NONE;
+						if (entityList[i].entityType == EnemyAdvanced)
+						{
+							EnemyShoot(entityList[i].lastPos);
+							entityList[i].state = NONE;
+						}
+						else
+							entityList[i].state = MOVE;
 					}
-					else
-						entityList[i].state = MOVE;
 				}
 
 				// draw the entity
@@ -220,8 +245,28 @@ int main(int argc,char *argv[])
 				}
 			}
 		}
-             
-		
+
+		// loop through all triggers and move camera to next trigger
+		// if the current trigger is able to think
+		for (i = 0; i < triggerCount; i++)
+		{
+			// if current entity is being used
+			if (triggerList[i]._inUse == 1)
+			{
+				// update the entity's collider position
+				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
+
+				if (triggerList[i].canThink == 1)
+				{
+					slog("trigger is thinking");
+					Think(&triggerList[i]);
+				}
+
+				if (triggerList[i].renderOn == 1 && triggerList[i].model)
+					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix);
+
+			}
+		}
 
         gf3d_command_rendering_end(commandBuffer);
             

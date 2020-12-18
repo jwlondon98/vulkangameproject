@@ -132,6 +132,9 @@
     <ClInclude Include="TextFileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CameraSequenceController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -252,6 +255,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextFileHandler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSequenceController.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

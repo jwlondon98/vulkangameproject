@@ -14,6 +14,7 @@
 #include <SDL.h>
 #include "Collider.h"
 #include "Entity.h"
+#include "CameraSequenceController.h"
 
 typedef enum
 {
@@ -38,8 +39,13 @@ typedef enum
 typedef struct Entity_S
 {
 	Uint8			_inUse;
+
 	Vector3D		lastPos;
+	Vector3D		targetPos;
+
 	Vector3D		lastRot;
+	Vector3D		targetRot;
+
 	Model			*model;
 	Matrix4			modelMatrix;
 	int				renderOn;

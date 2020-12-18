@@ -116,6 +116,7 @@
     <ClInclude Include="..\include\gf3d_vqueues.h" />
     <ClInclude Include="..\include\InputPoller.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CameraSequenceController.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="EntitySpawner.h" />
     <ClInclude Include="eol_3d_op.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="..\src\gf3d_vqueues.c" />
     <ClCompile Include="..\src\InputPoller.c" />
     <ClCompile Include="Bullet.c" />
+    <ClCompile Include="CameraSequenceController.c" />
     <ClCompile Include="Collider.c" />
     <ClCompile Include="EntitySpawner.c" />
     <ClCompile Include="eol_3d_op.c" />

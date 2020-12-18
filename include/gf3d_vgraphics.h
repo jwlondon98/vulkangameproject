@@ -49,6 +49,8 @@ void gf3d_vgraphics_rotate_entity(Entity* ent, float degrees, char axis, float s
 void gf3d_vgraphics_rotate_entityByVect(Entity* ent, Vector3D rot);
 void gf3d_vgraphics_rotate_entityByVectRads(Entity* ent, Vector3D rot);
 
+void gf3d_vgraphics_translate_camera(Vector3D moveVect);
+
 VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index);
 UniformBufferObject gf3d_vgraphics_get_uniform_buffer_object();
 

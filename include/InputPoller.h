@@ -9,6 +9,7 @@
 #include "gf3d_vgraphics.h"
 #include "../win32/Gun.h"
 #include "TextFileHandler.h"
+#include "CameraSequenceController.h"
 
 typedef enum
 {
@@ -20,6 +21,7 @@ KeyState enterBtn;
 KeyState equalsBtn;
 KeyState spaceBtn;
 KeyState leftShiftBtn;
+KeyState startBtn;
 
 int screenWidth;
 int screenHeight;

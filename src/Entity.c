@@ -41,6 +41,12 @@ void InitEntity(Uint32 maxEntities, GameMode gm)
 */
 Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D rot)
 {
+	if (modelName == "trigger")
+	{
+		CreateTrigger(spawnPos, rot);
+		return;
+	}
+
 	int i;
 	for (i = 0; i < entityManager.entityCount; i++)
 	{
@@ -106,7 +112,8 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D ro
 				spawnPos.y = -35;
 			}
 
-			if (modelName == "player" || modelName == "wall" || modelName == "wall2")
+			if (modelName == "player" || modelName == "wall" 
+				|| modelName == "wall2")
 			{
 				entityManager.entityList[i].state = NONE;
 				entityManager.entityList[i].canThink = 0;
@@ -143,7 +150,6 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D ro
 			);
 			entityManager.entityList[i].lastPos = spawnPos;
 
-			slog("end create entity");
 			// rotate entity
 			RotateEntity(&entityManager.entityList[i], rot);
 			entityManager.entityList[i].lastRot = rot;
@@ -157,7 +163,7 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D ro
 			return &entityManager.entityList[i];
 		}
 	}
-
+	
 	slog ("Failed to create new entity, no unused slots");
 	return NULL;
 }
@@ -187,7 +193,7 @@ void FreeEntity(Entity *entity)
 
 	gf3d_model_free(entity->model);
 	memset(entity, 0, sizeof(Entity));
-;}
+}
 
 
 Entity* GetEntityList()
@@ -266,6 +272,35 @@ void MoveEntity(Entity* entity)
 
 		Delay(1, EntityCreate, NULL);
 	}
+}
+
+void MoveEntityToPos(Entity* entity)
+{
+	if (entity->canThink == 0)
+	{
+		slog("Entity not allowed to think. Cant move it.");
+		return;
+	}
+	slog("moving: %s", entity->entityName);
+
+	Vector3D lastPos = entity->lastPos;
+
+	float xPos = lastPos.x;
+	float yPos = lastPos.y + entity->speed;
+	float zPos = lastPos.z + entity->speed;
+
+	// move camera if the entity is a trigger
+	if (entity->entityName == "trigger")
+		gf3d_vgraphics_translate_camera(entity->lastPos);
+	else
+		gfc_matrix_make_translation(
+			entity->modelMatrix,
+			vector3d(xPos, yPos, 0)
+		);
+
+	entity->lastPos = vector3d(xPos, yPos, zPos);
+
+	//UpdateCollider(entity->collider, entity->lastPos);
 }
 
 static int DelayEntityCreation(void *data)
