@@ -34,6 +34,10 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 		sj_object_update_object(jsonFile, key, sj_new_str(vectStr), keyVal);
 	else
 		sj_object_insert(jsonFile, key, sj_new_str(vectStr));
+
+	SJString *file = sj_object_to_json_string(jsonFile);
+	char *fileText = sj_string_get_text(file);
+	slog(fileText);
 }
 
 void LoadJSON()

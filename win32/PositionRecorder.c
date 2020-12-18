@@ -62,9 +62,9 @@ void MovePR(Vector3D moveVect)
 
 		lastSpawnedEntity->lastPos = vector3d(entityXPos, entityYPos, entityZPos);
 
-		/*slog("LAST SPAWNED ENTITY current pos at (%f, %f, %f)",
+		slog("LAST SPAWNED ENTITY current pos at (%f, %f, %f)",
 			lastSpawnedEntity->lastPos.x, lastSpawnedEntity->lastPos.y, lastSpawnedEntity->lastPos.z);
-		*/
+		
 
 		// Record position to JSON
 		if (lastSpawnedEntity->jsonKey)

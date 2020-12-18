@@ -15,6 +15,7 @@ void SelectEntity(int index)
 
 void SpawnEntity()
 {
+	entityNum++;
 	posRec.lastEntityLocked = 0;
 
 	if (!jsonFile)
@@ -39,15 +40,15 @@ void SpawnEntity()
 
 	if (fileWasLoaded == 1)
 	{
-		offset = 1;
-		//slog("SPAWN ENTITY FILE WAS LOADED");
+		offset = 0;
+		slog("SPAWN ENTITY FILE WAS LOADED");
 		keyStr = sj_string_new_integer(entityNum + offset);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum + offset);
 	}
 	else
 	{
-		//slog("SPAWN ENTITY FILE WAS NOT LOADED");
+		slog("SPAWN ENTITY FILE WAS NOT LOADED");
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, 0, entityNum);
@@ -60,7 +61,6 @@ void SpawnEntity()
 	lastSpawnedEntity->entityName = lastEntityName;
 	lastSpawnedEntity->lastPos = spawnPos;
 
-	entityNum++;
 
 	/*SJString *file = sj_object_to_json_string(jsonFile);
 	char *fileText = sj_string_get_text(file);
