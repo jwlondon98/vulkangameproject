@@ -30,10 +30,10 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, int insert, int keyVa
 
 	slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
 
-	//if (insert == 1)
-		sj_object_insertByIndex(jsonFile, key, sj_new_str(vectStr), realKeyVal);
-	//else
-		//sj_object_insert(jsonFile, key, sj_new_str(vectStr));
+	if (insert == 1)
+		sj_object_update_object(jsonFile, key, sj_new_str(vectStr), keyVal);
+	else
+		sj_object_insert(jsonFile, key, sj_new_str(vectStr));
 }
 
 void LoadJSON()
@@ -69,41 +69,45 @@ void LoadJSON()
 	{
 		keyStr = sj_string_new_integer(i);
 		valueStr = sj_object_get_value_as_string(jsonFile, sj_string_get_text(keyStr));
-		slog("VALUE: %s", valueStr);
+		//slog("VALUE: %s", valueStr);
 
 		// split for entity name
 		splitStr = strtok(valueStr, " ");
 		entityName = splitStr;
-		printf("%s\n", entityName);
+		//printf("%s\n", entityName);
 
 		// split for xVal
 		splitStr = strtok(NULL, " ");
 		xValStr = splitStr;
 		xValStr++[strlen(xValStr) - 1] = 0;
-		printf("%s\n", xValStr);
+		//printf("%s\n", xValStr);
 
 		// split for yVal
 		splitStr = strtok(NULL, " ");
 		yValStr = splitStr;
 		yValStr[strlen(yValStr) - 1] = 0;
-		printf("%s\n", yValStr);
+		//printf("%s\n", yValStr);
 
 		// split for zVal
 		splitStr = strtok(NULL, " ");
 		zValStr = splitStr;
 		zValStr[strlen(zValStr) - 1] = 0;
-		printf("%s\n", zValStr);
+		//printf("%s\n", zValStr);
 
 		// Convert vals to floats
 		xJStr = sj_string_new_text(xValStr);
 		yJStr = sj_string_new_text(yValStr);
 		zJStr = sj_string_new_text(zValStr);
-		zVal = sj_string_as_float(xJStr);
+		xVal = sj_string_as_float(xJStr);
 		yVal = sj_string_as_float(yJStr);
 		zVal = sj_string_as_float(zJStr);
 
 		entityNum = i;
-		slog("entity num: %i", entityNum);
+		/*slog("entity num: %i", entityNum);
+
+		slog("xVal: %f", xVal);
+		slog("yVal: %f", yVal);
+		slog("zVal: %f", zVal);*/
 
 		// Spawn
 		SpawnEntityAtPos(valueStr, vector3d(xVal, yVal, zVal), entityNum);
@@ -113,4 +117,5 @@ void LoadJSON()
 	SJString *file = sj_object_to_json_string(jsonFile);
 	char *fileText = sj_string_get_text(file);
 	slog(fileText);
+	slog("All entites loaded from file.");
 }
