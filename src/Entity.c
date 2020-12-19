@@ -217,6 +217,8 @@ int GetEntityCount()
 	return entityManager.entityCount;
 }
 
+void MoveEntityToPos(Entity* entity);
+
 void Think(Entity* entity)
 {
 	if (entity->state == WAIT)
@@ -227,7 +229,10 @@ void Think(Entity* entity)
 	}
 	else if (entity->state == MOVE)
 	{
-		MoveEntity(entity);
+		if (entity->entityName == "trigger")
+			MoveEntityToPos(entity);
+		else
+			MoveEntity(entity);
 		return;
 	}
 	else if (entity->state == ATTACK)

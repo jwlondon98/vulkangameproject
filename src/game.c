@@ -70,8 +70,8 @@ int main(int argc,char *argv[])
     );
 	slog_sync();
 
-    // main game loop
-    slog("gf3d main loop begin");
+	// move camera to origin
+	gf3d_vgraphics_translate_camera(vector3d(0, 0, 0));
 
 	InitRandom();
 	
@@ -107,6 +107,9 @@ int main(int argc,char *argv[])
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	// main game loop
+	slog("gf3d main loop begin");
 
     while(!done)
     {
@@ -260,6 +263,7 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
+				slog("TRIGGER CAN THINK: %i", triggerList[i].canThink);
 				if (triggerList[i].canThink == 1)
 				{
 					slog("trigger is thinking");
@@ -268,7 +272,6 @@ int main(int argc,char *argv[])
 
 				if (triggerList[i].renderOn == 1 && triggerList[i].model)
 					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix);
-
 			}
 		}
 

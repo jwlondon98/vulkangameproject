@@ -13,7 +13,7 @@ void SelectEntity(int index)
 	}
 }
 
-void SpawnEntity()
+void SpawnEntity(int useLastEntityTransform)
 {
 	entityNum++;
 	posRec.lastEntityLocked = 0;
@@ -30,9 +30,19 @@ void SpawnEntity()
 	//slog("%s spawned at (%f, %f, %f)", 
 		//lastEntityName, posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
 
-	Vector3D spawnPos = vector3d(
-		0 - posRec.currentPos.x, 0 - posRec.currentPos.y, 0 - posRec.currentPos.z
-	);
+	Vector3D spawnPos;
+	Vector3D spawnRot;
+	if (useLastEntityTransform == 0)
+	{
+		spawnPos = vector3d(
+			0 - posRec.currentPos.x, 0 - posRec.currentPos.y, 0 - posRec.currentPos.z);
+		spawnRot = vector3d(0, 0, 0);
+	}
+	else
+	{
+		spawnPos = lastSpawnedEntity->lastPos;
+		spawnRot = lastSpawnedEntity->lastRot;
+	}
 
 	SJString *keyStr;
 	char *key;
@@ -57,15 +67,15 @@ void SpawnEntity()
 	}
 
 	if (lastEntityName == "trigger")
-		lastSpawnedEntity = CreateTrigger(spawnPos, vector3d(0, 0, 0));
+		lastSpawnedEntity = CreateTrigger(spawnPos, spawnRot);
 	else
-		lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, vector3d(0, 0, 0));
+		lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, spawnRot);
 	lastSpawnedEntity->jsonKey = key;
 	//slog("entity num: %i", entityNum + offset);
 	lastSpawnedEntity->entityNum = entityNum + offset;
 	lastSpawnedEntity->entityName = lastEntityName;
 	lastSpawnedEntity->lastPos = spawnPos;
-	lastSpawnedEntity->lastRot = vector3d(0, 0, 0);
+	lastSpawnedEntity->lastRot = spawnRot;
 
 
 	/*SJString *file = sj_object_to_json_string(jsonFile);
@@ -78,9 +88,17 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 {
 	//slog("%s was loaded", entityName);
 
-	lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);
+	if (entityName == "trigger")
+		lastSpawnedEntity = CreateTrigger(spawnPos, rot);
+	else
+		lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);
 	lastSpawnedEntity->entityName = entityName;
 	lastSpawnedEntity->entityNum = entNum;
+}
+
+void DuplicateEntity()
+{
+	SpawnEntity(1);
 }
 
 void DestroyEntity()

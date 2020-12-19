@@ -51,6 +51,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_DELETE:
 				deleteBtn = PRESSED;
 				break;
+			case SDLK_BACKSLASH:
+				backslashBtn = PRESSED;
+				break;
 			case SDLK_LSHIFT:
 				leftShiftBtn = PRESSED;
 				break;
@@ -115,7 +118,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 		{
 			case SDLK_RETURN:
 				enterBtn = RELEASED;
-				SpawnEntity();
+				SpawnEntity(0);
 				break;
 			case SDLK_EQUALS:
 				equalsBtn = RELEASED;
@@ -129,11 +132,16 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_HOME:
 				startBtn = RELEASED;
+				slog("startBtn pressed");
 				MoveToNextTrigger();
 				break;
 			case SDLK_DELETE:
 				deleteBtn = RELEASED;
 				ClearJSONFile();
+				break;
+			case SDLK_BACKSLASH:
+				backslashBtn = RELEASED;
+				DuplicateEntity();
 				break;
 		}
 	}

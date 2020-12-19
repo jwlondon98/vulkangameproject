@@ -113,6 +113,8 @@ void MoveToNextTrigger()
 	trigger->state = MOVE;
 	trigger->canThink = 1;
 
+	slog("done");
+
 	camSeqController.triggerIndex++;
 }
 

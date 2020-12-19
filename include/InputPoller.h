@@ -23,6 +23,7 @@ KeyState spaceBtn;
 KeyState leftShiftBtn;
 KeyState startBtn;
 KeyState deleteBtn;
+KeyState backslashBtn;
 
 int screenWidth;
 int screenHeight;
