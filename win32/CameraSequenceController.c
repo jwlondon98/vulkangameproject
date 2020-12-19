@@ -6,6 +6,9 @@ typedef struct
 	int triggerCount;
 
 	int triggerIndex;		// the index of the trigger that the player is currently at
+
+	Vector3D camPos;
+
 }CamSeqController;
 
 static CamSeqController camSeqController = { 0 };
@@ -76,7 +79,7 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 			camSeqController.triggers[i].canThink = 0;
 			camSeqController.triggers[i].entityName = "trigger";
 
-			camSeqController.triggers[i].speed = 0.1;
+			camSeqController.triggers[i].speed = 0.0001;
 
 			// create a trigger collider
 			//camSeqController.triggers[i].collider = CreateCollider();
@@ -90,6 +93,7 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 			);
 			camSeqController.triggers[i].lastPos = spawnPos;
 
+			RotateEntity(&camSeqController.triggers[i], rot);
 			camSeqController.triggers[i].lastRot = rot;
 
 			slog("TRIGGER CREATED");
@@ -113,9 +117,59 @@ void MoveToNextTrigger()
 	trigger->state = MOVE;
 	trigger->canThink = 1;
 
-	slog("done");
-
 	camSeqController.triggerIndex++;
+}
+
+void MoveCameraToTrigger(Entity* entity)
+{
+	if (entity->canThink == 0)
+	{
+		slog("Trigger not allowed to think. Cannot move camera.");
+		return;
+	}
+
+	Vector3D lastCamPos = camSeqController.camPos;
+	Vector3D targetPos = entity->lastPos;
+
+	float xPos, yPos, zPos;
+	float tx, ty, tz;
+	float length;
+
+	// move camera if the entity is a trigger
+	/*tx = targetPos.x - lastCamPos.x;
+	ty = targetPos.y - lastCamPos.y;
+	tz = targetPos.z - lastCamPos.z;*/
+
+	tx = lastCamPos.x - targetPos.x;
+	ty = lastCamPos.y - targetPos.y;
+	tz = lastCamPos.z - targetPos.z;
+
+	Bool atPos = vector3d_distance_between_less_than(vector3d(-targetPos.x, -targetPos.y, -targetPos.z), lastCamPos, 1);
+	if (atPos == false)
+	{
+		//slog("moving: %s", entity->entityName);
+
+		// move camera towards the target
+		xPos = (lastCamPos.x + entity->speed * tx);
+		yPos = (lastCamPos.y + entity->speed * ty);
+		zPos = (lastCamPos.z + entity->speed * tz);
+
+		//slog("TARGET POS: (%f, %f, %f)", targetPos.x, targetPos.y, targetPos.z);
+		//slog("CAM POS: (%f, %f, %f)", xPos, yPos, zPos);
+		camSeqController.camPos = vector3d(xPos, yPos, zPos);
+		gf3d_vgraphics_translate_camera(camSeqController.camPos);
+		return;
+	}
+	else
+	{
+		slog("camera reached trigger pos");
+		entity->canThink = 0;
+	}
+}
+
+void TriggerThink(Entity* entity)
+{
+	MoveCameraToTrigger(entity);
 }
 
 void EnableDisableTriggerRender(int enable)

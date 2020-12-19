@@ -41,12 +41,6 @@ void InitEntity(Uint32 maxEntities, GameMode gm)
 */
 Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D rot)
 {
-	if (modelName == "trigger")
-	{
-		CreateTrigger(spawnPos, rot);
-		return;
-	}
-
 	int i;
 	for (i = 0; i < entityManager.entityCount; i++)
 	{
@@ -217,35 +211,6 @@ int GetEntityCount()
 	return entityManager.entityCount;
 }
 
-void MoveEntityToPos(Entity* entity);
-
-void Think(Entity* entity)
-{
-	if (entity->state == WAIT)
-	{
-		Delay(2, EnemyBullet, entity);
-		//entity->state = NONE;
-		return;
-	}
-	else if (entity->state == MOVE)
-	{
-		if (entity->entityName == "trigger")
-			MoveEntityToPos(entity);
-		else
-			MoveEntity(entity);
-		return;
-	}
-	else if (entity->state == ATTACK)
-	{
-		// enemy shoot
-		//EnemyShoot(entity->lastPos);
-		//slog("enemy attacking");
-
-		// set state back to waiting 
-		//entity->state = WAIT;
-	}
-}
-
 void MoveEntity(Entity* entity)
 {
 	if (entity->_inUse == 0)
@@ -279,33 +244,29 @@ void MoveEntity(Entity* entity)
 	}
 }
 
-void MoveEntityToPos(Entity* entity)
+
+void Think(Entity* entity)
 {
-	if (entity->canThink == 0)
+	if (entity->state == WAIT)
 	{
-		slog("Entity not allowed to think. Cant move it.");
+		Delay(2, EnemyBullet, entity);
+		//entity->state = NONE;
 		return;
 	}
-	slog("moving: %s", entity->entityName);
+	else if (entity->state == MOVE)
+	{
+		MoveEntity(entity);
+		return;
+	}
+	else if (entity->state == ATTACK)
+	{
+		// enemy shoot
+		//EnemyShoot(entity->lastPos);
+		//slog("enemy attacking");
 
-	Vector3D lastPos = entity->lastPos;
-
-	float xPos = lastPos.x;
-	float yPos = lastPos.y + entity->speed;
-	float zPos = lastPos.z + entity->speed;
-
-	// move camera if the entity is a trigger
-	if (entity->entityName == "trigger")
-		gf3d_vgraphics_translate_camera(entity->lastPos);
-	else
-		gfc_matrix_make_translation(
-			entity->modelMatrix,
-			vector3d(xPos, yPos, 0)
-		);
-
-	entity->lastPos = vector3d(xPos, yPos, zPos);
-
-	//UpdateCollider(entity->collider, entity->lastPos);
+		// set state back to waiting 
+		//entity->state = WAIT;
+	}
 }
 
 static int DelayEntityCreation(void *data)

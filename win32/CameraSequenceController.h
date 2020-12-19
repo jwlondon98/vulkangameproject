@@ -24,7 +24,10 @@ void FreeTrigger(Entity *trigger);
 
 Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot);
 void MoveToNextTrigger();
+void MoveCameraToTrigger(Entity* entity);
 void EnableDisableTriggerRender(int enable);
+
+void TriggerThink(Entity* entity);
 
 Entity* GetTriggerList();
 int GetTriggerCount();

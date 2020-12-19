@@ -86,9 +86,7 @@ void SpawnEntity(int useLastEntityTransform)
 
 void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum)
 {
-	//slog("%s was loaded", entityName);
-
-	if (entityName == "trigger")
+	if (strcmp(entityName, "trigger") == 0)
 		lastSpawnedEntity = CreateTrigger(spawnPos, rot);
 	else
 		lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);

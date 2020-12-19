@@ -88,8 +88,8 @@ void FreeEntity(Entity* entity);
 Entity* GetEntityList();
 Entity* GetLastAvailableEntity();
 int GetEntityCount();
-void Think(Entity* entity);
 void MoveEntity(Entity* entity);
+void Think(Entity* entity);
 
 void Delay(float sec, DelayType delayType, Entity* entity);
 void InitRandom();

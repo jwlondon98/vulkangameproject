@@ -100,10 +100,11 @@ int main(int argc,char *argv[])
 		bulletList = GetBulletList();
 	}
 	
+	// Init camera controller
+	InitCameraController(100);
+
 	// Load entities from level JSON file
 	LoadJSON();
-
-	InitCameraController(100);
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -263,12 +264,8 @@ int main(int argc,char *argv[])
 				// update the entity's collider position
 				//UpdateCollider(entityList[i].collider, entityList[i].lastPos);
 
-				slog("TRIGGER CAN THINK: %i", triggerList[i].canThink);
 				if (triggerList[i].canThink == 1)
-				{
-					slog("trigger is thinking");
-					Think(&triggerList[i]);
-				}
+					TriggerThink(&triggerList[i]);
 
 				if (triggerList[i].renderOn == 1 && triggerList[i].model)
 					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix);
