@@ -108,7 +108,5 @@ void ClearJSONFile()
 	for (i = 0; i < entCount; i++)
 		FreeEntity(&ents[i]);
 
-	entityNum = 0;
-
-	sj_object_free(jsonFile);
+	CreateJSONFile();
 }
