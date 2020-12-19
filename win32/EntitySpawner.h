@@ -5,6 +5,7 @@
 #include "PositionRecorder.h"
 #include "TextFileHandler.h"
 #include <simple_logger.h>
+#include "CameraSequenceController.h"
 
 
 char* lastEntityName;

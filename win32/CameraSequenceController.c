@@ -61,7 +61,7 @@ void FreeTrigger(Entity *trigger)
 	memset(trigger, 0, sizeof(Entity));
 }
 
-void CreateTrigger(Vector3D spawnPos, Vector3D rot)
+Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 {
 	int i;
 	for (i = 0; i < camSeqController.triggerCount; i++)
@@ -93,7 +93,8 @@ void CreateTrigger(Vector3D spawnPos, Vector3D rot)
 			camSeqController.triggers[i].lastRot = rot;
 
 			slog("TRIGGER CREATED");
-			return;
+
+			return &camSeqController.triggers[i];
 		}
 	}
 

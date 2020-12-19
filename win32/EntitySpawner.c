@@ -104,9 +104,15 @@ void ClearJSONFile()
 	Entity *ents = GetEntityList();
 	int entCount = GetEntityCount();
 
+	Entity *trigs = GetTriggerList();
+	int trigCount = GetTriggerCount();
+
 	int i;
 	for (i = 0; i < entCount; i++)
 		FreeEntity(&ents[i]);
+
+	for (i = 0; i < trigCount; i++)
+		FreeTrigger(&trigs[i]);
 
 	CreateJSONFile();
 }

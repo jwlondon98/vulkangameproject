@@ -22,7 +22,7 @@ void InitCameraController(Uint32 numTriggers);
 void CloseCamSeqController();
 void FreeTrigger(Entity *trigger);
 
-void CreateTrigger(Vector3D spawnPos, Vector3D rot);
+Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot);
 void MoveToNextTrigger();
 void EnableDisableTriggerRender(int enable);
 
