@@ -14,7 +14,6 @@
 #include <SDL.h>
 #include "Collider.h"
 #include "Entity.h"
-#include "CameraSequenceController.h"
 
 typedef enum
 {

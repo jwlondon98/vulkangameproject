@@ -100,6 +100,10 @@ int main(int argc,char *argv[])
 		bulletList = GetBulletList();
 	}
 	
+	// Load entities from level JSON file
+	LoadJSON();
+
+	InitCameraController(100);
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -114,7 +118,7 @@ int main(int argc,char *argv[])
 		int entityCount = GetEntityCount();
 
 		Entity* triggerList = GetTriggerList();
-		int triggerCount = GetTriggerCount();
+		int triggerCount =  GetTriggerCount();
 
 		// Poll
 		int lastXMousePos = xMousePos;

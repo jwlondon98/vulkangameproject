@@ -1,13 +1,25 @@
+#pragma once
+
 #ifndef __CAMERA_SEQUENCE_CONTROLLER_H__
 #define __CAMERA_SEQUENCE_CONTROLLER_H__
 
 #include "../gfc/include/gfc_matrix.h"
 #include "Entity.h"
 #include "PositionRecorder.h"
-#include "gf3d_vgraphics.h"
+#include "../include/gf3d_vgraphics.h"
 
+//struct CamSeqController
+//{
+//	Entity *triggers;		// list of triggers
+//	int triggerCount;
+//
+//	int triggerIndex;		// the index of the trigger that the player is currently at
+//};
+//
+//extern struct CamSeqController camSeqController;
+
+void InitCameraController(Uint32 numTriggers);
 void CloseCamSeqController();
-void InitCameraController(Uint32 numPositions);
 void FreeTrigger(Entity *trigger);
 
 void CreateTrigger(Vector3D spawnPos, Vector3D rot);

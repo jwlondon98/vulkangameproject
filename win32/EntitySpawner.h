@@ -17,7 +17,7 @@ void SpawnEntity();
 void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum);
 
 void DestroyEntity();
-
+void ClearJSONFile();
 //typedef void(*SpawnSpecificEntity)(char*, Vector3D);
 //extern void SpawnSpecificEntity(char* entityName, Vector3D spawnPos);
 

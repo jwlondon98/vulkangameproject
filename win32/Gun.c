@@ -51,7 +51,7 @@ void FreeGun()
 		FreeBullet(&bulletManager.bulletList[i]);*/
 
 	//memset(&bulletManager, 0, sizeof(BulletManager));
-	memset(&gun, 0, sizeof(Gun));
+	//memset(&gun, 0, sizeof(Gun));
 }
 
 void Shoot(Vector3D spawnPos)

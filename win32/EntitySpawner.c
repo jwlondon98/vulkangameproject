@@ -56,7 +56,10 @@ void SpawnEntity()
 		WriteJSON(key, lastEntityName, spawnPos, vector3d(0, 0, 0), 0, entityNum);
 	}
 
-	lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, vector3d(0, 0, 0));
+	if (lastEntityName == "trigger")
+		lastSpawnedEntity = CreateTrigger(spawnPos, vector3d(0, 0, 0));
+	else
+		lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, vector3d(0, 0, 0));
 	lastSpawnedEntity->jsonKey = key;
 	//slog("entity num: %i", entityNum + offset);
 	lastSpawnedEntity->entityNum = entityNum + offset;
@@ -80,7 +83,6 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	lastSpawnedEntity->entityNum = entNum;
 }
 
-
 void DestroyEntity()
 {
 	return;
@@ -95,4 +97,18 @@ void DestroyEntity()
 		lastSpawnedEntity = NULL;
 		slog("entity destroyed");
 	}
+}
+
+void ClearJSONFile()
+{
+	Entity *ents = GetEntityList();
+	int entCount = GetEntityCount();
+
+	int i;
+	for (i = 0; i < entCount; i++)
+		FreeEntity(&ents[i]);
+
+	entityNum = 0;
+
+	sj_object_free(jsonFile);
 }

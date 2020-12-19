@@ -22,6 +22,7 @@ KeyState equalsBtn;
 KeyState spaceBtn;
 KeyState leftShiftBtn;
 KeyState startBtn;
+KeyState deleteBtn;
 
 int screenWidth;
 int screenHeight;

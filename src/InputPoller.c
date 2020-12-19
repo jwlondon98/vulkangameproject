@@ -48,6 +48,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_HOME:
 				startBtn = PRESSED;
 				break;
+			case SDLK_DELETE:
+				deleteBtn = PRESSED;
+				break;
 			case SDLK_LSHIFT:
 				leftShiftBtn = PRESSED;
 				break;
@@ -116,7 +119,6 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_EQUALS:
 				equalsBtn = RELEASED;
-				LoadJSON();
 				break;
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;
@@ -128,6 +130,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_HOME:
 				startBtn = RELEASED;
 				MoveToNextTrigger();
+				break;
+			case SDLK_DELETE:
+				deleteBtn = RELEASED;
+				ClearJSONFile();
 				break;
 		}
 	}

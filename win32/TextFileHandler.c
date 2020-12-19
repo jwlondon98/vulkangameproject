@@ -3,6 +3,7 @@
 void CreateJSONFile()
 {
 	jsonFile = sj_object_new();
+	sj_save(jsonFile, "Level1.json");
 }
 
 void WriteJSON(char* key, char* entityType, Vector3D vect, Vector3D rot, int insert, int keyVal)
@@ -64,11 +65,18 @@ void WriteJSON(char* key, char* entityType, Vector3D vect, Vector3D rot, int ins
 void LoadJSON()
 {
 	jsonFile = sj_load("Level1.json");
+	if (jsonFile == NULL)
+	{
+		slog("JSON file empty or missing. Cannot load.");
+		return;
+	}
+
 	SJson *tempFile = sj_copy(jsonFile);
 	fileWasLoaded = 1;
 
 	SJString* jsonStr = sj_object_to_json_string(jsonFile);
 	SJList* jsonList = jsonFile->v.array;
+
 	int numElements = sj_list_get_count(jsonList);
 	char *text = sj_string_get_text(jsonStr);
 

@@ -1,7 +1,6 @@
 #include "CameraSequenceController.h"
 
-
-typedef struct
+typedef struct 
 {
 	Entity *triggers;		// list of triggers
 	int triggerCount;
@@ -10,7 +9,6 @@ typedef struct
 }CamSeqController;
 
 static CamSeqController camSeqController = { 0 };
-
 
 void InitCameraController(Uint32 numTriggers)
 {
@@ -21,7 +19,7 @@ void InitCameraController(Uint32 numTriggers)
 	}
 
 	// allocate memory 
-	camSeqController.triggers = gfc_allocate_array(sizeof(CamSeqController), numTriggers);
+	camSeqController.triggers = gfc_allocate_array(sizeof(Entity), numTriggers);
 	if (!camSeqController.triggers)
 	{
 		slog("failed to allocate memory for entity list");
@@ -70,35 +68,32 @@ void CreateTrigger(Vector3D spawnPos, Vector3D rot)
 	{
 		if (!camSeqController.triggers[i]._inUse)
 		{
-			Entity trigger;
+			camSeqController.triggers[i]._inUse = 1;
+			camSeqController.triggers[i].renderOn = 1;
+			camSeqController.triggers[i].model = gf3d_model_load("trigger");
+			camSeqController.triggers[i].entityType = None;
+			camSeqController.triggers[i].state = NONE;
+			camSeqController.triggers[i].canThink = 0;
+			camSeqController.triggers[i].entityName = "trigger";
 
-			trigger._inUse = 1;
-			trigger.renderOn = 1;
-			trigger.model = gf3d_model_load("trigger");
-			trigger.entityType = None;
-			trigger.state = NONE;
-			trigger.canThink = 0;
-			trigger.entityName = "trigger";
-
-			trigger.speed = 0.1;
+			camSeqController.triggers[i].speed = 0.1;
 
 			// create a trigger collider
 			//camSeqController.triggers[i].collider = CreateCollider();
 			//camSeqController.triggers[i].collider->extents = vector3d(1, 1, 1);
 
 			// set model's position to world origin
-			gfc_matrix_identity(trigger.modelMatrix);
+			gfc_matrix_identity(camSeqController.triggers[i].modelMatrix);
 			gfc_matrix_make_translation(
-				trigger.modelMatrix,
+				camSeqController.triggers[i].modelMatrix,
 				spawnPos
 			);
-			trigger.lastPos = spawnPos;
+			camSeqController.triggers[i].lastPos = spawnPos;
 
-			trigger.lastRot = rot;
-
-			camSeqController.triggers[i] = trigger;
+			camSeqController.triggers[i].lastRot = rot;
 
 			slog("TRIGGER CREATED");
+			return;
 		}
 	}
 
