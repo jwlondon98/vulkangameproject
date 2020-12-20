@@ -1,4 +1,5 @@
-#include <SDL.h>            
+#include <SDL.h>   
+#include <SDL_audio.h>
 
 #include "simple_logger.h"
 #include "gfc_vector.h"
