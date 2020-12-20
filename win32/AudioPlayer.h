@@ -8,8 +8,12 @@
 #include "../gfc/include/gfc_text.h"
 
 Mix_Chunk *explosionSound;
+Mix_Music *bgMusic;
 
 void InitAudio();
-void PlaySFX(Mix_Chunk *sfx);
 void CloseAudio();
+
+void PlayMusic(Mix_Music *music);
+void PlaySFX(Mix_Chunk *sfx);
+
 #endif

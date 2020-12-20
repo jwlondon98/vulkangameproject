@@ -78,6 +78,8 @@ int main(int argc,char *argv[])
 	
 	InitAudio();
 
+	PlayMusic(bgMusic);
+
 	Bullet* bulletList;
 
 	if (gameMode == LevelEdit)
@@ -274,6 +276,10 @@ int main(int argc,char *argv[])
 					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix);
 			}
 		}
+
+		// 2d rendering 
+		commandBuffer = gf3d_command_rendering_begin(
+			bufferFrame, gf3d_vgraphics_get_graphics_overlay_pipeline());
 
         gf3d_command_rendering_end(commandBuffer);
             

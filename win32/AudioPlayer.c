@@ -7,8 +7,14 @@ void InitAudio()
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	// load audio files
-	//Mix_Music *bgMusic = Mix_LoadMUS(".mp3");
+	bgMusic = Mix_LoadMUS("audio/BackgroundMusic.mp3");
 	explosionSound = Mix_LoadWAV("audio/Explosion.wav");
+	explosionSound->volume = 50;
+}
+
+void PlayMusic(Mix_Music *music)
+{
+	Mix_PlayMusic(music, -1);
 }
 
 void PlaySFX(Mix_Chunk *sfx)
