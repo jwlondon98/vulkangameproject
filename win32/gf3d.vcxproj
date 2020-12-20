@@ -110,6 +110,7 @@
     <ClInclude Include="..\include\gf3d_model.h" />
     <ClInclude Include="..\include\gf3d_pipeline.h" />
     <ClInclude Include="..\include\gf3d_shaders.h" />
+    <ClInclude Include="..\include\gf3d_sprite.h" />
     <ClInclude Include="..\include\gf3d_swapchain.h" />
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PositionRecorder.h" />
     <ClInclude Include="Raycaster.h" />
+    <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="TextFileHandler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +156,7 @@
     <ClCompile Include="..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\src\gf3d_shaders.c" />
+    <ClCompile Include="..\src\gf3d_sprite.c" />
     <ClCompile Include="..\src\gf3d_swapchain.c" />
     <ClCompile Include="..\src\gf3d_texture.c" />
     <ClCompile Include="..\src\gf3d_validation.c" />
@@ -169,6 +172,7 @@
     <ClCompile Include="Gun.c" />
     <ClCompile Include="PositionRecorder.c" />
     <ClCompile Include="Raycaster.c" />
+    <ClCompile Include="SpriteManager.c" />
     <ClCompile Include="TextFileHandler.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

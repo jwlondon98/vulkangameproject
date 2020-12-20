@@ -10,12 +10,15 @@
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 #include "gf3d_texture.h"
+#include "gf3d_sprite.h"
+
 #include "InputPoller.h"
 #include "Entity.h"
 #include "Gun.h"
 #include "PositionRecorder.h"
 #include "CameraSequenceController.h"
 #include "AudioPlayer.h"
+#include "SpriteManager.h"
 
 void CreateEntities()
 {
@@ -78,7 +81,9 @@ int main(int argc,char *argv[])
 	
 	InitAudio();
 
-	PlayMusic(bgMusic);
+	//PlayMusic(bgMusic);
+
+	InitSpriteManager();
 
 	Bullet* bulletList;
 
@@ -109,7 +114,7 @@ int main(int argc,char *argv[])
 	InitCameraController(100);
 
 	// Load entities from level JSON file
-	LoadJSON();
+	//LoadJSON();
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -191,7 +196,8 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
-        commandBuffer = gf3d_command_rendering_begin(bufferFrame);
+        gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_overlay_pipeline(),bufferFrame);
+        commandBuffer = gf3d_command_rendering_begin(bufferFrame, gf3d_vgraphics_get_graphics_pipeline());
 
 		// render bullet and move it
 		if (gameMode == Game)
@@ -277,10 +283,11 @@ int main(int argc,char *argv[])
 			}
 		}
 
-		// 2d rendering 
-		commandBuffer = gf3d_command_rendering_begin(
-			bufferFrame, gf3d_vgraphics_get_graphics_overlay_pipeline());
+        gf3d_command_rendering_end(commandBuffer);
 
+		// 2d rendering 
+		commandBuffer = gf3d_command_rendering_begin(bufferFrame, gf3d_vgraphics_get_graphics_overlay_pipeline());
+		RenderSprites(0, bufferFrame, commandBuffer);
         gf3d_command_rendering_end(commandBuffer);
             
         int rendEnd = gf3d_vgraphics_render_end(bufferFrame);

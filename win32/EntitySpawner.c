@@ -15,6 +15,8 @@ void SelectEntity(int index)
 
 void SpawnEntity(int useLastEntityTransform)
 {
+	slog("hi");
+
 	posRec.lastEntityLocked = 0;
 
 	if (!jsonFile)

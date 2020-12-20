@@ -8,6 +8,7 @@
 #include "gf3d_pipeline.h"
 #include "gf3d_commands.h"
 #include "Entity.h"
+#include "gf3d_sprite.h"
 
 #define GF3D_VGRAPHICS_DISCRETE 1   //Choosing whether to use discrete [1] or integrated graphics [0]
 
@@ -55,6 +56,7 @@ VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index);
 UniformBufferObject gf3d_vgraphics_get_uniform_buffer_object();
 
 Pipeline *gf3d_vgraphics_get_graphics_pipeline();
+Pipeline *gf3d_vgraphics_get_graphics_overlay_pipeline();
 
 Command *gf3d_vgraphics_get_graphics_command_pool();
 
