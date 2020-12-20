@@ -127,7 +127,7 @@ int main(int argc,char *argv[])
 
 	GameState gameState;
 
-	//Entity *cubeAnim = CreateAnimatedEntity("CubeShrink", 1, vector3d(0,0,0), vector3d(0, 0, 0), 1, 30, 0.05);
+	Entity *cubeAnim = CreateAnimatedEntity("CubeShrink", 1, vector3d(0,0,0), vector3d(0, 0, 0), 1, 30, 0.05);
 
     while(!done)
     {
@@ -276,27 +276,32 @@ int main(int argc,char *argv[])
 					{
 						//slog("rendering animated model: %s at frame %i", entityList[i].entityName, entityList[i].currFrame);
 
-						if (entityList[i].currAnimState != AnimPlay)
-							continue;
-
-						// reset frame to start
-						if (entityList[i].currFrame >= entityList[i].endFrame)
+						if (entityList[i].currAnimState == AnimWait)
 						{
-							entityList[i].currAnimState = entityList[i].endAnimState;
-							entityList[i].currFrame = entityList[i].startFrame;
-						}
-						else
-						{
-							// draw model based on current frame
 							gf3d_model_draw(
 								entityList[i].model, bufferFrame, commandBuffer,
-								entityList[i].modelMatrix, entityList[i].currFrame - 1);
+								entityList[i].modelMatrix, 0);
+						}
+						else if (entityList[i].currAnimState == AnimPlay)
+						{
+							// reset frame to start
+							if (entityList[i].currFrame >= entityList[i].endFrame)
+							{
+								entityList[i].currAnimState = entityList[i].endAnimState;
+								entityList[i].currFrame = entityList[i].startFrame;
+							}
+							else
+							{
+								// draw model based on current frame
+								gf3d_model_draw(
+									entityList[i].model, bufferFrame, commandBuffer,
+									entityList[i].modelMatrix, entityList[i].currFrame - 1);
 
-							entityList[i].frameInc += entityList[i].frameIncStart;
-							slog("FRAME INC: %f", entityList[i].frameInc);
-							entityList[i].currFrame = entityList[i].currFrame + (int)entityList[i].frameInc;
-							if (entityList[i].frameInc >= 1)
-								entityList[i].frameInc = entityList[i].frameIncStart;
+								entityList[i].frameInc += entityList[i].frameIncStart;
+								entityList[i].currFrame = entityList[i].currFrame + (int)entityList[i].frameInc;
+								if (entityList[i].frameInc >= 1)
+									entityList[i].frameInc = entityList[i].frameIncStart;
+							}
 						}
 					}
 				}
