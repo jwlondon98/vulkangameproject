@@ -1,4 +1,5 @@
 #include <SDL.h>   
+#include <SDL_ttf.h>
 
 #include "simple_logger.h"
 #include "gfc_vector.h"
@@ -65,7 +66,7 @@ int main(int argc,char *argv[])
     init_logger("gf3d.log");    
     slog("gf3d begin");
     gf3d_vgraphics_init(
-        "gf3d",						//program name
+        "CUBISM",						//program name
         screenWidth,				//screen width
 		screenHeight,				//screen height
         vector4d(0.51,0.75,1,1),	//background color

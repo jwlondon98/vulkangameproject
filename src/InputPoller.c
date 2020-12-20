@@ -117,6 +117,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_LCTRL:
 				ctrlBtn = PRESSED;
 				break;
+			case SDLK_MINUS:
+				minusBtn = PRESSED;
+				break;
 		}
 	}
 	else if (eventType == SDL_KEYUP)
@@ -129,6 +132,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_EQUALS:
 				equalsBtn = RELEASED;
+				break;
+			case SDLK_MINUS:
+				minusBtn = RELEASED;
+				health -= 1;
 				break;
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;

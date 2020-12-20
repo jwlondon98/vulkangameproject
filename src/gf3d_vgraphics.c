@@ -29,7 +29,7 @@ int screenHeight = 700;
 
 typedef struct
 {
-    SDL_Window                 *main_window;
+    SDL_Window                  *main_window;
 
     VkApplicationInfo           vk_app_info;
 

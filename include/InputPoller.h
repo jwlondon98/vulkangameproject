@@ -31,6 +31,7 @@ KeyState deleteBtn;
 KeyState backslashBtn;
 KeyState pBtn;
 KeyState ctrlBtn;
+KeyState minusBtn;
 
 int screenWidth;
 int screenHeight;
