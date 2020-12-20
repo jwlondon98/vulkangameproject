@@ -126,6 +126,8 @@ int main(int argc,char *argv[])
 
 	GameState gameState;
 
+	//Entity *cubeAnim = CreateAnimatedEntity("CubeShrink", 1, vector3d(0,0,0), vector3d(0, 0, 0), 1, 30, 0.05);
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -223,7 +225,7 @@ int main(int argc,char *argv[])
 					}
 
 					if (bulletList[j].model)
-						gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix);
+						gf3d_model_draw(bulletList[j].model, bufferFrame, commandBuffer, bulletList[j].modelMatrix, 0);
 				}
 			}
 		}
@@ -263,10 +265,39 @@ int main(int argc,char *argv[])
 					}
 				}
 
-				// draw the entity
+				// draw model
 				if (entityList[i].model)
 				{
-					gf3d_model_draw(entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix);
+					if (entityList[i].isAnimated == 0)
+						gf3d_model_draw(
+							entityList[i].model, bufferFrame, commandBuffer, entityList[i].modelMatrix, 0);
+					else
+					{
+						//slog("rendering animated model: %s at frame %i", entityList[i].entityName, entityList[i].currFrame);
+
+						if (entityList[i].currAnimState != AnimPlay)
+							continue;
+
+						// reset frame to start
+						if (entityList[i].currFrame >= entityList[i].endFrame)
+						{
+							entityList[i].currAnimState = entityList[i].endAnimState;
+							entityList[i].currFrame = entityList[i].startFrame;
+						}
+						else
+						{
+							// draw model based on current frame
+							gf3d_model_draw(
+								entityList[i].model, bufferFrame, commandBuffer,
+								entityList[i].modelMatrix, entityList[i].currFrame - 1);
+
+							entityList[i].frameInc += entityList[i].frameIncStart;
+							slog("FRAME INC: %f", entityList[i].frameInc);
+							entityList[i].currFrame = entityList[i].currFrame + (int)entityList[i].frameInc;
+							if (entityList[i].frameInc >= 1)
+								entityList[i].frameInc = entityList[i].frameIncStart;
+						}
+					}
 				}
 			}
 		}
@@ -285,7 +316,7 @@ int main(int argc,char *argv[])
 					TriggerThink(&triggerList[i]);
 
 				if (triggerList[i].renderOn == 1 && triggerList[i].model)
-					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix);
+					gf3d_model_draw(triggerList[i].model, bufferFrame, commandBuffer, triggerList[i].modelMatrix, 0);
 			}
 		}
 

@@ -32,6 +32,11 @@ typedef enum
 	EntityCreate, EnemyBullet, HostageDeath, NoDelay
 }DelayType;
 
+typedef enum
+{
+	AnimWait, AnimPlay, AnimStop
+}AnimState;
+
 typedef struct Entity_S
 {
 	Uint8			_inUse;
@@ -67,6 +72,16 @@ typedef struct Entity_S
 	char*			jsonKey;
 	char*			jsonValue;
 
+	int				isAnimated;
+	int				startFrame;
+	int				endFrame;
+	int				currFrame;
+	float			frameIncStart;
+	float			frameInc;
+
+	AnimState		currAnimState;
+	AnimState		endAnimState;
+
 	//void (Think*)(struct Entity_S *self);
 }Entity;
 
@@ -80,6 +95,9 @@ typedef struct DelayData_S
 
 void InitEntity(Uint32 maxEntities, GameMode gameMode);
 Entity* CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D rot);
+Entity* CreateAnimatedEntity(
+	char* modelName, int render, Vector3D spawnPos, Vector3D rot, 
+	int startFrame, int endFrame, float frameInc);
 void CloseEntity();
 void FreeEntity(Entity* entity);
 
@@ -100,5 +118,9 @@ static int DelayEnemyBullet(void *data);
 static int DelayHostageDeath(void *data);
 
 void AddScore(Entity* entity, int amt);
+
+void ChangeAnimState(Entity* ent, AnimState aState);
+
+void ChangeAnimStateAll(AnimState aState);
 
 #endif

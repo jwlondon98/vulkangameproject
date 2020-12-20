@@ -38,6 +38,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
 				break;
+			case SDLK_PAGEDOWN:
+				pageDownBtn = PRESSED;
+				break;
 			case SDLK_SPACE:
 				spaceBtn = PRESSED;
 				break;
@@ -126,6 +129,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_RETURN:
 				enterBtn = RELEASED;
 				SpawnEntity(0);
+				break;
+			case SDLK_PAGEDOWN:
+				pageDownBtn = RELEASED;
+				ChangeAnimStateAll(AnimPlay);
 				break;
 			case SDLK_EQUALS:
 				equalsBtn = RELEASED;

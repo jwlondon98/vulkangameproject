@@ -161,6 +161,79 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D ro
 	return NULL;
 }
 
+Entity *CreateAnimatedEntity(
+	char* modelName, int render, Vector3D spawnPos, Vector3D rot, 
+	int startFrame, int endFrame, float frameInc)
+{
+	int i;
+	for (i = 0; i < entityManager.entityCount; i++)
+	{
+		if (!entityManager.entityList[i]._inUse)
+		{
+			slog("entity %s spawned", modelName);
+			slog("\nspawn pos: (%f, %f, %f)", spawnPos.x,
+				spawnPos.y, spawnPos.z);
+
+			entityManager.entityList[i]._inUse = 1;
+
+			if (render == 1)
+				entityManager.entityList[i].renderOn = 1;
+			else
+				entityManager.entityList[i].renderOn = 0;
+
+			entityManager.entityList[i].state = NONE;
+			entityManager.entityList[i].entityType = None;
+
+			entityManager.entityList[i].model = gf3d_model_load_animated(modelName, startFrame, endFrame);
+
+			// set model's position to world origin
+			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
+			gfc_matrix_make_translation(
+				entityManager.entityList[i].modelMatrix,
+				spawnPos
+			);
+			entityManager.entityList[i].lastPos = spawnPos;
+
+			// rotate entity
+			RotateEntity(&entityManager.entityList[i], rot);
+			entityManager.entityList[i].lastRot = rot;
+
+			entityManager.entityList[i].isAnimated = 1;
+			entityManager.entityList[i].startFrame = startFrame;
+			entityManager.entityList[i].endFrame = endFrame;
+			entityManager.entityList[i].currFrame = startFrame;
+			entityManager.entityList[i].frameIncStart = frameInc;
+			entityManager.entityList[i].frameInc = frameInc;
+
+			entityManager.entityList[i].entityName = modelName;
+
+			entityManager.entityList[i].currAnimState = AnimWait;
+			entityManager.entityList[i].endAnimState = AnimStop;
+
+			return &entityManager.entityList[i];
+		}
+	}
+
+	slog("Failed to create new entity, no unused slots");
+	return NULL;
+}
+
+void ChangeAnimState(Entity* ent, AnimState aState)
+{
+	ent->currAnimState = aState;
+}
+
+void ChangeAnimStateAll (AnimState aState)
+{
+	Entity* ent;
+	int i;
+	for (i = 0; i < entityManager.entityCount; i++)
+	{
+		ent = &entityManager.entityList[i];
+		ent->currAnimState = aState;
+	}
+}
+
 void CloseEntity()
 {
 	int i;
