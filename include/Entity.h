@@ -14,11 +14,8 @@
 #include <SDL.h>
 #include "Collider.h"
 #include "Entity.h"
-
-typedef enum
-{
-	LevelEdit, Game
-}GameMode;
+#include "simple_logger.h"
+#include "GameStateManager.h"
 
 typedef enum 
 {

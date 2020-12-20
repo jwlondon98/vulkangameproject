@@ -268,6 +268,8 @@ Texture *gf3d_texture_load(char *filename)
 	allocInfo.allocationSize = memRequirements.size;
 	allocInfo.memoryTypeIndex = gf3d_vgraphics_find_memory_type(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
+
+
 	if (vkAllocateMemory(gf3d_texture.device, &allocInfo, NULL, &tex->textureImageMemory) != VK_SUCCESS)
 	{
 		slog("failed to allocate image memory!");
@@ -275,6 +277,7 @@ Texture *gf3d_texture_load(char *filename)
 		SDL_FreeSurface(surface);
 		return NULL;
 	}
+
 
 	vkBindImageMemory(gf3d_texture.device, tex->textureImage, tex->textureImageMemory, 0);
 

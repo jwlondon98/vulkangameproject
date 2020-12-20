@@ -122,6 +122,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="EntitySpawner.h" />
     <ClInclude Include="eol_3d_op.h" />
+    <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PositionRecorder.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Collider.c" />
     <ClCompile Include="EntitySpawner.c" />
     <ClCompile Include="eol_3d_op.c" />
+    <ClCompile Include="GameStateManager.c" />
     <ClCompile Include="Gun.c" />
     <ClCompile Include="PositionRecorder.c" />
     <ClCompile Include="Raycaster.c" />

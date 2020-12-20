@@ -12,6 +12,9 @@
 #include "CameraSequenceController.h"
 #include "AudioPlayer.h"
 #include "SpriteManager.h"
+#include "GameStateManager.h"
+#include "PositionRecorder.h"
+#include "EntitySpawner.h"
 
 typedef enum
 {
@@ -27,6 +30,7 @@ KeyState startBtn;
 KeyState deleteBtn;
 KeyState backslashBtn;
 KeyState pBtn;
+KeyState ctrlBtn;
 
 int screenWidth;
 int screenHeight;

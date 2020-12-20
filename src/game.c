@@ -83,6 +83,8 @@ int main(int argc,char *argv[])
 
 	//PlayMusic(bgMusic);
 
+	InitGameStateManager();
+
 	InitSpriteManager();
 
 	Bullet* bulletList;
@@ -122,6 +124,8 @@ int main(int argc,char *argv[])
 	// main game loop
 	slog("gf3d main loop begin");
 
+	GameState gameState;
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -138,6 +142,8 @@ int main(int argc,char *argv[])
 		int lastXMousePos = xMousePos;
 		int lastYMousePos = yMousePos;
 		PollForInput();
+
+		gameState = GetGameState();
 
 		if (gameMode == Game)
 		{

@@ -1,6 +1,5 @@
 #include "InputPoller.h"
-#include "PositionRecorder.h"
-#include "EntitySpawner.h"
+
 
 /*
 	@brief Polls for input
@@ -115,6 +114,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_p:
 				pBtn = PRESSED;
 				break;
+			case SDLK_LCTRL:
+				ctrlBtn = PRESSED;
+				break;
 		}
 	}
 	else if (eventType == SDL_KEYUP)
@@ -151,6 +153,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_p:
 				pBtn = RELEASED;
 				PlaySFX(explosionSound);
+				break;
+			case SDLK_LCTRL:
+				ctrlBtn = RELEASED;
+				SetGameState(PLAYING);
 				break;
 		}
 	}

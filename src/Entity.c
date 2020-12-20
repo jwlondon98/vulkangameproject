@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include "simple_logger.h"
 
 typedef struct
 {
