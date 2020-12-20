@@ -15,13 +15,31 @@ typedef struct SpriteIcon_S
 
 GameState gameState;
 
+// menus
 int showMainMenu;
+int showDeathMenu;
+int showGameIcons;
 SpriteIcon mainMenu;
+SpriteIcon deathMenu;
 
-int showGunIcons;
+// gun icons
 SpriteIcon pistolIcon;
 SpriteIcon machinegunIcon;
 SpriteIcon currentGunIcon;
+
+// health bar
+int health;
+SpriteIcon healthBar1;
+SpriteIcon healthBar2;
+SpriteIcon healthBar3;
+SpriteIcon healthBar4;
+SpriteIcon healthBar5;
+SpriteIcon healthBar6;
+SpriteIcon healthBar7;
+SpriteIcon healthBar8;
+SpriteIcon healthBar9;
+SpriteIcon healthBar10;
+
 
 void InitSpriteManager();
 void RenderSprites(Uint32 frame, Uint32 bufferFrame, VkCommandBuffer buffer);

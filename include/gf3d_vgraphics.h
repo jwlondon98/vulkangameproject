@@ -24,6 +24,8 @@ void gf3d_vgraphics_init(
     Bool enableValidation
 );
 
+SDL_Renderer *GetSDLRenderer();
+
 /**
  * @brief After initialization 
  */

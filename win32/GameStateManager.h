@@ -8,7 +8,7 @@ typedef enum
 
 typedef enum
 {
-	MAINMENU, PLAYING, PAUSED
+	MAINMENU, PLAYING, PAUSED, GAMEOVER
 }GameState;
 
 GameMode gameMode;
