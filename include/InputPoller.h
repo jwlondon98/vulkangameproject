@@ -10,6 +10,7 @@
 #include "../win32/Gun.h"
 #include "TextFileHandler.h"
 #include "CameraSequenceController.h"
+#include "AudioPlayer.h"
 
 typedef enum
 {
@@ -24,6 +25,7 @@ KeyState leftShiftBtn;
 KeyState startBtn;
 KeyState deleteBtn;
 KeyState backslashBtn;
+KeyState pBtn;
 
 int screenWidth;
 int screenHeight;

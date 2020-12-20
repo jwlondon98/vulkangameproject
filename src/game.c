@@ -1,5 +1,4 @@
 #include <SDL.h>   
-#include <SDL_audio.h>
 
 #include "simple_logger.h"
 #include "gfc_vector.h"
@@ -16,6 +15,7 @@
 #include "Gun.h"
 #include "PositionRecorder.h"
 #include "CameraSequenceController.h"
+#include "AudioPlayer.h"
 
 void CreateEntities()
 {
@@ -76,6 +76,8 @@ int main(int argc,char *argv[])
 
 	InitRandom();
 	
+	InitAudio();
+
 	Bullet* bulletList;
 
 	if (gameMode == LevelEdit)
@@ -290,6 +292,7 @@ int main(int argc,char *argv[])
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
     //cleanup
     slog("gf3d program end");
+	CloseAudio();
     slog_sync();
     return 0;
 }

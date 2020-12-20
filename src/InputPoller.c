@@ -110,6 +110,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_BACKSPACE:
 				DestroyEntity();
 				break;
+			case SDLK_p:
+				pBtn = PRESSED;
+				break;
 		}
 	}
 	else if (eventType == SDL_KEYUP)
@@ -142,6 +145,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_BACKSLASH:
 				backslashBtn = RELEASED;
 				DuplicateEntity();
+				break;
+			case SDLK_p:
+				pBtn = RELEASED;
+				PlaySFX(explosionSound);
 				break;
 		}
 	}
