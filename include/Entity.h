@@ -66,6 +66,7 @@ typedef struct Entity_S
 
 	int				entityNum;
 	char*			entityName;
+	int				jsonIndex;
 	char*			jsonKey;
 	char*			jsonValue;
 

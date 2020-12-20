@@ -71,7 +71,7 @@ int main(int argc,char *argv[])
 	slog_sync();
 
 	// move camera to origin
-	gf3d_vgraphics_translate_camera(vector3d(0, 0, 0));
+	gf3d_vgraphics_translate_camera(vector3d(0, 0, 0), 1);
 
 	InitRandom();
 	

@@ -74,7 +74,7 @@ void MovePR(Vector3D moveVect)
 				lastSpawnedEntity->entityName,
 				lastSpawnedEntity->lastPos, 
 				lastSpawnedEntity->lastRot, 
-				1, lastSpawnedEntity->entityNum);
+				1, lastSpawnedEntity->jsonIndex);
 
 			sj_save(jsonFile, "Level1.json");
 		}
@@ -94,7 +94,7 @@ void UpdateEntRot()
 		lastSpawnedEntity->entityName,
 		lastSpawnedEntity->lastPos,
 		lastSpawnedEntity->lastRot,
-		1, lastSpawnedEntity->entityNum);
+		1, lastSpawnedEntity->jsonIndex);
 
 	sj_save(jsonFile, "Level1.json");
 }

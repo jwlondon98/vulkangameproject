@@ -15,17 +15,22 @@ void SelectEntity(int index)
 
 void SpawnEntity(int useLastEntityTransform)
 {
-	entityNum++;
 	posRec.lastEntityLocked = 0;
 
 	if (!jsonFile)
 	{
+		slog("NO JSON FILE. CREATING ONE.");
 		CreateJSONFile();
 		entityNum = 0;
 	}
 
 	if (!lastEntityName)
 		lastEntityName = "wall2";
+
+	if (lastSpawnedEntity)
+	{
+		jsonIndex = lastSpawnedEntity->jsonIndex + 6;
+	}
 
 	//slog("%s spawned at (%f, %f, %f)", 
 		//lastEntityName, posRec.currentPos.x, posRec.currentPos.y, posRec.currentPos.z);
@@ -46,24 +51,23 @@ void SpawnEntity(int useLastEntityTransform)
 
 	SJString *keyStr;
 	char *key;
-	int offset;
-
-	slog("hello");
 
 	if (fileWasLoaded == 1)
 	{
-		offset = 0;
 		//slog("SPAWN ENTITY FILE WAS LOADED");
-		keyStr = sj_string_new_integer(entityNum + offset);
+		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
-		WriteJSON(key, lastEntityName, spawnPos, lastSpawnedEntity->lastRot, 0, entityNum + offset);
+		WriteJSON(key, lastEntityName, spawnPos, lastSpawnedEntity->lastRot, 0, entityNum);
+		entityNum++;
 	}
 	else
 	{
+
 		//slog("SPAWN ENTITY FILE WAS NOT LOADED");
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, vector3d(0, 0, 0), 0, entityNum);
+		entityNum++;
 	}
 
 	if (lastEntityName == "trigger")
@@ -71,8 +75,9 @@ void SpawnEntity(int useLastEntityTransform)
 	else
 		lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, spawnRot);
 	lastSpawnedEntity->jsonKey = key;
+	lastSpawnedEntity->jsonIndex = jsonIndex;
 	//slog("entity num: %i", entityNum + offset);
-	lastSpawnedEntity->entityNum = entityNum + offset;
+	lastSpawnedEntity->entityNum = entityNum;
 	lastSpawnedEntity->entityName = lastEntityName;
 	lastSpawnedEntity->lastPos = spawnPos;
 	lastSpawnedEntity->lastRot = spawnRot;
@@ -84,7 +89,7 @@ void SpawnEntity(int useLastEntityTransform)
 	sj_save(jsonFile, "Level1.json");
 }
 
-void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum)
+void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum, int jIndex)
 {
 	if (strcmp(entityName, "trigger") == 0)
 		lastSpawnedEntity = CreateTrigger(spawnPos, rot);
@@ -92,6 +97,9 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 		lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);
 	lastSpawnedEntity->entityName = entityName;
 	lastSpawnedEntity->entityNum = entNum;
+	lastSpawnedEntity->jsonIndex = jIndex;
+	jsonIndex = jIndex;
+	entityNum++;
 }
 
 void DuplicateEntity()
@@ -131,4 +139,5 @@ void ClearJSONFile()
 		FreeTrigger(&trigs[i]);
 
 	CreateJSONFile();
+	entityNum = 0;
 }

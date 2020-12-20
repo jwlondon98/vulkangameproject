@@ -10,12 +10,13 @@
 
 char* lastEntityName;
 int entityNum;
+int jsonIndex;
 Entity* lastSpawnedEntity;
 
 
 void SelectEntity(int index);
 void SpawnEntity(int useLastEntityTransform);
-void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum);
+void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum, int jsonIndex);
 void DuplicateEntity();
 
 void DestroyEntity();
