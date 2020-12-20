@@ -11,6 +11,7 @@
 #include "TextFileHandler.h"
 #include "CameraSequenceController.h"
 #include "AudioPlayer.h"
+#include "SpriteManager.h"
 
 typedef enum
 {

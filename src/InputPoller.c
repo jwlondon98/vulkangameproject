@@ -61,11 +61,13 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				/*gunPos = -1;
 				gun.lane = -1;*/
 				SelectEntity(1);
+				ChangeGunSprite(1);
 				break;
 			case SDLK_2:
 			/*	gunPos = 0;
 				gun.lane = 0;*/
 				SelectEntity(2);
+				ChangeGunSprite(2);
 				break;
 			case SDLK_3:
 				/*gunPos = 1;

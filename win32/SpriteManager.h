@@ -4,9 +4,20 @@
 #include "gf3d_vgraphics.h"
 #include "gf3d_swapchain.h"
 
-Sprite *pistolIcon;
+typedef struct SpriteIcon_S
+{
+	Sprite *sprite;
+	Vector2D pos;
+	Vector2D scale;
+} SpriteIcon;
+
+SpriteIcon pistolIcon;
+SpriteIcon machinegunIcon;
+SpriteIcon currentGunIcon;
 
 void InitSpriteManager();
 void RenderSprites(Uint32 frame, Uint32 bufferFrame, VkCommandBuffer buffer);
+
+void ChangeGunSprite(int gunNum);
 
 #endif

@@ -114,7 +114,7 @@ int main(int argc,char *argv[])
 	InitCameraController(100);
 
 	// Load entities from level JSON file
-	//LoadJSON();
+	LoadJSON();
 
 	// do SDL stuff
 	SDL_SetRelativeMouseMode(SDL_TRUE);
