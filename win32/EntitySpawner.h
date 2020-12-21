@@ -19,6 +19,8 @@ void SpawnEntity(int useLastEntityTransform);
 void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum, int jsonIndex);
 void DuplicateEntity();
 
+void RotateEntity(Entity* ent, Vector3D rot);
+
 void DestroyEntity();
 void ClearJSONFile();
 //typedef void(*SpawnSpecificEntity)(char*, Vector3D);

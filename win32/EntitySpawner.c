@@ -59,8 +59,7 @@ void SpawnEntity(int useLastEntityTransform)
 		//slog("SPAWN ENTITY FILE WAS LOADED");
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
-		WriteJSON(key, lastEntityName, spawnPos, lastSpawnedEntity->lastRot, 0, entityNum);
-		entityNum++;
+		WriteJSON(key, lastEntityName, spawnPos, vector3d(0,0,0), 0, entityNum);
 	}
 	else
 	{
@@ -69,7 +68,6 @@ void SpawnEntity(int useLastEntityTransform)
 		keyStr = sj_string_new_integer(entityNum);
 		key = sj_string_get_text(keyStr);
 		WriteJSON(key, lastEntityName, spawnPos, vector3d(0, 0, 0), 0, entityNum);
-		entityNum++;
 	}
 
 	if (lastEntityName == "trigger")
@@ -84,11 +82,25 @@ void SpawnEntity(int useLastEntityTransform)
 	lastSpawnedEntity->lastPos = spawnPos;
 	lastSpawnedEntity->lastRot = spawnRot;
 
+	// set model's position to world origin
+	gfc_matrix_identity(lastSpawnedEntity->modelMatrix);
+	gfc_matrix_make_translation(
+		lastSpawnedEntity->modelMatrix,
+		spawnPos
+	);
+	lastSpawnedEntity->lastPos = spawnPos;
+
+	// rotate entity
+	RotateEntity(lastSpawnedEntity, spawnRot);
+	lastSpawnedEntity->lastRot = spawnRot;
+
+	UpdateCollider(lastSpawnedEntity->collider, spawnPos);
+	entityNum++;
+
 
 	/*SJString *file = sj_object_to_json_string(jsonFile);
 	char *fileText = sj_string_get_text(file);
 	slog(fileText);*/
-	sj_save(jsonFile, "Level1.json");
 }
 
 void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int entNum, int jIndex)
@@ -100,8 +112,28 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	lastSpawnedEntity->entityName = entityName;
 	lastSpawnedEntity->entityNum = entNum;
 	lastSpawnedEntity->jsonIndex = jIndex;
+
+	// set model's position to world origin
+	gfc_matrix_identity(lastSpawnedEntity->modelMatrix);
+	gfc_matrix_make_translation(
+		lastSpawnedEntity->modelMatrix,
+		spawnPos
+	);
+	lastSpawnedEntity->lastPos = spawnPos;
+
+	// rotate entity
+	RotateEntity(lastSpawnedEntity, rot);
+	lastSpawnedEntity->lastRot = rot;
+
+	UpdateCollider(lastSpawnedEntity->collider, spawnPos);
+
 	jsonIndex = jIndex;
 	entityNum++;
+}
+
+void RotateEntity(Entity *ent, Vector3D rot)
+{
+	gf3d_vgraphics_rotate_entityByVect(ent, vector3d(rot.x, rot.y, rot.z));
 }
 
 void DuplicateEntity()

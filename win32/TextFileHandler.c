@@ -6,89 +6,167 @@ void CreateJSONFile()
 	sj_save(jsonFile, "Level1.json");
 }
 
-void WriteJSON(char* key, char* entityName, Vector3D pos, Vector3D rot, int update, int keyVal)
+void WriteJSON(char* key, char* entityName, Vector3D pos, Vector3D rot)
 {
+	int newObj = 0;
+
 	// key string
-	SJString *keyStr = sj_string_new_text(key);
-	int realKeyVal = sj_string_as_integer(keyStr);
-
-	// entity name
-	SJString *entityNameStr = sj_string_new_text(entityName);
-
-	// pos strings
-	SJString *pStrX = sj_string_new_text("x");
-	sj_string_concat(pStrX, keyStr);
-	SJString *pStrY = sj_string_new_text("y");
-	sj_string_concat(pStrY, keyStr);
-	SJString *pStrZ = sj_string_new_text("z");
-	sj_string_concat(pStrZ, keyStr);
-
-	// rot strings
-	SJString *rStrA = sj_string_new_text("a");
-	sj_string_concat(rStrA, keyStr);
-	SJString *rStrB = sj_string_new_text("b");
-	sj_string_concat(rStrB, keyStr);
-	SJString *rStrC = sj_string_new_text("c");
-	sj_string_concat(rStrC, keyStr);
-
-	// concat strings
-	//sj_string_concat(str1, paren);			// wall2 (
-	//sj_string_concat(str1, posStrX);		// 0.000000
-	//sj_string_concat(str1, str2);			// , 
-	//sj_string_concat(str1, posStrY);		// 0.000000
-	//sj_string_concat(str1, str2);			// ,
-	//sj_string_concat(str1, posStrZ);		// 0.000000
-	//sj_string_concat(str1, endStr);			//)
-	//sj_string_concat(str1, str2);			// ,
-	//sj_string_concat(str1, parenNoSpace);	// (
-	//sj_string_concat(str1, rotStrX);		// 0.000000
-	//sj_string_concat(str1, str2);			// , 
-	//sj_string_concat(str1, rotStrY);		// 0.000000
-	//sj_string_concat(str1, str2);			// ,
-	//sj_string_concat(str1, rotStrZ);		// 0.000000
-	//sj_string_concat(str1, endStr);			//)
-
-	char *entStr = sj_string_get_text(entityNameStr);
-
-	//slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
-
-	if (update == 1)
+	SJson *parentArr = sj_object_get_value(jsonFile, "Level");
+	if (sj_array_get_count(parentArr) == 0)
 	{
-		//sj_object_update_object(jsonFile, key, sj_new_str(entStr), keyVal);
+		parentArr = sj_array_new();
+		newObj = 1;
+	}
+
+	SJson *mainObj = sj_object_new();
+	sj_object_insert(mainObj, "name", sj_new_str(entityName));
+
+	// Position 
+	SJson *posArr = sj_array_new();
+	sj_array_append(posArr, sj_new_float(pos.x));
+	sj_array_append(posArr, sj_new_float(pos.y));
+	sj_array_append(posArr, sj_new_float(pos.z));
+	sj_object_insert(mainObj, "pos", posArr);
+
+	// Rotation 
+	SJson *rotArr = sj_array_new();
+	sj_array_append(rotArr, sj_new_float(rot.x));
+	sj_array_append(rotArr, sj_new_float(rot.y));
+	sj_array_append(rotArr, sj_new_float(rot.z));
+	sj_object_insert(mainObj, "rot", rotArr);
+
+	sj_array_append(parentArr, mainObj);
+	if (newObj == 1)
+		sj_object_insert(jsonFile, "Level", parentArr);
 	
-		// entity name
-		sj_object_update_object(jsonFile, key, sj_new_str(entStr), keyVal);
+	sj_save(jsonFile, "Level1.json");
 
-		// pos
-		sj_object_update_object(jsonFile, sj_string_get_text(pStrX), sj_new_float(pos.x), keyVal + 1); // x
-		sj_object_update_object(jsonFile, sj_string_get_text(pStrY), sj_new_float(pos.y), keyVal + 2); // y
-		sj_object_update_object(jsonFile, sj_string_get_text(pStrZ), sj_new_float(pos.z), keyVal + 3); // z
-
-		// rot
-		sj_object_update_object(jsonFile, sj_string_get_text(rStrA), sj_new_float(rot.x), keyVal + 4); // a
-		sj_object_update_object(jsonFile, sj_string_get_text(rStrB), sj_new_float(rot.y), keyVal + 5); // b
-		sj_object_update_object(jsonFile, sj_string_get_text(rStrC), sj_new_float(rot.z), keyVal + 6); // c
-	}
-	else
-	{
-		// entity name
-		sj_object_insert(jsonFile, key, sj_new_str(entStr)); 
-
-		// pos
-		sj_object_insert(jsonFile, sj_string_get_text(pStrX), sj_new_float(pos.x)); // x
-		sj_object_insert(jsonFile, sj_string_get_text(pStrY), sj_new_float(pos.y)); // y
-		sj_object_insert(jsonFile, sj_string_get_text(pStrZ), sj_new_float(pos.z)); // z
-
-		// rot
-		sj_object_insert(jsonFile, sj_string_get_text(rStrA), sj_new_float(rot.x)); // a
-		sj_object_insert(jsonFile, sj_string_get_text(rStrB), sj_new_float(rot.y)); // b
-		sj_object_insert(jsonFile, sj_string_get_text(rStrC), sj_new_float(rot.z)); // c
-	}
-
-	SJString *file = sj_object_to_json_string(jsonFile);
-	char *fileText = sj_string_get_text(file);
-	slog(fileText);
+	slog("JSON WRITTEN");
 }
+
+void AppendJSON(char* key, char* entityName, Vector3D pos, Vector3D rot, int index)
+{
+	slog("APPENDING JSON..");
+	//slog("ENTITY NUMBER: %i", index);
+
+	// key string
+	SJson *parentArr = sj_object_get_value(jsonFile, "Level");
+
+	SJson *mainObj = sj_object_new();
+	sj_object_insert(mainObj, "name", sj_new_str(entityName));
+
+	// Position 
+	SJson *posArr = sj_array_new();
+	sj_array_append(posArr, sj_new_float(pos.x));
+	sj_array_append(posArr, sj_new_float(pos.y));
+	sj_array_append(posArr, sj_new_float(pos.z));
+	sj_object_insert(mainObj, "pos", posArr);
+
+	// Rotation 
+	SJson *rotArr = sj_array_new();
+	sj_array_append(rotArr, sj_new_float(rot.x));
+	sj_array_append(rotArr, sj_new_float(rot.y));
+	sj_array_append(rotArr, sj_new_float(rot.z));
+	sj_object_insert(mainObj, "rot", rotArr);
+
+	//sj_echo(parentArr);
+
+	//parentArr->v.array = sj_list_delete_last(parentArr->v.array);
+	sj_array_insert(parentArr, mainObj, index);
+
+	//sj_echo(parentArr);
+
+	//sj_object_update(parentArr, "pos", posArr, 1);
+	//sj_object_update(parentArr, "rot", rotArr, 1);
+
+	sj_save(jsonFile, "Level1.json");
+
+	slog("JSON APPENDED");
+}
+
+//void WriteJSON(char* key, char* entityName, Vector3D pos, Vector3D rot, int update, int keyVal)
+//{
+//	// key string
+//	SJString *keyStr = sj_string_new_text(key);
+//	int realKeyVal = sj_string_as_integer(keyStr);
+//
+//	// entity name
+//	SJString *entityNameStr = sj_string_new_text(entityName);
+//
+//	// pos strings
+//	SJString *pStrX = sj_string_new_text("x");
+//	sj_string_concat(pStrX, keyStr);
+//	SJString *pStrY = sj_string_new_text("y");
+//	sj_string_concat(pStrY, keyStr);
+//	SJString *pStrZ = sj_string_new_text("z");
+//	sj_string_concat(pStrZ, keyStr);
+//
+//	// rot strings
+//	SJString *rStrA = sj_string_new_text("a");
+//	sj_string_concat(rStrA, keyStr);
+//	SJString *rStrB = sj_string_new_text("b");
+//	sj_string_concat(rStrB, keyStr);
+//	SJString *rStrC = sj_string_new_text("c");
+//	sj_string_concat(rStrC, keyStr);
+//
+//	// concat strings
+//	//sj_string_concat(str1, paren);			// wall2 (
+//	//sj_string_concat(str1, posStrX);		// 0.000000
+//	//sj_string_concat(str1, str2);			// , 
+//	//sj_string_concat(str1, posStrY);		// 0.000000
+//	//sj_string_concat(str1, str2);			// ,
+//	//sj_string_concat(str1, posStrZ);		// 0.000000
+//	//sj_string_concat(str1, endStr);			//)
+//	//sj_string_concat(str1, str2);			// ,
+//	//sj_string_concat(str1, parenNoSpace);	// (
+//	//sj_string_concat(str1, rotStrX);		// 0.000000
+//	//sj_string_concat(str1, str2);			// , 
+//	//sj_string_concat(str1, rotStrY);		// 0.000000
+//	//sj_string_concat(str1, str2);			// ,
+//	//sj_string_concat(str1, rotStrZ);		// 0.000000
+//	//sj_string_concat(str1, endStr);			//)
+//
+//	char *entStr = sj_string_get_text(entityNameStr);
+//
+//	//slog("KEYSTR: %s, KEYVAL %i", key, keyVal);
+//
+//	if (update == 1)
+//	{
+//		//sj_object_update_object(jsonFile, key, sj_new_str(entStr), keyVal);
+//	
+//		// entity name
+//		sj_object_update_object(jsonFile, key, sj_new_str(entStr), keyVal);
+//
+//		// pos
+//		sj_object_update_object(jsonFile, sj_string_get_text(pStrX), sj_new_float(pos.x), keyVal + 1); // x
+//		sj_object_update_object(jsonFile, sj_string_get_text(pStrY), sj_new_float(pos.y), keyVal + 2); // y
+//		sj_object_update_object(jsonFile, sj_string_get_text(pStrZ), sj_new_float(pos.z), keyVal + 3); // z
+//
+//		// rot
+//		sj_object_update_object(jsonFile, sj_string_get_text(rStrA), sj_new_float(rot.x), keyVal + 4); // a
+//		sj_object_update_object(jsonFile, sj_string_get_text(rStrB), sj_new_float(rot.y), keyVal + 5); // b
+//		sj_object_update_object(jsonFile, sj_string_get_text(rStrC), sj_new_float(rot.z), keyVal + 6); // c
+//	}
+//	else
+//	{
+//		// entity name
+//		sj_object_insert(jsonFile, key, sj_new_str(entStr)); 
+//
+//		// pos
+//		sj_object_insert(jsonFile, sj_string_get_text(pStrX), sj_new_float(pos.x)); // x
+//		sj_object_insert(jsonFile, sj_string_get_text(pStrY), sj_new_float(pos.y)); // y
+//		sj_object_insert(jsonFile, sj_string_get_text(pStrZ), sj_new_float(pos.z)); // z
+//
+//		// rot
+//		sj_object_insert(jsonFile, sj_string_get_text(rStrA), sj_new_float(rot.x)); // a
+//		sj_object_insert(jsonFile, sj_string_get_text(rStrB), sj_new_float(rot.y)); // b
+//		sj_object_insert(jsonFile, sj_string_get_text(rStrC), sj_new_float(rot.z)); // c
+//	}
+//
+//	SJString *file = sj_object_to_json_string(jsonFile);
+//	char *fileText = sj_string_get_text(file);
+//	slog(fileText);
+//}
 
 void LoadJSON()
 {
@@ -99,97 +177,33 @@ void LoadJSON()
 		slog("JSON file empty or missing. Cannot load.");
 		return;
 	}
-
-	SJson *tempFile = sj_copy(jsonFile);
-	fileWasLoaded = 1;
-	SJString* jsonStr = sj_object_to_json_string(jsonFile);
-	SJList* jsonList = jsonFile->v.array;
-	int numElements = sj_list_get_count(jsonList);
-
-	float xPos;
-	float yPos;
-	float zPos;
-	float aRot;
-	float bRot;
-	float cRot;
-
-	char *entStr;
 	
-	SJString *keyStr;
-	SJString *xStrKey;
-	SJString *yStrKey;
-	SJString *zStrKey;
-	SJString *aStrKey;
-	SJString *bStrKey;
-	SJString *cStrKey;
+	SJson *parentArr = sj_object_get_value(jsonFile, "Level");
 
-	SJString *xStrVal;
-	SJString *yStrVal;
-	SJString *zStrVal;
-	SJString *aStrVal;
-	SJString *bStrVal;
-	SJString *cStrVal;
-
-	int jsonIndex;
+	int length = sj_array_get_count(parentArr);
 	int i;
-	slog("NUM ELEMENTS: %i", numElements);
-	slog("NUM ELEMENTS / 7: %i", (numElements / 7));
-	for (i = 0; i < (numElements / 7); i++)
+	for (i = 0; i < length; i++)
 	{
-		slog("index: %i", i);
-		jsonIndex = i * 6;
+		SJson *child = sj_array_get_nth(parentArr, i);
+	
+		char* nameText = sj_object_get_value_as_string(child, "name");
 
-		keyStr = sj_string_new_integer(i);
-		//slog("KEY STR: %s", sj_string_get_text(keyStr));
-		entStr = sj_object_get_value_as_string(jsonFile, sj_string_get_text(keyStr));
+		SJson *posArr = sj_object_get_value(child, "pos");
+		sj_echo(posArr);
+		float xPos = sj_get_float_value(sj_array_get_nth(posArr, 0));
+		float yPos = sj_get_float_value(sj_array_get_nth(posArr, 1));
+		float zPos = sj_get_float_value(sj_array_get_nth(posArr, 2));
 
-		if (!entStr)
-		{
-			slog("ENT STR WAS NOT FOUND. STOPPING LOADING OF LEVEL FILE");
-			return;
-		}
+		SJson *rotArr = sj_object_get_value(child, "rot");
+		float xRot = sj_get_float_value(sj_array_get_nth(rotArr, 0));
+		float yRot = sj_get_float_value(sj_array_get_nth(rotArr, 1));
+		float zRot = sj_get_float_value(sj_array_get_nth(rotArr, 2));
 
-		// concat keyStr with pos and rot strs
-		xStrKey = sj_string_new_text("x");
-		yStrKey = sj_string_new_text("y");
-		zStrKey = sj_string_new_text("z");
-		aStrKey = sj_string_new_text("a");
-		bStrKey = sj_string_new_text("b");
-		cStrKey = sj_string_new_text("c");
-		sj_string_concat(xStrKey, keyStr);
-		sj_string_concat(yStrKey, keyStr);
-		sj_string_concat(zStrKey, keyStr);
-		sj_string_concat(aStrKey, keyStr);
-		sj_string_concat(bStrKey, keyStr);
-		sj_string_concat(cStrKey, keyStr);
 
-		// get pos and rot
-		xPos = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(xStrKey))));
-		yPos = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(yStrKey))));
-		zPos = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(zStrKey))));
-		aRot = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(aStrKey))));
-		bRot = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(bStrKey))));
-		cRot = sj_string_as_float(sj_string_to_json_string(sj_object_get_value(jsonFile, sj_string_get_text(cStrKey))));
-
-		slog("Ent Str: %s", entStr);
-		slog("X: %f", xPos);
-		slog("Y: %f", yPos);
-		slog("Z: %f", zPos);
-		slog("Z: %f", aRot);
-		slog("B: %f", bRot);
-		slog("C: %f", cRot);
-
-		// Spawn
-		SpawnEntityAtPos(
-			entStr, 
-			vector3d(xPos, yPos, zPos), 
-			vector3d(aRot, bRot, cRot), 
-			entityNum, jsonIndex);
+		SpawnEntityAtPos(nameText, vector3d(xPos, yPos, zPos),
+			vector3d(xRot, yRot, zRot), i, i);
 	}
 
-	jsonFile = tempFile;
-	SJString *file = sj_object_to_json_string(jsonFile);
-	char *fileText = sj_string_get_text(file);
-	slog(fileText);
+	fileWasLoaded = 1;
 	slog("All entites loaded from file.");
 }

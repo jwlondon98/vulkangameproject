@@ -86,7 +86,7 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 			//camSeqController.triggers[i].collider->extents = vector3d(1, 1, 1);
 
 			// set model's position to world origin
-			gfc_matrix_identity(camSeqController.triggers[i].modelMatrix);
+			/*gfc_matrix_identity(camSeqController.triggers[i].modelMatrix);
 			gfc_matrix_make_translation(
 				camSeqController.triggers[i].modelMatrix,
 				spawnPos
@@ -94,7 +94,7 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 			camSeqController.triggers[i].lastPos = spawnPos;
 
 			RotateEntity(&camSeqController.triggers[i], rot);
-			camSeqController.triggers[i].lastRot = rot;
+			camSeqController.triggers[i].lastRot = rot;*/
 
 			slog("TRIGGER CREATED");
 

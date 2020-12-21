@@ -11,7 +11,8 @@ int	 fileWasLoaded;
 
 void CreateJSONFile();
 
-void WriteJSON(char* key, char* entityType, Vector3D vect, Vector3D rot, int insert, int keyVal);
+void WriteJSON(char* key, char* entityType, Vector3D vect, Vector3D rot);
+void AppendJSON(char* key, char* entityName, Vector3D pos, Vector3D rot, int index);
 
 void LoadJSON();
 

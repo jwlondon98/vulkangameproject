@@ -135,20 +135,6 @@ Entity *CreateEntity(char* modelName, int render, Vector3D spawnPos, Vector3D ro
 
 			entityManager.entityList[i].speed = 0.5;
 
-			// set model's position to world origin
-			gfc_matrix_identity(entityManager.entityList[i].modelMatrix);
-			gfc_matrix_make_translation(
-				entityManager.entityList[i].modelMatrix,
-				spawnPos
-			);
-			entityManager.entityList[i].lastPos = spawnPos;
-
-			// rotate entity
-			RotateEntity(&entityManager.entityList[i], rot);
-			entityManager.entityList[i].lastRot = rot;
-
-			UpdateCollider(entityManager.entityList[i].collider, spawnPos);
-
 			//entityManager.entityList[i].targetX = GetRandomNum(-50, 50);
 			//entityManager.entityList[i].targetZ = GetRandomNum(-50, 50);
 

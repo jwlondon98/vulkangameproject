@@ -69,14 +69,12 @@ void MovePR(Vector3D moveVect)
 		// Record position to JSON
 		if (lastSpawnedEntity->jsonKey)
 		{
-			WriteJSON(
+			AppendJSON(
 				lastSpawnedEntity->jsonKey,
 				lastSpawnedEntity->entityName,
 				lastSpawnedEntity->lastPos, 
 				lastSpawnedEntity->lastRot, 
-				1, lastSpawnedEntity->jsonIndex);
-
-			sj_save(jsonFile, "Level1.json");
+				lastSpawnedEntity->entityNum);
 		}
 	}
 
@@ -89,14 +87,13 @@ void MovePR(Vector3D moveVect)
 
 void UpdateEntRot()
 {
-	WriteJSON(
+	AppendJSON(
 		lastSpawnedEntity->jsonKey,
 		lastSpawnedEntity->entityName,
 		lastSpawnedEntity->lastPos,
 		lastSpawnedEntity->lastRot,
-		1, lastSpawnedEntity->jsonIndex);
+		lastSpawnedEntity->entityNum);
 
-	sj_save(jsonFile, "Level1.json");
 }
 
 void RotateCamera(float dir, char axis)
@@ -117,11 +114,6 @@ void RotateCameraAboutEntity(float dir, char axis)
 		gf3d_vgraphics_rotate_camera_about_entity(lastSpawnedEntity, posRec.currentPos, dir, 'y', 1);
 	else if (axis == 'z')
 		gf3d_vgraphics_rotate_camera_about_entity(lastSpawnedEntity, posRec.currentPos, dir, 'z', 1);
-}
-
-void RotateEntity(Entity* ent, Vector3D rot)
-{
-	gf3d_vgraphics_rotate_entityByVectRads(ent, vector3d(rot.x, rot.y, rot.z));
 }
 
 void Rotate(float dir, char axis)

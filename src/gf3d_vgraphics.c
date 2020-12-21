@@ -808,9 +808,9 @@ void gf3d_vgraphics_rotate_entityByVect(Entity* ent, Vector3D rot)
 		vector3d(0, 1, 0));
 
 	ent->lastRot = vector3d(
-		ent->lastRot.x + xRads,
-		ent->lastRot.y + yRads,
-		ent->lastRot.z + zRads);
+		ent->lastRot.x + rot.x,
+		ent->lastRot.y + rot.y,
+		ent->lastRot.z + rot.z);
 }
 
 void gf3d_vgraphics_rotate_entityByVectRads(Entity* ent, Vector3D rot)
@@ -840,10 +840,10 @@ void gf3d_vgraphics_rotate_entityByVectRads(Entity* ent, Vector3D rot)
 		zRads,
 		vector3d(0, 1, 0));
 
-	ent->lastRot = vector3d(
+	/*ent->lastRot = vector3d(
 		ent->lastRot.x + xRads,
 		ent->lastRot.y + yRads,
-		ent->lastRot.z + zRads);
+		ent->lastRot.z + zRads);*/
 }
 
 void gf3d_vgraphics_translate_camera(Vector3D moveVect)
