@@ -134,12 +134,12 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	if (strcmp(entityName, "enemy3") == 0)
 	{
 		AddEnemyToCamSeqController(lastSpawnedEntity, 20);
-		lastSpawnedEntity->ticks = 6;
+		lastSpawnedEntity->ticks = 6 * 1000;
 	}
 	else if (strcmp(entityName, "boss") == 0)
 	{
 		AddEnemyToCamSeqController(lastSpawnedEntity, 50);
-		lastSpawnedEntity->ticks = 8;
+		lastSpawnedEntity->ticks = 8 * 1000;
 	}
 
 	// set model's position to world origin

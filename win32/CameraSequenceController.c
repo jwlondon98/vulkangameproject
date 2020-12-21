@@ -311,7 +311,7 @@ void Attack()
 
 	// UU
 	if (combos[0] == 'U' && combos[1] == 'U' && combos[2] == 'U')
-		damage = 10;
+		damage = 20;
 
 	slog("ATTACK: %c%c%c", combos[0], combos[1], combos[2]);
 

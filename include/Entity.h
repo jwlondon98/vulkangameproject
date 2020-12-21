@@ -85,7 +85,6 @@ typedef struct Entity_S
 	Vector2D		moveDir;
 
 	int				health;
-	int				initTicks;
 	int				ticks;
 
 	//void (Think*)(struct Entity_S *self);

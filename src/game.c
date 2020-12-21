@@ -251,7 +251,14 @@ int main(int argc,char *argv[])
 					if (entityList[i].canThink == 1 && entityList[i].state == FIGHT)
 					{
 						if (SDL_GetTicks() % entityList[i].ticks == 0)
-							slog("TICKED");
+						{
+							if (invincible == 0)
+							{
+								playerHealth -= 1;
+								UpdateHealthBar(playerHealth);
+								slog("PLAYER DAMAGED");
+							}
+						}
 						/*if (SDL_GetTicks() % (entityList[i].ticks * 1000) <= 0)
 						{
 							playerHealth--;

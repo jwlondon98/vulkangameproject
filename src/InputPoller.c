@@ -208,9 +208,15 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_LCTRL:
 				ctrlBtn = RELEASED;
 				if (invincible == 0)
+				{
 					invincible = 1;
+					slog("invincibility on");
+				}
 				else
+				{
+					slog("invincibility off");
 					invincible = 0;
+				}
 				break;
 		}
 	}

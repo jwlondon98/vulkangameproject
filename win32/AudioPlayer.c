@@ -8,8 +8,9 @@ void InitAudio()
 
 	// load audio files
 	bgMusic = Mix_LoadMUS("audio/BackgroundMusic.mp3");
+	Mix_VolumeMusic(5);
 	explosionSound = Mix_LoadWAV("audio/Explosion.wav");
-	explosionSound->volume = 50;
+	Mix_VolumeChunk(explosionSound, 10);
 }
 
 void PlayMusic(Mix_Music *music)
