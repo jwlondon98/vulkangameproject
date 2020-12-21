@@ -21,6 +21,9 @@ void SelectEntity(int index)
 
 void SpawnEntity(int useLastEntityTransform)
 {
+	if (gameMode == Game)
+		return;
+
 	posRec.lastEntityLocked = 0;
 
 	if (!jsonFile)
@@ -129,9 +132,15 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	lastSpawnedEntity->jsonIndex = jIndex;
 
 	if (strcmp(entityName, "enemy3") == 0)
+	{
 		AddEnemyToCamSeqController(lastSpawnedEntity, 20);
+		lastSpawnedEntity->ticks = 6;
+	}
 	else if (strcmp(entityName, "boss") == 0)
+	{
 		AddEnemyToCamSeqController(lastSpawnedEntity, 50);
+		lastSpawnedEntity->ticks = 8;
+	}
 
 	// set model's position to world origin
 	gfc_matrix_identity(lastSpawnedEntity->modelMatrix);

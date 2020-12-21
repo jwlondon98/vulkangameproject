@@ -33,6 +33,7 @@ void InitCameraController(Uint32 numTriggers)
 		return;
 	}
 
+	invincible = 0;
 	camSeqController.triggerCount = numTriggers;
 	atexit(CloseCamSeqController);
 	slog("Entity System intiialized");
@@ -315,7 +316,7 @@ void Attack()
 	slog("ATTACK: %c%c%c", combos[0], combos[1], combos[2]);
 
 	// damage player if bad combo
-	if (damage == -1)
+	if (damage == -1 && invincible == 0)
 	{
 		playerHealth -= 1;
 		UpdateHealthBar(playerHealth);
@@ -337,6 +338,7 @@ void Attack()
 		camSeqController.enemies[camSeqController.enemyFightIndex]->canThink = 0;
 		slog("enemy %i died", camSeqController.enemyFightIndex);
 		camSeqController.enemyFightIndex++;
+		PlaySFX(explosionSound);
 	}
 
 	combos[0] = 'x';

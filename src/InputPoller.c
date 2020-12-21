@@ -163,14 +163,11 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_TAB:
 				tabBtn = RELEASED;
 				SwitchGameMode();
-				{
-				default:
-					break;
-				}
 				break;
 			case SDLK_RETURN:
 				enterBtn = RELEASED;
 				SpawnEntity(0);
+				SetGameState(PLAYING);
 				break;
 			case SDLK_PAGEDOWN:
 				pageDownBtn = RELEASED;
@@ -210,7 +207,10 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				break;
 			case SDLK_LCTRL:
 				ctrlBtn = RELEASED;
-				SetGameState(PLAYING);
+				if (invincible == 0)
+					invincible = 1;
+				else
+					invincible = 0;
 				break;
 		}
 	}

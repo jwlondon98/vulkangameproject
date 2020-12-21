@@ -8,6 +8,7 @@
 #include "PositionRecorder.h"
 #include "../include/gf3d_vgraphics.h"
 #include "SpriteManager.h"
+#include "AudioPlayer.h"
 
 //struct CamSeqController
 //{
@@ -23,6 +24,7 @@ char combos[3];
 int comboIndex;
 
 int playerHealth;
+int invincible;
 
 void InitCameraController(Uint32 numTriggers);
 void CloseCamSeqController();

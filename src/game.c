@@ -93,7 +93,7 @@ int main(int argc,char *argv[])
 	
 	InitAudio();
 
-	//PlayMusic(bgMusic);
+	PlayMusic(bgMusic);
 
 	InitGameStateManager();
 
@@ -250,6 +250,20 @@ int main(int argc,char *argv[])
 				{
 					if (entityList[i].canThink == 1 && entityList[i].state == FIGHT)
 					{
+						if (SDL_GetTicks() % entityList[i].ticks == 0)
+							slog("TICKED");
+						/*if (SDL_GetTicks() % (entityList[i].ticks * 1000) <= 0)
+						{
+							playerHealth--;
+							UpdateHealthBar(playerHealth);
+							entityList[i].ticks = entityList[i].initTicks;
+							slog("ENEMY ATTACKED PLAYER.. PLAYER HEALTH: %i", playerHealth);
+						}
+						else
+						{
+							entityList[i].ticks--;
+							slog("ticking down");
+						}*/
 						// fight
 						//slog("fighting  %i", i);
 					}
