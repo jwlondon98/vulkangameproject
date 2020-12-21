@@ -9,6 +9,9 @@ typedef struct
 
 	Vector3D camPos;
 
+	Entity* enemies[10];
+	int enemyIndex;
+
 }CamSeqController;
 
 static CamSeqController camSeqController = { 0 };
@@ -58,7 +61,7 @@ void FreeTrigger(Entity *trigger)
 	trigger->renderOn = 0;
 
 	// Move camera to next trigger location and rotation
-	MoveToNextTrigger(trigger->lastPos, trigger->lastRot);
+	//MoveToNextTrigger(trigger->lastPos, trigger->lastRot);
 
 	gf3d_model_free(trigger->model);
 	memset(trigger, 0, sizeof(Entity));
@@ -72,14 +75,14 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 		if (!camSeqController.triggers[i]._inUse)
 		{
 			camSeqController.triggers[i]._inUse = 1;
-			camSeqController.triggers[i].renderOn = 1;
+			camSeqController.triggers[i].renderOn = 0;
 			camSeqController.triggers[i].model = gf3d_model_load("trigger");
 			camSeqController.triggers[i].entityType = None;
 			camSeqController.triggers[i].state = NONE;
 			camSeqController.triggers[i].canThink = 0;
 			camSeqController.triggers[i].entityName = "trigger";
 
-			camSeqController.triggers[i].speed = 0.0001;
+			camSeqController.triggers[i].speed = 0.05;
 
 			// create a trigger collider
 			//camSeqController.triggers[i].collider = CreateCollider();
@@ -105,7 +108,7 @@ Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot)
 	slog("Failed to add trigger to triggers list, no unused slots");
 }
 
-void MoveToNextTrigger()
+void MoveToNextTrigger(Vector2D dir)
 {
 	if (camSeqController.triggerIndex >= camSeqController.triggerCount)
 	{
@@ -115,9 +118,49 @@ void MoveToNextTrigger()
 
 	Entity *trigger = &camSeqController.triggers[camSeqController.triggerIndex];
 	trigger->state = MOVE;
+	trigger->moveDir = dir;
 	trigger->canThink = 1;
 
 	camSeqController.triggerIndex++;
+}
+
+void HandleEnemiesAtTriggerPos()
+{
+	slog("HandleEnemiesAtTriggerPos");
+
+	switch (camSeqController.triggerIndex)
+	{
+		case 1:
+			camSeqController.enemies[0]->canThink = 1;
+			camSeqController.enemies[0]->state = FIGHT;
+			camSeqController.enemies[1]->canThink = 1;
+			camSeqController.enemies[1]->state = FIGHT;
+			camSeqController.enemies[2]->canThink = 1;
+			camSeqController.enemies[2]->state = FIGHT;
+			slog("TRIGGER POS 1 ENEMIES ENABLED");
+			break;
+		case 4:
+			camSeqController.enemies[3]->canThink = 1;
+			camSeqController.enemies[3]->state = FIGHT;
+			slog("TRIGGER POS 4 ENEMIES ENABLED");
+			break;
+		case 5:
+			camSeqController.enemies[4]->canThink = 1;
+			camSeqController.enemies[4]->state = FIGHT;
+			slog("TRIGGER POS 5 ENEMIES ENABLED");
+			break;
+		case 6:
+			camSeqController.enemies[5]->canThink = 1;
+			camSeqController.enemies[5]->state = FIGHT;
+			slog("TRIGGER POS 6 ENEMIES ENABLED");
+			break;
+		case 7:
+			camSeqController.enemies[6]->canThink = 1;
+			camSeqController.enemies[6]->state = FIGHT;
+			slog("TRIGGER POS 7 BOSS ENABLED");
+			break;
+	
+	}
 }
 
 void MoveCameraToTrigger(Entity* entity)
@@ -130,33 +173,30 @@ void MoveCameraToTrigger(Entity* entity)
 
 	Vector3D lastCamPos = camSeqController.camPos;
 	Vector3D targetPos = entity->lastPos;
+	Vector2D moveDir = entity->moveDir;
+	/*slog("last cam pos x: %f", lastCamPos.x);
+	slog("target pos x: %f", targetPos.x);
+	slog("xDiff: %f", xDiff);*/
+	//slog("zDiff: %f", zDiff);
+
+
 
 	float xPos, yPos, zPos;
-	float tx, ty, tz;
-	float length;
-
-	// move camera if the entity is a trigger
-	/*tx = targetPos.x - lastCamPos.x;
-	ty = targetPos.y - lastCamPos.y;
-	tz = targetPos.z - lastCamPos.z;*/
-
-	tx = lastCamPos.x - targetPos.x;
-	ty = lastCamPos.y - targetPos.y;
-	tz = lastCamPos.z - targetPos.z;
 
 	Bool atPos = vector3d_distance_between_less_than(vector3d(-targetPos.x, -targetPos.y, -targetPos.z), lastCamPos, 1);
 	if (atPos == false)
 	{
-		//slog("moving: %s", entity->entityName);
+		Vector3D newPos;
 
-		// move camera towards the target
-		xPos = (lastCamPos.x + entity->speed * tx);
-		yPos = (lastCamPos.y + entity->speed * ty);
-		zPos = (lastCamPos.z + entity->speed * tz);
+		if (moveDir.x == -1)
+			newPos = vector3d(lastCamPos.x + entity->speed, 0, lastCamPos.z);
+		else if (moveDir.x == 1)
+			newPos = vector3d(lastCamPos.x - entity->speed, 0, lastCamPos.z);
+		else if (moveDir.y == 1)
+			newPos = vector3d(lastCamPos.x, 0, lastCamPos.z + entity->speed);
 
-		//slog("TARGET POS: (%f, %f, %f)", targetPos.x, targetPos.y, targetPos.z);
-		//slog("CAM POS: (%f, %f, %f)", xPos, yPos, zPos);
-		camSeqController.camPos = vector3d(xPos, yPos, zPos);
+		camSeqController.camPos = newPos;
+
 		gf3d_vgraphics_translate_camera(camSeqController.camPos);
 		return;
 	}
@@ -164,6 +204,7 @@ void MoveCameraToTrigger(Entity* entity)
 	{
 		slog("camera reached trigger pos");
 		entity->canThink = 0;
+		HandleEnemiesAtTriggerPos();
 	}
 }
 
@@ -192,4 +233,12 @@ Entity* GetTriggerList()
 int GetTriggerCount()
 {
 	return camSeqController.triggerCount;
+}
+
+void AddEnemyToCamSeqController(Entity* ent)
+{
+	camSeqController.enemies[camSeqController.enemyIndex] = ent;
+	slog("enemy %s added to cam seq controller", camSeqController.enemies[camSeqController.enemyIndex]->entityName);
+
+	camSeqController.enemyIndex++;
 }

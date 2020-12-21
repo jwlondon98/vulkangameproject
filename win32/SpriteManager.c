@@ -14,44 +14,44 @@ void InitSpriteManager()
 	deathMenu.scale = vector2d(2.2, 2.2);
 
 	// gun icons
-	pistolIcon.sprite = gf3d_sprite_load("images/UI/pistol.png", -1, -1, 0);
-	pistolIcon.pos = vector2d(-410, 390);
-	pistolIcon.scale = vector2d(.3, .3);
-	machinegunIcon.sprite = gf3d_sprite_load("images/UI/machinegun.png", -1, -1, 0);
-	machinegunIcon.pos = vector2d(-220, 490);
-	machinegunIcon.scale = vector2d(.6, .6);
-	currentGunIcon = pistolIcon;
+	//pistolIcon.sprite = gf3d_sprite_load("images/UI/pistol.png", -1, -1, 0);
+	//pistolIcon.pos = vector2d(-410, 390);
+	//pistolIcon.scale = vector2d(.3, .3);
+	//machinegunIcon.sprite = gf3d_sprite_load("images/UI/machinegun.png", -1, -1, 0);
+	//machinegunIcon.pos = vector2d(-220, 490);
+	//machinegunIcon.scale = vector2d(.6, .6);
+	//currentGunIcon = pistolIcon;
 
 	// health bars
 	healthBar10.sprite = gf3d_sprite_load("images/UI/healthbar10.png", -1, -1, 0);
-	healthBar10.pos = vector2d(180, 575);
+	healthBar10.pos = vector2d(20, 575);
 	healthBar10.scale = vector2d(1, .8);
 	healthBar9.sprite = gf3d_sprite_load("images/UI/healthbar9.png", -1, -1, 0);
-	healthBar9.pos = vector2d(180, 575);
+	healthBar9.pos = vector2d(20, 575);
 	healthBar9.scale = vector2d(1, .8);
 	healthBar8.sprite = gf3d_sprite_load("images/UI/healthbar8.png", -1, -1, 0);
-	healthBar8.pos = vector2d(180, 575);
+	healthBar8.pos = vector2d(20, 575);
 	healthBar8.scale = vector2d(1, .8);
 	healthBar7.sprite = gf3d_sprite_load("images/UI/healthbar7.png", -1, -1, 0);
-	healthBar7.pos = vector2d(180, 575);
+	healthBar7.pos = vector2d(20, 575);
 	healthBar7.scale = vector2d(1, .8);
 	healthBar6.sprite = gf3d_sprite_load("images/UI/healthbar6.png", -1, -1, 0);
-	healthBar6.pos = vector2d(180, 575);
+	healthBar6.pos = vector2d(20, 575);
 	healthBar6.scale = vector2d(1, .8);
 	healthBar5.sprite = gf3d_sprite_load("images/UI/healthbar5.png", -1, -1, 0);
-	healthBar5.pos = vector2d(180, 575);
+	healthBar5.pos = vector2d(20, 575);
 	healthBar5.scale = vector2d(1, .8);
 	healthBar4.sprite = gf3d_sprite_load("images/UI/healthbar4.png", -1, -1, 0);
-	healthBar4.pos = vector2d(180, 575);
+	healthBar4.pos = vector2d(20, 575);
 	healthBar4.scale = vector2d(1, .8);
 	healthBar3.sprite = gf3d_sprite_load("images/UI/healthbar3.png", -1, -1, 0);
-	healthBar3.pos = vector2d(180, 575);
+	healthBar3.pos = vector2d(20, 575);
 	healthBar3.scale = vector2d(1, .8);
 	healthBar2.sprite = gf3d_sprite_load("images/UI/healthbar2.png", -1, -1, 0);
-	healthBar2.pos = vector2d(180, 575);
+	healthBar2.pos = vector2d(20, 575);
 	healthBar2.scale = vector2d(1, .8);
 	healthBar1.sprite = gf3d_sprite_load("images/UI/healthbar1.png", -1, -1, 0);
-	healthBar1.pos = vector2d(180, 575);
+	healthBar1.pos = vector2d(20, 575);
 	healthBar1.scale = vector2d(1, .8);
 
 	showGameIcons = 0;
@@ -81,9 +81,9 @@ void RenderSprites(Uint32 frame, Uint32 bufferFrame, VkCommandBuffer buffer)
 	if (showGameIcons == 1)
 	{
 		// gun icons
-		gf3d_sprite_draw(
+		/*gf3d_sprite_draw(
 			currentGunIcon.sprite, currentGunIcon.pos, currentGunIcon.scale,
-			frame, bufferFrame, buffer);
+			frame, bufferFrame, buffer);*/
 
 		// health bars
 		switch (health)
@@ -152,7 +152,7 @@ void RenderSprites(Uint32 frame, Uint32 bufferFrame, VkCommandBuffer buffer)
 
 void ChangeGunSprite(int gunNum)
 {
-	switch (gunNum)
+	/*switch (gunNum)
 	{
 		case 1:
 			currentGunIcon = pistolIcon;
@@ -160,7 +160,7 @@ void ChangeGunSprite(int gunNum)
 		case 2:
 			currentGunIcon = machinegunIcon;
 			break;
-	}
+	}*/
 }
 
 void CloseMainMenu()

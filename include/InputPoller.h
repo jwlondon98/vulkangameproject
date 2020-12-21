@@ -33,6 +33,7 @@ KeyState pBtn;
 KeyState ctrlBtn;
 KeyState pageDownBtn;
 KeyState minusBtn;
+KeyState tabBtn;
 
 int screenWidth;
 int screenHeight;

@@ -19,7 +19,7 @@
 
 typedef enum 
 {
-	WAIT, MOVE, ATTACK, NONE
+	WAIT, MOVE, ATTACK, NONE, FIGHT, DEAD
 }State;
 
 typedef enum
@@ -81,6 +81,8 @@ typedef struct Entity_S
 
 	AnimState		currAnimState;
 	AnimState		endAnimState;
+
+	Vector2D		moveDir;
 
 	//void (Think*)(struct Entity_S *self);
 }Entity;

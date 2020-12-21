@@ -23,7 +23,8 @@ void CloseCamSeqController();
 void FreeTrigger(Entity *trigger);
 
 Entity* CreateTrigger(Vector3D spawnPos, Vector3D rot);
-void MoveToNextTrigger();
+void MoveToNextTrigger(Vector2D dir);
+void HandleEnemiesAtTriggerPos();
 void MoveCameraToTrigger(Entity* entity);
 void EnableDisableTriggerRender(int enable);
 
@@ -31,5 +32,6 @@ void TriggerThink(Entity* entity);
 
 Entity* GetTriggerList();
 int GetTriggerCount();
+void AddEnemyToCamSeqController(Entity* ent);
 
 #endif

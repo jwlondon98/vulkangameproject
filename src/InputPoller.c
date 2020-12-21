@@ -35,6 +35,9 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 	{
 		switch (keycode)
 		{
+			case SDLK_TAB:
+				tabBtn = PRESSED;
+				break;
 			case SDLK_RETURN:
 				enterBtn = PRESSED;
 				break;
@@ -72,6 +75,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				ChangeGunSprite(2);
 				break;
 			case SDLK_3:
+				SelectEntity(3);
 				/*gunPos = 1;
 				gun.lane = 1;*/
 				break;
@@ -94,22 +98,23 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				MovePR(vector3d(0, -1, 0));
 				break;
 			case SDLK_LEFT:
-				if (leftShiftBtn == PRESSED)
+				/*if (leftShiftBtn == PRESSED)
 					Rotate(-1.0, 'z');
 				else
-					Rotate(1.0, 'y');
+					Rotate(1.0, 'y');*/
+				MoveToNextTrigger(vector2d(-1, 0));
 				break;
 			case SDLK_RIGHT:
-				if (leftShiftBtn == PRESSED)
+				/*if (leftShiftBtn == PRESSED)
 					Rotate(1.0, 'z');
 				else
-					Rotate(-1.0, 'y');
+					Rotate(-1.0, 'y');*/
+				MoveToNextTrigger(vector2d(1, 0));
 				break;
 			case SDLK_DOWN:
-				Rotate(-1.0, 'x');
 				break;
 			case SDLK_UP:
-				Rotate(1.0, 'x');
+				MoveToNextTrigger(vector2d(0, 1));
 				break;
 			case SDLK_BACKSPACE:
 				DestroyEntity();
@@ -129,6 +134,14 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 	{
 		switch (keycode)
 		{
+			case SDLK_TAB:
+				tabBtn = RELEASED;
+				SwitchGameMode();
+				{
+				default:
+					break;
+				}
+				break;
 			case SDLK_RETURN:
 				enterBtn = RELEASED;
 				SpawnEntity(0);
@@ -154,7 +167,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_HOME:
 				startBtn = RELEASED;
 				slog("startBtn pressed");
-				MoveToNextTrigger();
+				//MoveToNextTrigger();
 				break;
 			case SDLK_DELETE:
 				deleteBtn = RELEASED;

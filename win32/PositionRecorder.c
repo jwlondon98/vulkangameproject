@@ -28,6 +28,9 @@ void FreePR()
 
 void MovePR(Vector3D moveVect)
 {
+	if (gameMode == Game)
+		return;
+
 	Vector3D lastPos = posRec.currentPos;
 	float step = posRec.step;
 

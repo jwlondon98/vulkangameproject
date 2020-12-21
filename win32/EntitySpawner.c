@@ -10,13 +10,14 @@ void SelectEntity(int index)
 		case 2:
 			lastEntityName = "trigger";
 			break;
+		case 3:
+			lastEntityName = "enemy3";
+			break;
 	}
 }
 
 void SpawnEntity(int useLastEntityTransform)
 {
-	slog("hi");
-
 	posRec.lastEntityLocked = 0;
 
 	if (!jsonFile)
@@ -70,10 +71,19 @@ void SpawnEntity(int useLastEntityTransform)
 		WriteJSON(key, lastEntityName, spawnPos, vector3d(0, 0, 0), 0, entityNum);
 	}
 
-	if (lastEntityName == "trigger")
+	if (strcmp(lastEntityName, "trigger") == 0)
 		lastSpawnedEntity = CreateTrigger(spawnPos, spawnRot);
 	else
 		lastSpawnedEntity = CreateEntity(lastEntityName, 1, spawnPos, spawnRot);
+
+	if (lastSpawnedEntity)
+		slog("trigger found");
+	else
+	{
+		slog("trigger not found");
+		return;
+	}
+
 	lastSpawnedEntity->jsonKey = key;
 	lastSpawnedEntity->jsonIndex = jsonIndex;
 	//slog("entity num: %i", entityNum + offset);
@@ -94,9 +104,9 @@ void SpawnEntity(int useLastEntityTransform)
 	RotateEntity(lastSpawnedEntity, spawnRot);
 	lastSpawnedEntity->lastRot = spawnRot;
 
-	UpdateCollider(lastSpawnedEntity->collider, spawnPos);
 	entityNum++;
 
+	slog("End Spawn Entity");
 
 	/*SJString *file = sj_object_to_json_string(jsonFile);
 	char *fileText = sj_string_get_text(file);
@@ -113,6 +123,9 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	lastSpawnedEntity->entityNum = entNum;
 	lastSpawnedEntity->jsonIndex = jIndex;
 
+	if (strcmp(entityName, "enemy3") == 0 || strcmp(entityName, "boss") == 0)
+		AddEnemyToCamSeqController(lastSpawnedEntity);
+
 	// set model's position to world origin
 	gfc_matrix_identity(lastSpawnedEntity->modelMatrix);
 	gfc_matrix_make_translation(
@@ -124,8 +137,6 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 	// rotate entity
 	RotateEntity(lastSpawnedEntity, rot);
 	lastSpawnedEntity->lastRot = rot;
-
-	UpdateCollider(lastSpawnedEntity->collider, spawnPos);
 
 	jsonIndex = jIndex;
 	entityNum++;

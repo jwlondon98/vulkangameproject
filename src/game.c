@@ -23,23 +23,34 @@
 
 void CreateEntities()
 {
-	InitEntity(20, Game);
+	//InitEntity(20, Game);
 
 	// invisible walls to destroy passed bullets
-	CreateEntity("player", 0, vector3d(0, -1000, 0), vector3d(0, 0, 0));
-	CreateEntity("cube", 0, vector3d(10,-100,0), vector3d(0, 0, 0));
+	//CreateEntity("player", 0, vector3d(0, -1000, 0), vector3d(0, 0, 0));
+	/*CreateEntity("cube", 0, vector3d(10,-100,0), vector3d(0, 0, 0));
 	CreateEntity("cube", 0, vector3d(0,-100,0), vector3d(0, 0, 0));
 	CreateEntity("cube", 0, vector3d(-10,-100,0), vector3d(0, 0, 0));
 
 	CreateEntity("enemy1", 1, vector3d(10,-50,0), vector3d(0, 0, 0));
-	CreateEntity("enemy2", 1, vector3d(0,-50,0), vector3d(0, 0, 0));
-	CreateEntity("enemy1", 1, vector3d(-10,-50,0), vector3d(0, 0, 0));
+	CreateEntity("enemy2", 1, vector3d(0,-50,0), vector3d(0, 0, 0));*/
+	// room 1
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(19, 0, 116), vector3d(0, 0, 0), 1, 30, 0.05);
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(0, 0, 108), vector3d(0, 0, 0), 1, 30, 0.05);
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(-24, 0, 97), vector3d(0, 0, 0), 1, 30, 0.05);
+
+	// room 2
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(-75, 0, 205), vector3d(0, 0, 0), 1, 30, 0.05);
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(-46, 0, 231), vector3d(0, 0, 0), 1, 30, 0.05);
+	//CreateAnimatedEntity("CubeShrink", 1, vector3d(-47, 0, 232), vector3d(0, 0, 0), 1, 30, 0.05);
+
+	// room 3
+	//CreateAnimatedEntity("Boss", 1, vector3d(-45, 0, 319), vector3d(0, 0, 0), 1, 30, 0.05);
 }
 
 int main(int argc,char *argv[])
 {
 	// CHANGE THIS IF CREATING LEVELS OR PLAYING THE GAME
-	GameMode gameMode = LevelEdit; //Game
+	GameMode gameMode = Game; //Game // LevelEdit
 
     int done = 0;
     int a;
@@ -90,28 +101,20 @@ int main(int argc,char *argv[])
 
 	Bullet* bulletList;
 
-	if (gameMode == LevelEdit)
-	{
-		// Create PositionRecorder
-		CreatePR();
+	// Create PositionRecorder
+	CreatePR();
 
-		// Init Entity Manager
-		InitEntity(100, LevelEdit);
-	}
-	else
-	{
-		// Init Entity Manager
-		InitEntity(100, Game);
+	// Init Entity Manager
+	InitEntity(200, Game);
 
-		// this will be loaded from json file instead
-		//CreateEntities();
+	// this will be loaded from json file instead
+	CreateEntities();
 
-		//Entity player;
+	//Entity player;
 
-		// create a gun for the player
-		CreateGun(Pistol, 300);
-		bulletList = GetBulletList();
-	}
+	// create a gun for the player
+	//CreateGun(Pistol, 300);
+	//bulletList = GetBulletList();
 	
 	// Init camera controller
 	InitCameraController(100);
@@ -127,7 +130,7 @@ int main(int argc,char *argv[])
 
 	GameState gameState;
 
-	Entity *cubeAnim = CreateAnimatedEntity("CubeShrink", 1, vector3d(0,0,0), vector3d(0, 0, 0), 1, 30, 0.05);
+	//Entity *cubeAnim = CreateAnimatedEntity("CubeShrink", 1, vector3d(0,0,0), vector3d(0, 0, 0), 1, 30, 0.05);
 
     while(!done)
     {
@@ -147,58 +150,59 @@ int main(int argc,char *argv[])
 		PollForInput();
 
 		gameState = GetGameState();
+		gameMode = GetGameMode();
 
-		if (gameMode == Game)
-		{
-			// Detect shooting
-			if (mouseBtn == PRESSED)
-			{
-				if (gun.gunType != Shotgun)
-				{
-					if (gunPos == -1)
-						Shoot(vector3d(10, 50, 0));
-					else if (gunPos == 0)
-						Shoot(vector3d(0, 50, 0));
-					else if (gunPos == 1)
-						Shoot(vector3d(-10, 50, 0));
-				}
-				else
-				{
-					Shoot(vector3d(10, 50, 0));
-					Shoot(vector3d(0, 50, 0));
-					Shoot(vector3d(-10, 50, 0));
-				}
+		//if (gameMode == Game)
+		//{
+		//	// Detect shooting
+		//	if (mouseBtn == PRESSED)
+		//	{
+		//		if (gun.gunType != Shotgun)
+		//		{
+		//			if (gunPos == -1)
+		//				Shoot(vector3d(10, 50, 0));
+		//			else if (gunPos == 0)
+		//				Shoot(vector3d(0, 50, 0));
+		//			else if (gunPos == 1)
+		//				Shoot(vector3d(-10, 50, 0));
+		//		}
+		//		else
+		//		{
+		//			Shoot(vector3d(10, 50, 0));
+		//			Shoot(vector3d(0, 50, 0));
+		//			Shoot(vector3d(-10, 50, 0));
+		//		}
 
-				if (gun.gunType != Machinegun)
-					mouseBtn = RELEASED;
-			}
+		//		if (gun.gunType != Machinegun)
+		//			mouseBtn = RELEASED;
+		//	}
 
-			// Detect hostage pull
-			if (spaceBtn == PRESSED)
-			{
-				int k;
-				for (k = 0; k < entityCount; k++)
-				{
-					if (entityList[k].entityType != Hostage)
-						continue;
+		//	// Detect hostage pull
+		//	if (spaceBtn == PRESSED)
+		//	{
+		//		int k;
+		//		for (k = 0; k < entityCount; k++)
+		//		{
+		//			if (entityList[k].entityType != Hostage)
+		//				continue;
 
-					entityList[k].speed = 2;
-				}
-				SaveHostage(entityList, entityCount);
-				//spaceBtn = RELEASED;
-			}
-			else if (spaceBtn == RELEASED)
-		{
-			int k;
-			for (k = 0; k < entityCount; k++)
-			{
-				if (entityList[k].entityType != Hostage)
-					continue;
+		//			entityList[k].speed = 2;
+		//		}
+		//		SaveHostage(entityList, entityCount);
+		//		//spaceBtn = RELEASED;
+		//	}
+		//	else if (spaceBtn == RELEASED)
+		//{
+		//	int k;
+		//	for (k = 0; k < entityCount; k++)
+		//	{
+		//		if (entityList[k].entityType != Hostage)
+		//			continue;
 
-				entityList[k].speed = 0.5;
-			}
-		}
-		}
+		//		entityList[k].speed = 0.5;
+		//	}
+		//}
+		//}
 
 
         // configure render command for graphics command pool
@@ -244,26 +248,31 @@ int main(int argc,char *argv[])
 				// handle entity thinking if the gameMode is a Game
 				if (gameMode == Game)
 				{
-					if (entityList[i].state != NONE ||
-						entityList[i].state != WAIT)
+					if (entityList[i].canThink == 1 && entityList[i].state == FIGHT)
 					{
-						if (entityList[i].canThink == 1)
-						{
-							slog("entity %s is thinking", entityList[i].entityName);
-							Think(&entityList[i]);
-						}
+						slog("fighting  %i", i);
 					}
 
-					if (entityList[i].state == ATTACK)
-					{
-						if (entityList[i].entityType == EnemyAdvanced)
-						{
-							EnemyShoot(entityList[i].lastPos);
-							entityList[i].state = NONE;
-						}
-						else
-							entityList[i].state = MOVE;
-					}
+					//if (entityList[i].state != NONE ||
+					//	entityList[i].state != WAIT)
+					//{
+					//	if (entityList[i].canThink == 1)
+					//	{
+					//		slog("entity %s is thinking", entityList[i].entityName);
+					//		//Think(&entityList[i]);
+					//	}
+					//}
+
+					//if (entityList[i].state == ATTACK)
+					//{
+					//	if (entityList[i].entityType == EnemyAdvanced)
+					//	{
+					//		//EnemyShoot(entityList[i].lastPos);
+					//		entityList[i].state = NONE;
+					//	}
+					//	else
+					//		entityList[i].state = MOVE;
+					//}
 				}
 
 				// draw model
