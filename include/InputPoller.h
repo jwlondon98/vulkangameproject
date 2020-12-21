@@ -35,6 +35,12 @@ KeyState pageDownBtn;
 KeyState minusBtn;
 KeyState tabBtn;
 
+// combos
+KeyState hBtn;
+KeyState jBtn;
+KeyState uBtn;
+
+
 int screenWidth;
 int screenHeight;
 

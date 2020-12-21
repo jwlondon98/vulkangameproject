@@ -79,6 +79,11 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 				/*gunPos = 1;
 				gun.lane = 1;*/
 				break;
+			case SDLK_4:
+				SelectEntity(4);
+				/*gunPos = 1;
+				gun.lane = 1;*/
+				break;
 			case SDLK_w:
 				MovePR(vector3d(0, 0, 1));
 				break;
@@ -128,12 +133,33 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_MINUS:
 				minusBtn = PRESSED;
 				break;
+			case SDLK_h:
+				hBtn = PRESSED;
+				break;
+			case SDLK_j:
+				jBtn = PRESSED;
+				break;
+			case SDLK_u:
+				uBtn = PRESSED;
+				break;
 		}
 	}
 	else if (eventType == SDL_KEYUP)
 	{
 		switch (keycode)
 		{
+			case SDLK_h:
+				hBtn =	RELEASED;
+				Combo('H');
+				break;
+			case SDLK_j:
+				jBtn = RELEASED;
+				Combo('J');
+				break;
+			case SDLK_u:
+				uBtn = RELEASED;
+				Combo('U');
+				break;
 			case SDLK_TAB:
 				tabBtn = RELEASED;
 				SwitchGameMode();
@@ -160,6 +186,7 @@ void HandleKey(SDL_Keycode keycode, SDL_Event* eventType)
 			case SDLK_SPACE:
 				spaceBtn = RELEASED;
 				EnableDisableEntityLock();
+				Attack();
 				break;
 			case SDLK_LSHIFT:
 				leftShiftBtn = RELEASED;

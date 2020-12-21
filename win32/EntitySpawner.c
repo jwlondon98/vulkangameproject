@@ -13,6 +13,9 @@ void SelectEntity(int index)
 		case 3:
 			lastEntityName = "enemy3";
 			break;
+		case 4:
+			lastEntityName = "boss";
+			break;
 	}
 }
 
@@ -117,14 +120,18 @@ void SpawnEntityAtPos(char* entityName, Vector3D spawnPos, Vector3D rot, int ent
 {
 	if (strcmp(entityName, "trigger") == 0)
 		lastSpawnedEntity = CreateTrigger(spawnPos, rot);
+	else if (strcmp(entityName, "enemy3") == 0 || strcmp(entityName, "boss") == 0)
+		lastSpawnedEntity = CreateAnimatedEntity(entityName, 1, spawnPos, rot, 1, 30, 0.05);
 	else
 		lastSpawnedEntity = CreateEntity(entityName, 1, spawnPos, rot);
 	lastSpawnedEntity->entityName = entityName;
 	lastSpawnedEntity->entityNum = entNum;
 	lastSpawnedEntity->jsonIndex = jIndex;
 
-	if (strcmp(entityName, "enemy3") == 0 || strcmp(entityName, "boss") == 0)
-		AddEnemyToCamSeqController(lastSpawnedEntity);
+	if (strcmp(entityName, "enemy3") == 0)
+		AddEnemyToCamSeqController(lastSpawnedEntity, 20);
+	else if (strcmp(entityName, "boss") == 0)
+		AddEnemyToCamSeqController(lastSpawnedEntity, 50);
 
 	// set model's position to world origin
 	gfc_matrix_identity(lastSpawnedEntity->modelMatrix);

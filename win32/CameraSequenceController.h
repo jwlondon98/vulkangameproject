@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "PositionRecorder.h"
 #include "../include/gf3d_vgraphics.h"
+#include "SpriteManager.h"
 
 //struct CamSeqController
 //{
@@ -17,6 +18,11 @@
 //};
 //
 //extern struct CamSeqController camSeqController;
+
+char combos[3];
+int comboIndex;
+
+int playerHealth;
 
 void InitCameraController(Uint32 numTriggers);
 void CloseCamSeqController();
@@ -32,6 +38,9 @@ void TriggerThink(Entity* entity);
 
 Entity* GetTriggerList();
 int GetTriggerCount();
-void AddEnemyToCamSeqController(Entity* ent);
+void AddEnemyToCamSeqController(Entity* ent, int health);
+
+void Combo(char attack);
+void Attack();
 
 #endif

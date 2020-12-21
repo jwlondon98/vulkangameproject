@@ -11,6 +11,7 @@ typedef struct
 
 	Entity* enemies[10];
 	int enemyIndex;
+	int enemyFightIndex;
 
 }CamSeqController;
 
@@ -235,10 +236,111 @@ int GetTriggerCount()
 	return camSeqController.triggerCount;
 }
 
-void AddEnemyToCamSeqController(Entity* ent)
+void AddEnemyToCamSeqController(Entity* ent, int health)
 {
 	camSeqController.enemies[camSeqController.enemyIndex] = ent;
+	camSeqController.enemies[camSeqController.enemyIndex]->health = health;
+	slog("health: %i", camSeqController.enemies[camSeqController.enemyIndex]->health);
 	slog("enemy %s added to cam seq controller", camSeqController.enemies[camSeqController.enemyIndex]->entityName);
 
 	camSeqController.enemyIndex++;
+
+	camSeqController.enemyFightIndex = 0;
+	comboIndex = 0;
+	playerHealth = 10;
+	combos[0] = 'x';
+	combos[1] = 'x';
+	combos[2] = 'x';
+}
+
+void Combo(char attack)
+{
+	slog("COMBO FRAME %i is %c", comboIndex, attack);
+
+	if (comboIndex >= 3)
+	{
+		combos[0] = 'x';
+		combos[1] = 'x';
+		combos[2] = 'x';
+		Attack();
+	}
+
+	combos[comboIndex] = attack;
+
+	comboIndex++;
+	/*if (comboIndex = 3)
+		comboIndex = 0;*/
+}
+
+void Attack()
+{
+	int damage = -1;
+	
+	// H
+	if (combos[0] == 'H' && combos[1] == 'x' && combos[2] == 'x')
+		damage = 1;
+
+	// HHH
+	if (combos[0] == 'H' && combos[1] == 'H' && combos[2] == 'H')
+		damage = 4;
+
+	// J
+	if (combos[0] == 'J' && combos[1] == 'x' && combos[2] == 'x')
+		damage = 1;
+
+	// JJJ
+	if (combos[0] == 'J' && combos[1] == 'J' && combos[2] == 'J')
+		damage = 4;
+
+	// UH
+	if (combos[0] == 'U' && combos[1] == 'H' && combos[2] == 'x')
+		damage = 2;
+
+	// UJ
+	if (combos[0] == 'U' && combos[1] == 'J' && combos[2] == 'x')
+		damage = 2;
+
+	// UHJ
+	if (combos[0] == 'U' && combos[1] == 'H' && combos[2] == 'J')
+		damage = 4;
+
+	// UU
+	if (combos[0] == 'U' && combos[1] == 'U' && combos[2] == 'x')
+		damage = 1;
+
+	// UU
+	if (combos[0] == 'U' && combos[1] == 'U' && combos[2] == 'U')
+		damage = 10;
+
+	slog("ATTACK: %c%c%c", combos[0], combos[1], combos[2]);
+
+	// damage player if bad combo
+	if (damage == -1)
+	{
+		playerHealth -= 1;
+		UpdateHealthBar(playerHealth);
+		slog("BAD COMBO.. PLAYER WAS HIT BY ENEMY.. PLAYER HEALTH: %i", playerHealth);
+	}
+
+	// do damage to current enemy
+	slog("ENEMY FIGHT INDEX: %i", camSeqController.enemyFightIndex);
+	if (damage != -1)
+	{
+		camSeqController.enemies[camSeqController.enemyFightIndex]->health -= damage;
+		slog("DAMAGE DEALT: %i\nENEMY HEALTH: %i", damage, camSeqController.enemies[camSeqController.enemyFightIndex]->health);
+	}
+	
+	if (camSeqController.enemies[camSeqController.enemyFightIndex]->health <= 0)
+	{
+		camSeqController.enemies[camSeqController.enemyFightIndex]->currAnimState = AnimPlay;
+		camSeqController.enemies[camSeqController.enemyFightIndex]->state = DEAD;
+		camSeqController.enemies[camSeqController.enemyFightIndex]->canThink = 0;
+		slog("enemy %i died", camSeqController.enemyFightIndex);
+		camSeqController.enemyFightIndex++;
+	}
+
+	combos[0] = 'x';
+	combos[1] = 'x';
+	combos[2] = 'x';
+	comboIndex = 0;
 }

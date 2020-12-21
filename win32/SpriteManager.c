@@ -150,6 +150,11 @@ void RenderSprites(Uint32 frame, Uint32 bufferFrame, VkCommandBuffer buffer)
 	}
 }
 
+void UpdateHealthBar(int h)
+{
+	health = h;
+}
+
 void ChangeGunSprite(int gunNum)
 {
 	/*switch (gunNum)

@@ -48,4 +48,7 @@ void ChangeGunSprite(int gunNum);
 
 void CloseMainMenu();
 
+void UpdateHealthBar(int health);
+
+
 #endif

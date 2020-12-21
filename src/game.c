@@ -250,7 +250,8 @@ int main(int argc,char *argv[])
 				{
 					if (entityList[i].canThink == 1 && entityList[i].state == FIGHT)
 					{
-						slog("fighting  %i", i);
+						// fight
+						//slog("fighting  %i", i);
 					}
 
 					//if (entityList[i].state != NONE ||
